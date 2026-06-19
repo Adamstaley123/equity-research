@@ -1,0 +1,545 @@
+"""
+SEC EDGAR XBRL API fetcher — primary source for all financial statement data.
+
+Endpoints used:
+  CIK lookup:     https://efts.sec.gov/LATEST/search-index?q="TICKER"&forms=10-K
+  XBRL concept:   https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/{concept}.json
+  Submissions:    https://data.sec.gov/submissions/CIK{cik}.json
+
+Rate limit: 10 req/sec — we sleep EDGAR_RATE_LIMIT_SLEEP between calls.
+User-Agent header is REQUIRED by SEC or requests are blocked.
+"""
+from __future__ import annotations
+import time
+import json
+import re
+from datetime import date
+from typing import Optional
+import requests
+
+from pipeline.config import (
+    EDGAR_USER_AGENT, EDGAR_RATE_LIMIT_SLEEP, EDGAR_BASE_URL,
+    REVENUE_CONCEPTS, GROSS_PROFIT_CONCEPTS, COST_OF_REVENUE_CONCEPTS,
+    OPERATING_INCOME_CONCEPTS,
+    NET_INCOME_CONCEPTS, OCF_CONCEPTS, CAPEX_CONCEPTS,
+    CASH_CONCEPTS, DEBT_CONCEPTS, SHARES_CONCEPTS, DA_CONCEPTS,
+    STALENESS_FLOW_MONTHS, STALENESS_BALANCE_MONTHS,
+)
+from pipeline.schema import DataPoint
+from pipeline.fetchers.base import make_dp, na_dp
+
+_SESSION = requests.Session()
+_SESSION.headers.update({"User-Agent": EDGAR_USER_AGENT, "Accept": "application/json"})
+
+
+def _get(url: str) -> dict:
+    time.sleep(EDGAR_RATE_LIMIT_SLEEP)
+    r = _SESSION.get(url, timeout=15)
+    r.raise_for_status()
+    return r.json()
+
+
+def lookup_cik(ticker: str) -> Optional[str]:
+    """Return zero-padded 10-digit CIK for a ticker, or None if not found."""
+    url = f"https://efts.sec.gov/LATEST/search-index?q=%22{ticker}%22&forms=10-K&dateRange=custom&startdt=2020-01-01"
+    try:
+        data = _get(url)
+        hits = data.get("hits", {}).get("hits", [])
+        for hit in hits:
+            src = hit.get("_source", {})
+            entity_ticker = src.get("period_of_report", "")  # not ticker field
+            # Try entity_id or file_date path for CIK
+            file_path = hit.get("_id", "")
+            cik_match = re.search(r"CIK(\d+)", file_path, re.IGNORECASE)
+            if cik_match:
+                return cik_match.group(1).zfill(10)
+        # Fallback: company search
+        url2 = f"https://efts.sec.gov/LATEST/search-index?q=%22{ticker}%22&forms=10-K"
+        data2 = _get(url2)
+        hits2 = data2.get("hits", {}).get("hits", [])
+        for hit in hits2:
+            file_path = hit.get("_id", "")
+            cik_match = re.search(r"CIK(\d+)", file_path, re.IGNORECASE)
+            if cik_match:
+                return cik_match.group(1).zfill(10)
+    except Exception:
+        pass
+    return None
+
+
+def lookup_cik_from_submissions(ticker: str) -> Optional[str]:
+    """Search EDGAR company search page for CIK by ticker symbol."""
+    try:
+        url = f"https://efts.sec.gov/LATEST/search-index?q=%22{ticker}%22&forms=10-K%2C10-Q"
+        data = _get(url)
+        hits = data.get("hits", {}).get("hits", [])
+        for hit in hits:
+            src = hit.get("_source", {})
+            entity_name = src.get("display_names", "")
+            file_path = hit.get("_id", "")
+            cik_match = re.search(r"(\d{10})", file_path)
+            if cik_match:
+                return cik_match.group(1)
+        # Try the company-concept ticker search
+        ticker_url = f"https://efts.sec.gov/LATEST/search-index?q=%22{ticker.upper()}%22&forms=10-K"
+        data2 = _get(ticker_url)
+        hits2 = data2.get("hits", {}).get("hits", [])
+        for hit in hits2:
+            file_path = hit.get("_id", "")
+            cik_match = re.search(r"(\d{10})", file_path)
+            if cik_match:
+                return cik_match.group(1)
+    except Exception:
+        pass
+    return None
+
+
+def lookup_cik_direct(ticker: str) -> Optional[str]:
+    """Use SEC EDGAR's company tickers JSON (most reliable method)."""
+    try:
+        url = "https://www.sec.gov/files/company_tickers.json"
+        data = _get(url)
+        ticker_upper = ticker.upper()
+        for entry in data.values():
+            if entry.get("ticker", "").upper() == ticker_upper:
+                return str(entry["cik_str"]).zfill(10)
+    except Exception:
+        pass
+    return None
+
+
+def get_cik(ticker: str) -> Optional[str]:
+    """Try all CIK lookup methods in order."""
+    cik = lookup_cik_direct(ticker)
+    if cik:
+        return cik
+    cik = lookup_cik(ticker)
+    if cik:
+        return cik
+    return lookup_cik_from_submissions(ticker)
+
+
+def _fetch_concept(cik: str, concept: str) -> Optional[dict]:
+    """Fetch a single GAAP concept for a company. Returns raw JSON or None."""
+    cik_str = cik if cik.startswith("CIK") else f"CIK{cik}"
+    url = f"{EDGAR_BASE_URL}/api/xbrl/companyconcept/{cik_str}/us-gaap/{concept}.json"
+    try:
+        return _get(url)
+    except Exception:
+        return None
+
+
+# ── Staleness anchor ──────────────────────────────────────────────────────────
+# The "anchor" is the company's most recent filing period (max reportDate across
+# its recent 10-Q/10-K filings). Every fetched value is checked against it so we
+# never silently return data from a concept the company stopped tagging years ago.
+_ANCHOR_CACHE: dict[str, Optional[str]] = {}
+
+
+def _get_anchor_period(cik: str) -> Optional[str]:
+    """Return the company's latest 10-Q/10-K report date (ISO string), or None."""
+    if cik in _ANCHOR_CACHE:
+        return _ANCHOR_CACHE[cik]
+    cik_str = cik if cik.startswith("CIK") else f"CIK{cik}"
+    anchor: Optional[str] = None
+    try:
+        data = _get(f"{EDGAR_BASE_URL}/submissions/{cik_str}.json")
+        recent = data.get("filings", {}).get("recent", {})
+        forms = recent.get("form", [])
+        report_dates = recent.get("reportDate", [])
+        cands = [
+            rd for f, rd in zip(forms, report_dates)
+            if f in ("10-Q", "10-K") and rd
+        ]
+        if cands:
+            anchor = max(cands)
+    except Exception:
+        anchor = None
+    _ANCHOR_CACHE[cik] = anchor
+    return anchor
+
+
+def _months_behind(period_end: str, anchor: str) -> Optional[int]:
+    """How many whole months `period_end` is before `anchor` (None on parse error)."""
+    try:
+        pe = date.fromisoformat(period_end)
+        an = date.fromisoformat(anchor)
+        return (an.year - pe.year) * 12 + (an.month - pe.month)
+    except Exception:
+        return None
+
+
+def _staleness_reason(period_end: str, anchor: Optional[str], max_months: int) -> Optional[str]:
+    """Return a rejection reason if the value is too old vs the anchor, else None."""
+    if not anchor or not period_end:
+        return None
+    months = _months_behind(period_end, anchor)
+    if months is not None and months > max_months:
+        return (
+            f"value period {period_end} is {months}mo behind latest filing "
+            f"{anchor} (max {max_months}mo) — concept likely no longer tagged; "
+            f"skipped to avoid stale data"
+        )
+    return None
+
+
+def _period_days(entry: dict) -> int:
+    """Return number of days the entry covers, or -1 on error."""
+    try:
+        from datetime import date
+        s = date.fromisoformat(entry.get("start", ""))
+        e = date.fromisoformat(entry.get("end", ""))
+        return (e - s).days
+    except Exception:
+        return -1
+
+
+def _is_single_quarter(entry: dict) -> bool:
+    """True if entry covers roughly one quarter (70–105 days)."""
+    d = _period_days(entry)
+    return 70 <= d <= 105
+
+
+def _extract_ttm_quarters(
+    concept_data: dict,
+    cik: str,
+    concept: str,
+) -> tuple[Optional[float], str, str, str]:
+    """
+    TTM assembly for income-statement items.
+    Primary: sum 4 non-overlapping individual quarters.
+    Fallback: most recent 10-K annual.
+    """
+    units = concept_data.get("units", {})
+    usd_entries = units.get("USD", units.get("shares", []))
+    if not usd_entries:
+        return None, "", "", f"No USD units found for concept {concept}"
+
+    valid = [e for e in usd_entries if e.get("form") in ("10-Q", "10-K") and e.get("val") is not None]
+    if not valid:
+        return None, "", "", "No 10-Q or 10-K entries found"
+
+    valid.sort(key=lambda e: e.get("end", ""), reverse=True)
+
+    # Path 1: 4 individual single-quarter entries
+    q_single = [e for e in valid if e.get("form") == "10-Q" and _is_single_quarter(e)]
+    if len(q_single) >= 4:
+        # Verify non-overlapping by unique end dates
+        seen_ends: set = set()
+        selected = []
+        for e in q_single:
+            if e["end"] not in seen_ends:
+                seen_ends.add(e["end"])
+                selected.append(e)
+            if len(selected) == 4:
+                break
+        if len(selected) == 4:
+            ttm = sum(e["val"] for e in selected)
+            accessions = [e.get("accn", "?") for e in selected]
+            return ttm, f"TTM ({selected[0]['end']} latest quarter)", selected[0]["end"], f"edgar_10q:accessions={accessions[:2]}...,concept={concept}"
+
+    # Fallback: most recent annual 10-K
+    annual = [e for e in valid if e.get("form") == "10-K"]
+    if annual:
+        best = annual[0]
+        return float(best["val"]), f"FY ({best.get('end','')})", best.get("end", ""), f"edgar_10k:accession={best.get('accn','?')},concept={concept}"
+
+    return None, "", "", f"Could not assemble TTM from {len(q_single)} single-quarter entries"
+
+
+def _extract_ttm_cashflow(
+    concept_data: dict,
+    cik: str,
+    concept: str,
+) -> tuple[Optional[float], str, str, str]:
+    """
+    TTM assembly for cash flow items, which EDGAR reports as YTD cumulative.
+
+    Strategy (in order):
+    1. 4 individual single-quarter entries (rare for cash flows but possible)
+    2. YTD reconstruction: TTM = FY_prior + most_recent_10Q - prior_year_same_period_10Q
+    3. Most recent annual 10-K
+    """
+    from datetime import date as _date
+
+    units = concept_data.get("units", {})
+    usd_entries = units.get("USD", [])
+    if not usd_entries:
+        return None, "", "", f"No USD units for {concept}"
+
+    valid = [e for e in usd_entries if e.get("form") in ("10-Q", "10-K") and e.get("val") is not None]
+    if not valid:
+        return None, "", "", "No 10-Q or 10-K entries"
+
+    valid.sort(key=lambda e: e.get("end", ""), reverse=True)
+
+    # Path 1: 4 individual quarters — must span ~12 months (not 4 Q1s from different years)
+    q_single = [e for e in valid if e.get("form") == "10-Q" and _is_single_quarter(e)]
+    if len(q_single) >= 4:
+        seen_ends: set = set()
+        selected = []
+        for e in q_single:
+            if e["end"] not in seen_ends:
+                seen_ends.add(e["end"])
+                selected.append(e)
+            if len(selected) == 4:
+                break
+        if len(selected) == 4:
+            # Validate: oldest and newest end dates should be within ~13 months
+            try:
+                from datetime import date as _date_cls
+                newest = _date_cls.fromisoformat(selected[0]["end"])
+                oldest = _date_cls.fromisoformat(selected[3]["end"])
+                span_days = (newest - oldest).days
+                if span_days <= 400:  # ~13 months — genuine consecutive quarters
+                    ttm = sum(e["val"] for e in selected)
+                    accessions = [e.get("accn", "?") for e in selected]
+                    return ttm, f"TTM ({selected[0]['end']})", selected[0]["end"], f"edgar_10q:individual_quarters,concept={concept}"
+                # else: span > 13 months means we're picking same-quarter from different years → fall through
+            except Exception:
+                pass
+
+    # Path 2: YTD reconstruction
+    # Most recent 10-Q (any period) — the starting point
+    quarterly = [e for e in valid if e.get("form") == "10-Q" and e.get("start") and e.get("end")]
+    if quarterly:
+        most_recent_q = quarterly[0]
+        mr_start = most_recent_q["start"]
+        mr_end = most_recent_q["end"]
+        mr_val = most_recent_q["val"]
+
+        try:
+            mr_end_dt = _date.fromisoformat(mr_end)
+            mr_start_dt = _date.fromisoformat(mr_start)
+
+            # Prior year same period: shift both dates back one year
+            def shift_year(d: _date, delta: int) -> str:
+                try:
+                    return d.replace(year=d.year + delta).isoformat()
+                except ValueError:
+                    # Feb 29 edge case
+                    return d.replace(year=d.year + delta, day=28).isoformat()
+
+            prior_end = shift_year(mr_end_dt, -1)
+            prior_start = shift_year(mr_start_dt, -1)
+
+            # Find matching prior-year same-period 10-Q (exact start+end match)
+            prior_q = next(
+                (e for e in quarterly if e["end"] == prior_end and e["start"] == prior_start),
+                None
+            )
+
+            # Find most recent 10-K annual that ended BEFORE or AT the start of current period
+            annual_entries = sorted(
+                [e for e in valid if e.get("form") == "10-K"],
+                key=lambda e: e.get("end", ""), reverse=True
+            )
+            fy_prior = next(
+                (e for e in annual_entries if e["end"] < mr_end),
+                None
+            )
+
+            if prior_q and fy_prior:
+                ttm = float(fy_prior["val"]) + float(mr_val) - float(prior_q["val"])
+                detail = (
+                    f"edgar_10q:ytd_reconstruction,"
+                    f"FY({fy_prior['end']})={fy_prior['val']:,}+"
+                    f"YTD({mr_end})={mr_val:,}-"
+                    f"PriorYTD({prior_end})={prior_q['val']:,},"
+                    f"concept={concept}"
+                )
+                return ttm, f"TTM via YTD recon ({mr_end})", mr_end, detail
+        except Exception:
+            pass
+
+    # Path 3: annual fallback
+    annual = [e for e in valid if e.get("form") == "10-K"]
+    if annual:
+        best = annual[0]
+        return float(best["val"]), f"FY ({best['end']})", best["end"], f"edgar_10k:annual_fallback,concept={concept}"
+
+    return None, "", "", f"All TTM paths failed for {concept}"
+
+
+def _fetch_latest_balance_sheet_value(
+    cik: str,
+    concepts: list[str],
+    field_name: str,
+) -> DataPoint:
+    """
+    For balance-sheet items (cash, debt, shares): fetch the single most recent
+    point-in-time value from 10-Q or 10-K.
+    """
+    failures = []
+    anchor = _get_anchor_period(cik)
+    for concept in concepts:
+        data = _fetch_concept(cik, concept)
+        if not data:
+            failures.append(f"{concept}: HTTP error or not found")
+            continue
+        units = data.get("units", {})
+        entries = units.get("USD", units.get("shares", []))
+        if not entries:
+            failures.append(f"{concept}: no USD/shares units")
+            continue
+        # For balance sheet: take the entry with the latest end date from 10-Q/10-K
+        filed = [e for e in entries if e.get("form") in ("10-Q", "10-K") and e.get("val") is not None]
+        if not filed:
+            failures.append(f"{concept}: no 10-Q/10-K entries")
+            continue
+        filed.sort(key=lambda e: e.get("end", ""), reverse=True)
+        best = filed[0]
+        stale = _staleness_reason(best.get("end", ""), anchor, STALENESS_BALANCE_MONTHS)
+        if stale:
+            failures.append(f"{concept}: {stale}")
+            continue
+        return make_dp(
+            value=float(best["val"]),
+            source="edgar_10q" if best.get("form") == "10-Q" else "edgar_10k",
+            source_detail=f"edgar:{best.get('form')},accession={best.get('accn','?')},concept={concept}",
+            period_label=f"As of {best.get('end','')}",
+            period_end=best.get("end", ""),
+        )
+    return na_dp(f"All EDGAR concepts failed for {field_name}: " + " | ".join(failures))
+
+
+def _fetch_ttm_income_statement(
+    cik: str,
+    concepts: list[str],
+    field_name: str,
+    cashflow: bool = False,
+) -> DataPoint:
+    """Fetch TTM value. Set cashflow=True for OCF/CapEx to use YTD-aware assembly."""
+    failures = []
+    extractor = _extract_ttm_cashflow if cashflow else _extract_ttm_quarters
+    anchor = _get_anchor_period(cik)
+    for concept in concepts:
+        data = _fetch_concept(cik, concept)
+        if not data:
+            failures.append(f"{concept}: HTTP error or not found")
+            continue
+        val, period_label, period_end, detail = extractor(data, cik, concept)
+        if val is not None:
+            stale = _staleness_reason(period_end, anchor, STALENESS_FLOW_MONTHS)
+            if stale:
+                failures.append(f"{concept}: {stale}")
+                continue
+            return make_dp(
+                value=float(val),
+                source="edgar_10q",
+                source_detail=detail,
+                period_label=period_label,
+                period_end=period_end,
+            )
+        failures.append(f"{concept}: {detail}")
+    return na_dp(f"All EDGAR concepts failed for {field_name}: " + " | ".join(failures))
+
+
+# ── Public fetch functions ────────────────────────────────────────────────────
+
+def fetch_revenue_ttm(cik: str) -> DataPoint:
+    return _fetch_ttm_income_statement(cik, REVENUE_CONCEPTS, "revenue_ttm")
+
+
+def fetch_revenue_prior_annual(cik: str) -> DataPoint:
+    """Fetch the second-most-recent annual (10-K) revenue — used for YoY growth."""
+    for concept in REVENUE_CONCEPTS:
+        data = _fetch_concept(cik, concept)
+        if not data:
+            continue
+        units = data.get("units", {}).get("USD", [])
+        annual = sorted(
+            [e for e in units if e.get("form") == "10-K" and e.get("val") is not None],
+            key=lambda e: e.get("end", ""),
+            reverse=True,
+        )
+        if len(annual) >= 2:
+            prior = annual[1]  # second most recent annual
+            return make_dp(
+                value=float(prior["val"]),
+                source="edgar_10k",
+                source_detail=f"edgar_10k:accession={prior.get('accn','?')},concept={concept}",
+                period_label=f"FY prior ({prior.get('end','')})",
+                period_end=prior.get("end", ""),
+            )
+        elif len(annual) == 1:
+            return na_dp(f"Only one annual 10-K revenue entry found; cannot compute prior year")
+    return na_dp("All EDGAR revenue concepts failed for prior-year annual fetch")
+
+def fetch_revenue_annual_pair(cik: str) -> tuple[DataPoint, DataPoint]:
+    """Return (most_recent_FY, prior_FY) annual revenue as a matched pair.
+
+    Growth is computed FY-over-FY from this pair so both endpoints are the same
+    fiscal-period length and month — avoiding the old bug of comparing a TTM
+    (e.g. ending Mar-2026) against a mismatched annual (e.g. FY ending Jun-2024).
+    """
+    for concept in REVENUE_CONCEPTS:
+        data = _fetch_concept(cik, concept)
+        if not data:
+            continue
+        units = data.get("units", {}).get("USD", [])
+        # Keep only full-year (~365d) 10-K entries, dedupe by period-end (a 10-K
+        # restates the prior year, so the same end date appears in several filings).
+        full_year = {}
+        for e in units:
+            if e.get("form") != "10-K" or e.get("val") is None:
+                continue
+            if not (330 <= _period_days(e) <= 400):
+                continue
+            end = e.get("end", "")
+            if end and end not in full_year:
+                full_year[end] = e
+        annual = [full_year[k] for k in sorted(full_year, reverse=True)]
+        if len(annual) >= 2:
+            cur, prior = annual[0], annual[1]
+            cur_dp = make_dp(
+                value=float(cur["val"]), source="edgar_10k",
+                source_detail=f"edgar_10k:accession={cur.get('accn','?')},concept={concept}",
+                period_label=f"FY ({cur.get('end','')})", period_end=cur.get("end", ""),
+            )
+            prior_dp = make_dp(
+                value=float(prior["val"]), source="edgar_10k",
+                source_detail=f"edgar_10k:accession={prior.get('accn','?')},concept={concept}",
+                period_label=f"FY prior ({prior.get('end','')})", period_end=prior.get("end", ""),
+            )
+            return cur_dp, prior_dp
+    na = na_dp("EDGAR: could not find two full-year 10-K revenue entries for FY-over-FY growth")
+    return na, na
+
+
+def fetch_gross_profit(cik: str) -> DataPoint:
+    return _fetch_ttm_income_statement(cik, GROSS_PROFIT_CONCEPTS, "gross_profit")
+
+def fetch_cost_of_revenue(cik: str) -> DataPoint:
+    """Cost of revenue TTM — used to derive gross profit (Revenue − Cost) when
+    the GrossProfit concept is untagged or stale (e.g. JKHY, FOUR)."""
+    return _fetch_ttm_income_statement(cik, COST_OF_REVENUE_CONCEPTS, "cost_of_revenue")
+
+def fetch_operating_income(cik: str) -> DataPoint:
+    return _fetch_ttm_income_statement(cik, OPERATING_INCOME_CONCEPTS, "operating_income")
+
+def fetch_net_income(cik: str) -> DataPoint:
+    return _fetch_ttm_income_statement(cik, NET_INCOME_CONCEPTS, "net_income_ttm")
+
+def fetch_operating_cash_flow(cik: str) -> DataPoint:
+    return _fetch_ttm_income_statement(cik, OCF_CONCEPTS, "operating_cash_flow", cashflow=True)
+
+def fetch_capex(cik: str) -> DataPoint:
+    """CapEx is always negative in EDGAR cash flow statements; we return the absolute value."""
+    dp = _fetch_ttm_income_statement(cik, CAPEX_CONCEPTS, "capex", cashflow=True)
+    if dp.value is not None and dp.value < 0:
+        dp = dp.model_copy(update={"value": abs(dp.value)})
+    return dp
+
+def fetch_da(cik: str) -> DataPoint:
+    """Fetch Depreciation & Amortization TTM for computing EBITDA = OpIncome + D&A."""
+    return _fetch_ttm_income_statement(cik, DA_CONCEPTS, "depreciation_amortization", cashflow=True)
+
+def fetch_total_cash(cik: str) -> DataPoint:
+    return _fetch_latest_balance_sheet_value(cik, CASH_CONCEPTS, "total_cash")
+
+def fetch_total_debt(cik: str) -> DataPoint:
+    return _fetch_latest_balance_sheet_value(cik, DEBT_CONCEPTS, "total_debt")
+
+def fetch_shares_outstanding(cik: str) -> DataPoint:
+    return _fetch_latest_balance_sheet_value(cik, SHARES_CONCEPTS, "shares_outstanding")

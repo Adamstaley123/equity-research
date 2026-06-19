@@ -1,0 +1,97 @@
+# Payments sector — company universe for the valuation dashboard.
+#
+# To run this sector:        python pipeline/run.py --sector payments
+# To run a subset:           python pipeline/run.py --sector payments --tickers FOUR --tickers TOST
+#
+# To add your OWN sector, copy this file to sectors/<name>.yaml and edit the
+# companies map below. Most tickers need only name/focus/exchange/currency —
+# add `cik` / `yfinance_ticker` overrides only when auto-lookup picks the wrong
+# entity (short/ambiguous tickers) or Yahoo uses a different symbol.
+#
+# Per-company fields:
+#   name            Display name
+#   focus           One-line business description (shown in the dashboard)
+#   exchange        NYSE | NASDAQ | AMS | ...
+#   currency        Reporting currency (USD default; non-USD is FX-converted)
+#   cik             (optional) SEC CIK override, zero-padded, quoted as a string
+#   yfinance_ticker (optional) Yahoo Finance symbol when it differs from `ticker`
+#   flags           (optional) tags: net_revenue | gross_revenue | european
+
+name: Payments
+description: US & European payments, fintech infrastructure, and money-movement platforms.
+
+companies:
+  TOST:
+    name: Toast, Inc.
+    focus: Restaurant payments OS
+    exchange: NYSE
+    currency: USD
+  FI:
+    name: Fiserv, Inc.
+    focus: Payments + banking tech
+    exchange: NYSE
+    currency: USD
+    cik: "0000798354"          # short ticker "FI" fools CIK auto-lookup
+    yfinance_ticker: FISV      # Yahoo still lists Fiserv under FISV
+  FOUR:
+    name: Shift4 Payments
+    focus: Integrated payments (hospitality)
+    exchange: NYSE
+    currency: USD
+    flags: [gross_revenue]
+  JKHY:
+    name: Jack Henry & Associates
+    focus: Banking / community FI payments
+    exchange: NASDAQ
+    currency: USD
+  MQ:
+    name: Marqeta, Inc.
+    focus: Card issuing-as-a-service
+    exchange: NASDAQ
+    currency: USD
+    flags: [net_revenue]
+  WEX:
+    name: WEX Inc.
+    focus: Fleet & B2B payments
+    exchange: NYSE
+    currency: USD
+  FLYW:
+    name: Flywire Corporation
+    focus: Global payments (edu, healthcare)
+    exchange: NASDAQ
+    currency: USD
+  PAYO:
+    name: Payoneer Global Inc.
+    focus: Cross-border & SMB payments
+    exchange: NASDAQ
+    currency: USD
+    flags: [net_revenue]
+  PAY:
+    name: Paymentus Holdings
+    focus: Bill payment platform (utilities, govt)
+    exchange: NYSE
+    currency: USD
+    flags: [gross_revenue]
+  RPAY:
+    name: Repay Holdings Corp.
+    focus: Integrated payments (vertical markets)
+    exchange: NASDAQ
+    currency: USD
+  GDOT:
+    name: Green Dot Corporation
+    focus: Prepaid debit / Banking-as-a-Service
+    exchange: NYSE
+    currency: USD
+  PRTH:
+    name: Priority Technology Holdings
+    focus: SMB payments & banking solutions
+    exchange: NASDAQ
+    currency: USD
+  ADYEN:
+    name: Adyen N.V.
+    focus: Enterprise global payment platform
+    exchange: AMS
+    currency: EUR
+    cik: "0001788707"          # CIK auto-lookup matched eBay; pin Adyen's CIK
+    yfinance_ticker: ADYEN.AS  # Amsterdam listing
+    flags: [european, net_revenue]

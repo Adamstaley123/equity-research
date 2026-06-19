@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ dataset.sector | title }} Sector Tearsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper:      #f6f3ea;
+    --paper-2:    #fbf9f3;
+    --card:       #ffffff;
+    --ink:        #1f1d18;
+    --ink-soft:   #565049;
+    --ink-faint:  #8a8378;
+    --rule:       #e2dccd;
+    --rule-soft:  #ece7da;
+    --accent:     #0f4f47;   /* petrol */
+    --accent-2:   #b0822f;   /* brass  */
+    --accent-ink: #0b3a34;
+    --g-bg: rgba(47,125,91,.14);  --g-fg: #1f6b4d;
+    --y-bg: rgba(192,138,45,.16); --y-fg: #876217;
+    --r-bg: rgba(180,81,63,.14);  --r-fg: #8f3a2c;
+    --shadow: 0 1px 2px rgba(31,29,24,.04), 0 8px 28px rgba(31,29,24,.06);
+    --na: #b3ada1;
+}
+html[data-theme="dark"] {
+    --paper:      #14130f;
+    --paper-2:    #1a1813;
+    --card:       #201d17;
+    --ink:        #efe9da;
+    --ink-soft:   #b8b0a0;
+    --ink-faint:  #837c6e;
+    --rule:       #322d24;
+    --rule-soft:  #2a261f;
+    --accent:     #5cc3b2;
+    --accent-2:   #d8a64a;
+    --accent-ink: #8fd8c9;
+    --g-bg: rgba(92,195,150,.15); --g-fg: #6fce9f;
+    --y-bg: rgba(216,166,74,.16); --y-fg: #e0b25e;
+    --r-bg: rgba(214,110,90,.16); --r-fg: #e08a73;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    --na: #6a6457;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    transition: background .3s ease, color .3s ease;
+}
+/* subtle paper grain */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(var(--rule-soft) 0.5px, transparent 0.5px);
+    background-size: 22px 22px;
+}
+.wrap { position: relative; z-index: 1; max-width: 1680px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 52px); }
+
+/* ── Masthead ─────────────────────────────────────────── */
+header.mast { padding: 40px 0 26px; border-bottom: 2px solid var(--ink); margin-bottom: 0; }
+.eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--accent-2); display: inline-block; }
+.mast-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+h1.title {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(34px, 5.2vw, 60px);
+    line-height: .98; letter-spacing: -.015em; color: var(--ink); font-optical-sizing: auto;
+}
+h1.title em { font-style: italic; color: var(--accent); }
+.mast-meta { font-size: 12px; color: var(--ink-soft); text-align: right; line-height: 1.85; }
+.mast-meta b { color: var(--ink); font-weight: 600; }
+.controls { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
+.btn {
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; font-weight: 600;
+    color: var(--ink-soft); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 6px 14px; cursor: pointer; transition: all .15s;
+    display: inline-flex; align-items: center; gap: 6px; letter-spacing: .02em;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Summary band ─────────────────────────────────────── */
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin: 28px 0 0; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.stat { background: var(--card); padding: 18px 20px; }
+.stat .k { font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+.stat .v { font-family: 'Fraunces', serif; font-weight: 600; font-size: 30px; line-height: 1.1; margin-top: 6px; color: var(--ink); letter-spacing: -.01em; }
+.stat .v small { font-size: 15px; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+.stat .sub { font-size: 11px; color: var(--ink-soft); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+.stat.accent .v { color: var(--accent); }
+
+/* ── Toolbar ──────────────────────────────────────────── */
+.toolbar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 16px 2px 14px; font-size: 11.5px; color: var(--ink-soft); }
+.toolbar .hint { display: inline-flex; align-items: center; gap: 6px; }
+.toolbar .sep { color: var(--rule); }
+.legend { display: flex; gap: 14px; align-items: center; margin-left: auto; }
+.legend b { color: var(--ink); font-weight: 600; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 11px; height: 11px; border-radius: 3px; }
+.swatch.g { background: var(--g-bg); border: 1px solid var(--g-fg); }
+.swatch.y { background: var(--y-bg); border: 1px solid var(--y-fg); }
+.swatch.r { background: var(--r-bg); border: 1px solid var(--r-fg); }
+
+/* ── Methodology (collapsible) ────────────────────────── */
+.method { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); margin-bottom: 22px; overflow: hidden; }
+.method summary { cursor: pointer; padding: 13px 18px; font-size: 12px; font-weight: 600;
+    color: var(--ink); list-style: none; display: flex; align-items: center; gap: 9px; user-select: none; }
+.method summary::-webkit-details-marker { display: none; }
+.method summary .chev { transition: transform .2s; color: var(--accent); font-size: 13px; }
+.method[open] summary .chev { transform: rotate(90deg); }
+.method summary .tag { margin-left: auto; font-weight: 500; font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; }
+.method .body { padding: 4px 20px 18px; border-top: 1px solid var(--rule-soft); columns: 2; column-gap: 36px; }
+.method .body h4 { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); margin: 14px 0 4px; break-after: avoid; }
+.method .body p { font-size: 12px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 4px; break-inside: avoid; }
+.method .body code { font-family: 'IBM Plex Mono', monospace; font-size: 11px; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; color: var(--accent-ink); }
+@media (max-width: 720px) { .method .body { columns: 1; } }
+
+/* ── Table ────────────────────────────────────────────── */
+.table-wrapper { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px;
+    box-shadow: var(--shadow); background: var(--card); margin-bottom: 26px; }
+.table-wrapper::-webkit-scrollbar { height: 10px; }
+.table-wrapper::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px; }
+.table-wrapper::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 2280px;
+    font-size: 12.5px; background: var(--card); }
+
+/* group label row */
+.group-label-row th { background: var(--paper-2); color: var(--ink-faint);
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+    padding: 9px 10px 7px; text-align: left; border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; z-index: 3; }
+.group-label-row th:not(:first-child) { border-left: 1px solid var(--rule-soft); }
+
+/* column header row */
+thead tr.cols th { background: var(--card); color: var(--ink); cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 11px; line-height: 1.25;
+    padding: 11px 10px; text-align: right; white-space: nowrap; vertical-align: bottom;
+    position: sticky; top: 31px; z-index: 3; border-bottom: 2px solid var(--ink);
+    user-select: none; transition: color .12s; }
+thead tr.cols th .u { font-weight: 400; font-size: 9px; color: var(--ink-faint); letter-spacing: .02em; }
+thead tr.cols th.txt { text-align: left; }
+thead tr.cols th:hover { color: var(--accent); }
+thead tr.cols th.sorted-asc, thead tr.cols th.sorted-desc { color: var(--accent); }
+thead tr.cols th.sorted-asc::after { content: " ↑"; font-size: 10px; }
+thead tr.cols th.sorted-desc::after { content: " ↓"; font-size: 10px; }
+thead tr.cols th.nosort { cursor: default; }
+thead tr.cols th.nosort:hover { color: var(--ink); }
+
+/* body cells */
+tbody td { padding: 11px 10px; text-align: right; white-space: nowrap; vertical-align: middle;
+    border-bottom: 1px solid var(--rule-soft);
+    font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+    font-size: 12.5px; color: var(--ink); }
+tbody td.txt { text-align: left; font-family: 'IBM Plex Sans', sans-serif; }
+tbody tr.data-row:hover td { background: color-mix(in srgb, var(--accent) 6%, var(--card)); }
+tbody tr.data-row.european td:first-child { box-shadow: inset 3px 0 0 var(--accent-2); }
+
+.ticker { font-family: 'IBM Plex Mono', monospace !important; font-weight: 600; font-size: 13.5px;
+    color: var(--accent-ink); cursor: pointer; letter-spacing: .01em; }
+html[data-theme="dark"] .ticker { color: var(--accent); }
+.ticker:hover { text-decoration: underline; }
+.ticker .car { color: var(--ink-faint); font-size: 10px; margin-right: 5px; }
+.company { font-weight: 600; color: var(--ink); }
+.focus { color: var(--ink-soft); font-size: 11.5px; max-width: 230px; white-space: normal; line-height: 1.35; }
+
+.badge { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 8.5px; font-weight: 700;
+    padding: 1.5px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle; letter-spacing: .04em; }
+.badge-eur  { background: var(--accent-2); color: #fff; }
+.badge-sbc  { background: var(--y-bg); color: var(--y-fg); border: 1px solid var(--y-fg); }
+.badge-est  { background: transparent; color: var(--ink-faint); border: 1px solid var(--rule); font-weight: 600; }
+.rev-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 9px; color: var(--ink-faint); margin-left: 3px; }
+
+.na { color: var(--na); font-style: italic; font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; cursor: help; }
+
+td.g { background: var(--g-bg); color: var(--g-fg); font-weight: 600; }
+td.y { background: var(--y-bg); color: var(--y-fg); font-weight: 600; }
+td.r { background: var(--r-bg); color: var(--r-fg); font-weight: 600; }
+
+.source-cell { text-align: left; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; min-width: 170px; }
+.source-cell a { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; line-height: 1.7; }
+.source-cell a:hover { text-decoration: underline; }
+.source-cell .gen { display: block; color: var(--ink-faint); margin-top: 4px; font-size: 10px; }
+
+/* ── Detail row ───────────────────────────────────────── */
+tr.detail-row { display: none; }
+tr.detail-row.open { display: table-row; }
+tr.detail-row > td { padding: 0; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+.detail-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+    font-family: 'IBM Plex Sans', sans-serif; border-bottom: 1px solid var(--rule); }
+.detail-bar .dt { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--accent-ink); font-size: 13px; }
+html[data-theme="dark"] .detail-bar .dt { color: var(--accent); }
+.detail-bar .dn { font-weight: 600; color: var(--ink); }
+.detail-bar .meta { font-size: 11px; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; }
+.detail-bar .close-btn { margin-left: auto; cursor: pointer; background: none; border: 1px solid var(--rule);
+    border-radius: 6px; color: var(--ink-soft); width: 26px; height: 26px; font-size: 14px; line-height: 1; }
+.detail-bar .close-btn:hover { border-color: var(--r-fg); color: var(--r-fg); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; padding: 16px 20px 20px; }
+.detail-card { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px;
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; line-height: 1.55; }
+.detail-card.na-card { border-color: color-mix(in srgb, var(--r-fg) 35%, var(--rule)); background: color-mix(in srgb, var(--r-fg) 5%, var(--card)); }
+.detail-metric { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 4px; }
+.detail-value { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.detail-value.na { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-style: italic; color: var(--na); }
+.detail-line { color: var(--ink-soft); font-size: 11px; margin-top: 3px; word-break: break-word; }
+.detail-line strong { color: var(--ink); font-weight: 600; }
+.detail-line.reason { color: var(--r-fg); }
+
+/* ── Footer ───────────────────────────────────────────── */
+footer.foot { border-top: 2px solid var(--ink); padding: 22px 0 60px; font-size: 11.5px; color: var(--ink-soft); line-height: 1.7; }
+footer.foot .disc { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: var(--ink); margin-bottom: 10px; }
+footer.foot .src { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); }
+footer.foot a { color: var(--accent); }
+
+@media (max-width: 640px) {
+    h1.title { font-size: 32px; }
+    .mast-meta { text-align: left; }
+    .stat .v { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+    <div class="eyebrow">Tearsheet · Equity Research · v{{ dataset.pipeline_version }}</div>
+    <div class="mast-row">
+        <h1 class="title">{{ dataset.sector | title }} <em>Sector Tearsheet</em></h1>
+        <div>
+            <div class="mast-meta">
+                As of <b>{{ dataset.generated_at[:10] }}</b> · <b>{{ summary.count }}</b> companies<br>
+                Financials <b>SEC EDGAR XBRL</b> · Market data <b>Yahoo Finance</b><br>
+                Estimates <b>analyst consensus</b> · EV computed from components
+            </div>
+            <div class="controls">
+                <button class="btn" id="themeBtn" onclick="toggleTheme()">◐ Theme</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="summary">
+    <div class="stat accent">
+        <div class="k">Companies</div>
+        <div class="v">{{ summary.count }}</div>
+        <div class="sub">in universe</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median EV / EBITDA</div>
+        <div class="v">{% if summary.median_ev_ebitda is not none %}{{ "%.1f"|format(summary.median_ev_ebitda) }}<small>×</small>{% else %}—{% endif %}</div>
+        <div class="sub">trailing</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median EV / Revenue</div>
+        <div class="v">{% if summary.median_ev_revenue is not none %}{{ "%.1f"|format(summary.median_ev_revenue) }}<small>×</small>{% else %}—{% endif %}</div>
+        <div class="sub">trailing</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median Rev Growth</div>
+        <div class="v">{% if summary.median_rev_growth is not none %}{{ "%.0f"|format(summary.median_rev_growth) }}<small>%</small>{% else %}—{% endif %}</div>
+        <div class="sub">FY over FY</div>
+    </div>
+    <div class="stat">
+        <div class="k">Cheapest · EV/EBITDA</div>
+        <div class="v">{% if summary.cheapest_ev_ebitda %}{{ summary.cheapest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
+        <div class="sub">{% if summary.cheapest_ev_ebitda %}{{ "%.1f"|format(summary.cheapest_ev_ebitda[1]) }}× trailing{% endif %}</div>
+    </div>
+    <div class="stat">
+        <div class="k">Priciest · EV/EBITDA</div>
+        <div class="v">{% if summary.priciest_ev_ebitda %}{{ summary.priciest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
+        <div class="sub">{% if summary.priciest_ev_ebitda %}{{ "%.1f"|format(summary.priciest_ev_ebitda[1]) }}× trailing{% endif %}</div>
+    </div>
+</section>
+
+<div class="toolbar">
+    <span class="hint">↕ Click a column to sort</span>
+    <span class="sep">·</span>
+    <span class="hint">▸ Click a ticker for per-metric sources &amp; formulas</span>
+    <span class="legend">
+        <b>Valuation:</b>
+        <span class="legend-item"><span class="swatch g"></span> Favorable</span>
+        <span class="legend-item"><span class="swatch y"></span> Moderate</span>
+        <span class="legend-item"><span class="swatch r"></span> Elevated</span>
+    </span>
+</div>
+
+<details class="method">
+    <summary><span class="chev">▸</span> Methodology &amp; data sources <span class="tag">how every number is computed</span></summary>
+    <div class="body">
+        <h4>Sources</h4>
+        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. Foreign issuers without EDGAR XBRL (e.g. Adyen) fall back to a StockAnalysis source.</p>
+        <h4>TTM &amp; freshness</h4>
+        <p>TTM = the four most recent quarters (or YTD reconstruction for cash-flow items). Every value is checked against the company's latest filing date; anything stale is dropped to <strong>N/A with a reason</strong> rather than shown.</p>
+        <h4>Enterprise value</h4>
+        <p><code>EV = Market Cap + Total Debt − Total Cash</code>, computed from components. Pre-computed EV fields are not used (known stale-value issues). Market cap = price × basic shares.</p>
+        <h4>EBITDA</h4>
+        <p><code>EBITDA = Operating Income + D&amp;A</code> from EDGAR. Where D&amp;A is untagged or unreliable, operating income is used as a proxy and flagged.</p>
+        <h4>Estimates</h4>
+        <p>Forward P/E and PEG are <strong>analyst consensus</strong> (marked <span class="badge badge-est">EST</span>), not filings. PEG is Yahoo's (P/E ÷ 3–5yr est. growth).</p>
+        <h4>Revenue basis</h4>
+        <p>Net revenue (†) keeps only the fee retained (Adyen, Marqeta, Payoneer); gross revenue includes full processing volume (Shift4, Paymentus). EV/Revenue is not directly comparable across these.</p>
+        <h4>Rule of 40</h4>
+        <p><code>Rev Growth % + FCF Margin %</code>. For SBC-heavy names, FCF &gt; EBITDA because stock comp is added back — EV/FCF flatters them (<span class="badge badge-sbc">SBC</span>).</p>
+    </div>
+</details>
+
+<div class="table-wrapper">
+<table>
+<thead>
+    <tr class="group-label-row">
+        <th colspan="3">Identity</th>
+        <th colspan="2">Size</th>
+        <th colspan="2">Revenue</th>
+        <th colspan="3">Margins</th>
+        <th colspan="3">EV Multiples</th>
+        <th colspan="5">Price Multiples</th>
+        <th colspan="2">Leverage &amp; Quality</th>
+        <th>Sources</th>
+    </tr>
+    <tr class="cols">
+        <th class="txt" data-key="ticker"    data-type="text">Ticker</th>
+        <th class="txt" data-key="company"   data-type="text">Company</th>
+        <th class="txt" data-key="focus"     data-type="text">Focus</th>
+        <th data-key="mktcap"    data-type="num">Mkt Cap<br><span class="u">$B</span></th>
+        <th data-key="ev"        data-type="num">EV<br><span class="u">$B</span></th>
+        <th data-key="rev"       data-type="num">Rev TTM<br><span class="u">$B</span></th>
+        <th data-key="revgrowth" data-type="num">Rev Grth<br><span class="u">YoY %</span></th>
+        <th data-key="gm"        data-type="num">Gross<br><span class="u">margin %</span></th>
+        <th data-key="ebitdam"   data-type="num">EBITDA<br><span class="u">margin %</span></th>
+        <th data-key="fcfm"      data-type="num">FCF<br><span class="u">margin %</span></th>
+        <th data-key="evrev"     data-type="num">EV /<br>Revenue</th>
+        <th data-key="evebitda"  data-type="num">EV /<br>EBITDA</th>
+        <th data-key="evfcf"     data-type="num">EV /<br>FCF</th>
+        <th data-key="pe"        data-type="num">P / E<br><span class="u">TTM</span></th>
+        <th data-key="fwdpe"     data-type="num">Fwd P/E<br><span class="u">est.</span></th>
+        <th data-key="peg"       data-type="num">PEG<br><span class="u">est.</span></th>
+        <th data-key="ps"        data-type="num">Price /<br>Sales</th>
+        <th data-key="pfcf"      data-type="num">Price /<br>FCF</th>
+        <th data-key="netdebt"   data-type="num">Net Debt /<br>EBITDA</th>
+        <th data-key="r40"       data-type="num">Rule<br>of 40</th>
+        <th class="txt nosort">Data Sources</th>
+    </tr>
+</thead>
+<tbody id="tbody">
+
+{% for ticker in dataset.tickers %}
+{% set c = dataset.companies[ticker] %}
+<tr class="data-row{% if 'european' in c.flags %} european{% endif %}"
+    data-ticker="{{ c.ticker }}"
+    data-company="{{ c.company_name }}"
+    data-focus="{{ c.payments_focus }}"
+    data-mktcap="{{ c.market_cap.value | fmt_num }}"
+    data-ev="{{ c.enterprise_value.value | fmt_num }}"
+    data-rev="{{ c.revenue_ttm.value | fmt_rev }}"
+    data-revgrowth="{{ c.revenue_growth_yoy_pct.value | fmt_num }}"
+    data-gm="{{ c.gross_margin_pct.value | fmt_num }}"
+    data-ebitdam="{{ c.ebitda_margin_pct.value | fmt_num }}"
+    data-fcfm="{{ c.fcf_margin_pct.value | fmt_num }}"
+    data-evrev="{{ c.ev_revenue.value | fmt_num }}"
+    data-evebitda="{{ c.ev_ebitda.value | fmt_num }}"
+    data-evfcf="{{ c.ev_fcf.value | fmt_num }}"
+    data-pe="{{ c.pe_ttm.value | fmt_num }}"
+    data-fwdpe="{{ c.pe_forward.value | fmt_num }}"
+    data-peg="{{ c.peg_ratio.value | fmt_num }}"
+    data-ps="{{ c.price_sales.value | fmt_num }}"
+    data-pfcf="{{ c.price_fcf.value | fmt_num }}"
+    data-netdebt="{{ c.net_debt_ebitda.value | fmt_num }}"
+    data-r40="{{ c.rule_of_40.value | fmt_num }}">
+
+  <td class="txt ticker" onclick="toggleDetail('{{ c.ticker }}')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>{{ c.ticker }}{% if 'european' in c.flags %} <span class="badge badge-eur">{{ c.currency }}</span>{% endif %}{% if 'sbc_heavy' in c.flags %} <span class="badge badge-sbc">SBC</span>{% endif %}
+  </td>
+  <td class="txt"><span class="company">{{ c.company_name }}</span></td>
+  <td class="txt focus">{{ c.payments_focus }}</td>
+
+  <td title="{{ c.market_cap | dp_tooltip('Market Cap') }}">{{ c.market_cap.value | fmt_b_display | safe }}</td>
+  <td title="{{ c.enterprise_value | dp_tooltip('EV = MarketCap + Debt − Cash') }}">{{ c.enterprise_value.value | fmt_b_display | safe }}</td>
+  <td title="{{ c.revenue_ttm | dp_tooltip('Revenue TTM') }}">{{ c.revenue_ttm.value | fmt_b_display | safe }}{% if 'net_revenue' in c.flags %}<span class="rev-tag">net†</span>{% elif 'gross_revenue' in c.flags %}<span class="rev-tag">gross</span>{% endif %}</td>
+  <td title="{{ c.revenue_growth_yoy_pct | ratio_tooltip }}">{{ c.revenue_growth_yoy_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.gross_margin_pct | ratio_tooltip }}">{{ c.gross_margin_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.ebitda_margin_pct | ratio_tooltip }}">{{ c.ebitda_margin_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.fcf_margin_pct | ratio_tooltip }}">{{ c.fcf_margin_pct | fmt_ratio_pct | safe }}</td>
+
+  <td class="{{ c.ev_revenue | color_class('ev_revenue') }}" title="{{ c.ev_revenue | ratio_tooltip }}">{{ c.ev_revenue | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.ev_ebitda | color_class('ev_ebitda') }}" title="{{ c.ev_ebitda | ratio_tooltip }}">{{ c.ev_ebitda | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.ev_fcf | color_class('ev_fcf') }}" title="{{ c.ev_fcf | ratio_tooltip }}">{{ c.ev_fcf | fmt_ratio_x | safe }}</td>
+
+  <td class="{{ c.pe_ttm | color_class('pe_ttm') }}" title="{{ c.pe_ttm | ratio_tooltip }}">{{ c.pe_ttm | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.pe_forward | color_class('fwd_pe') }}" title="{{ c.pe_forward | ratio_tooltip }} [analyst estimate]">{{ c.pe_forward | fmt_ratio_x | safe }} <span class="badge badge-est">EST</span></td>
+  <td title="{{ c.peg_ratio | ratio_tooltip }} [analyst estimate]">{{ c.peg_ratio | fmt_ratio_x | safe }}{% if c.peg_ratio.value is not none %} <span class="badge badge-est">EST</span>{% endif %}</td>
+  <td title="{{ c.price_sales | ratio_tooltip }}">{{ c.price_sales | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.price_fcf | color_class('price_fcf') }}" title="{{ c.price_fcf | ratio_tooltip }}">{{ c.price_fcf | fmt_ratio_x | safe }}</td>
+
+  <td class="{{ c.net_debt_ebitda | color_class('net_debt_ebitda') }}" title="{{ c.net_debt_ebitda | ratio_tooltip }}">{{ c.net_debt_ebitda | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.rule_of_40 | color_class('rule_of_40') }}" title="{{ c.rule_of_40 | ratio_tooltip }}">{{ c.rule_of_40 | fmt_ratio_plain | safe }}</td>
+
+  <td class="source-cell">
+    {% if c.cik %}<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{ c.cik }}&type=10-K" target="_blank">↗ SEC EDGAR</a>{% endif %}
+    {% if 'european' not in c.flags %}<a href="https://stockanalysis.com/stocks/{{ c.ticker | lower }}/statistics/" target="_blank">↗ StockAnalysis</a>{% else %}<a href="https://stockanalysis.com/quote/ams/{{ c.ticker | lower }}/statistics/" target="_blank">↗ StockAnalysis</a>{% endif %}
+    <a href="https://finance.yahoo.com/quote/{{ c.ticker }}" target="_blank">↗ Yahoo Finance</a>
+    <span class="gen">Generated {{ dataset.generated_at[:10] }}</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-{{ c.ticker }}">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">{{ c.ticker }}</span><span class="dn">{{ c.company_name }}</span>
+      {% if c.cik %}<span class="meta">CIK {{ c.cik }}</span>{% endif %}
+      {% if 'european' in c.flags %}<span class="meta">{{ c.currency }} → USD @ {{ "%.4f" | format(c.fx_rate_to_usd) }}</span>{% endif %}
+      <button class="close-btn" onclick="toggleDetail('{{ c.ticker }}')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      {{ c.revenue_ttm | detail_card('Revenue TTM', '') }}
+      {{ c.gross_profit | detail_card('Gross Profit', '') }}
+      {{ c.ebitda | detail_card('EBITDA', '') }}
+      {{ c.fcf | ratio_detail_card('Free Cash Flow (OCF − CapEx)') }}
+      {{ c.operating_cash_flow | detail_card('Operating Cash Flow', '') }}
+      {{ c.capex | detail_card('CapEx', '') }}
+      {{ c.net_income_ttm | detail_card('Net Income TTM', '') }}
+      {{ c.total_cash | detail_card('Total Cash', '') }}
+      {{ c.total_debt | detail_card('Total Debt', '') }}
+      {{ c.market_cap | detail_card('Market Cap', '') }}
+      {{ c.enterprise_value | detail_card('Enterprise Value', 'EV = MarketCap + Debt − Cash') }}
+      {{ c.gross_margin_pct | ratio_detail_card('Gross Margin %') }}
+      {{ c.ebitda_margin_pct | ratio_detail_card('EBITDA Margin %') }}
+      {{ c.fcf_margin_pct | ratio_detail_card('FCF Margin %') }}
+      {{ c.revenue_growth_yoy_pct | ratio_detail_card('Revenue Growth YoY %') }}
+      {{ c.ev_revenue | ratio_detail_card('EV / Revenue') }}
+      {{ c.ev_ebitda | ratio_detail_card('EV / EBITDA') }}
+      {{ c.ev_fcf | ratio_detail_card('EV / FCF') }}
+      {{ c.pe_ttm | ratio_detail_card('P/E TTM') }}
+      {{ c.pe_forward | ratio_detail_card('Forward P/E (analyst estimate)') }}
+      {{ c.peg_ratio | ratio_detail_card('PEG Ratio (analyst estimate)') }}
+      {{ c.price_sales | ratio_detail_card('Price / Sales') }}
+      {{ c.price_fcf | ratio_detail_card('Price / FCF') }}
+      {{ c.net_debt | ratio_detail_card('Net Debt (Debt − Cash)') }}
+      {{ c.net_debt_ebitda | ratio_detail_card('Net Debt / EBITDA') }}
+      {{ c.rule_of_40 | ratio_detail_card('Rule of 40') }}
+    </div>
+  </td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+<footer class="foot">
+    <div class="disc">Not investment advice. For research and educational use only.</div>
+    <div class="src">
+        Generated {{ dataset.generated_at[:10] }} · Pipeline v{{ dataset.pipeline_version }} ·
+        Deterministic open-source pipeline · Data: SEC EDGAR XBRL, Yahoo Finance, StockAnalysis ·
+        Every figure is traceable — click a ticker for sources, formulas, and N/A reasons.
+    </div>
+</footer>
+
+</div><!-- /wrap -->
+
+<script>
+// ── Theme toggle (persisted) ─────────────────────────────────────────────────
+(function () {
+    const saved = localStorage.getItem('valdash-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute('data-theme', 'dark');
+})();
+function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('valdash-theme', next);
+}
+
+// ── Sort ─────────────────────────────────────────────────────────────────────
+(function () {
+    const tbody = document.getElementById('tbody');
+    const headers = document.querySelectorAll('thead tr.cols th[data-key]');
+    let currentKey = null, ascending = true;
+    headers.forEach(th => {
+        th.addEventListener('click', function () {
+            const key = this.dataset.key, type = this.dataset.type;
+            if (!key) return;
+            if (currentKey === key) ascending = !ascending;
+            else { currentKey = key; ascending = (type !== 'num'); }
+            headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+            this.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
+            const dataRows = Array.from(tbody.querySelectorAll('tr.data-row'));
+            const pairs = dataRows.map(r => {
+                const next = r.nextElementSibling;
+                return { data: r, detail: (next && next.classList.contains('detail-row')) ? next : null };
+            });
+            pairs.sort((a, b) => {
+                if (type === 'num') {
+                    const av = parseFloat(a.data.dataset[key]) || 0;
+                    const bv = parseFloat(b.data.dataset[key]) || 0;
+                    return ascending ? av - bv : bv - av;
+                }
+                const av = (a.data.dataset[key] || '').toLowerCase();
+                const bv = (b.data.dataset[key] || '').toLowerCase();
+                return ascending ? av.localeCompare(bv) : bv.localeCompare(av);
+            });
+            pairs.forEach(({ data, detail }) => {
+                tbody.appendChild(data);
+                if (detail) tbody.appendChild(detail);
+            });
+        });
+    });
+})();
+
+// ── Expand / collapse detail rows ────────────────────────────────────────────
+function toggleDetail(ticker) {
+    const row = document.getElementById('detail-' + ticker);
+    if (row) row.classList.toggle('open');
+}
+</script>
+</body>
+</html>
