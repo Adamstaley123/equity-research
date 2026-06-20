@@ -12,6 +12,8 @@ from **Yahoo Finance**, computes a full set of valuation multiples, and renders
 a polished, self-contained HTML dashboard for a whole sector — with per-metric
 sourcing, formulas, and an explicit reason behind every `N/A`.
 
+🔗 **[Live demo — Payments sector tearsheet](https://adamstaley123.github.io/equity-research/)**
+
 ```bash
 cd tearsheet
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt

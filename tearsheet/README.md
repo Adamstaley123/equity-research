@@ -17,7 +17,8 @@ clone and run in two minutes.
 <!-- Add a screenshot here after running: docs/preview.png
 ![Tearsheet — Payments sector](docs/preview.png) -->
 
-📊 **Example output:** [`examples/payments_tearsheet.html`](examples/payments_tearsheet.html) — open it in a browser.
+🔗 **[Live demo — Payments sector tearsheet](https://adamstaley123.github.io/equity-research/)**
+&nbsp;·&nbsp; or open [`examples/payments_tearsheet.html`](examples/payments_tearsheet.html) locally.
 
 ---
 
