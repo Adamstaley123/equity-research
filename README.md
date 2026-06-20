@@ -9,10 +9,12 @@ This repo is a home for small, focused research tools. The first one:
 
 A deterministic pipeline that pulls financials from **SEC EDGAR**, market data
 from **Yahoo Finance**, computes a full set of valuation multiples, and renders
-a polished, self-contained HTML dashboard for a whole sector — with per-metric
-sourcing, formulas, and an explicit reason behind every `N/A`.
+polished, self-contained HTML dashboards — with per-metric sourcing, formulas,
+and an explicit reason behind every `N/A`.
 
-🔗 **[Live demo — Payments sector tearsheet](https://adamstaley123.github.io/equity-research/)**
+🔗 **[Live demo — multi-sector dashboard](https://adamstaley123.github.io/equity-research/)**
+&nbsp;·&nbsp; browse all three sectors with a **sector dropdown** and a
+**market-cap filter** (every number still links to its filing).
 
 ```bash
 cd tearsheet
@@ -25,9 +27,14 @@ export EDGAR_USER_AGENT="YourName your@email.com"   # courtesy to SEC; optional
 
 # …or any tickers you like, no config file (metadata auto-filled from Yahoo):
 .venv/bin/python pipeline/run.py --tickers NEE,DUK,SO --name "Utilities"
+
+# Combine the curated sectors into one browsable dashboard (sector + cap filters):
+.venv/bin/python pipeline/build_combined.py        # → docs/index.html
 ```
 
 Keyless by default (SEC EDGAR + Yahoo Finance); every number links to its source.
+The combined view is a **deterministic render over verified sectors** — no live
+screening, no model in the data path.
 
 See [`tearsheet/README.md`](tearsheet/README.md) for the full guide, including
 how to add your own sector in a single YAML file.

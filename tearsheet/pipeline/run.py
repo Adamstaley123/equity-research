@@ -33,8 +33,13 @@ from pipeline.fetchers import edgar_fetcher as EF
 from pipeline.fetchers import yfinance_fetcher as YF
 from pipeline.fetchers import stockanalysis_fetcher as SA
 from pipeline.fetchers.base import try_sources, na_dp, make_dp
-from pipeline.sectors import load_sector, available_sectors
+from pipeline.sectors import load_sector
 from pipeline import render as R
+
+# Per-company fetches run in a small thread pool. Kept low so concurrent EDGAR
+# calls (globally rate-limited in edgar_fetcher) stay well under SEC's 10 req/sec
+# limit; yfinance/StockAnalysis calls parallelize freely.
+FETCH_WORKERS = 4
 
 app = typer.Typer(add_completion=False)
 
@@ -132,10 +137,20 @@ def _fetch_company(
         )
         return sa_data.get(field, fallback)
 
-    # ── Market data (yfinance primary) ────────────────────────────────────────
-    typer.echo(f"  [{ticker}] Fetching market data (yfinance)...")
+    # ── Fetch + assemble (split into focused helpers) ─────────────────────────
+    market = _fetch_market(ticker, yfinance_ticker, cik, skip_edgar, sa)
+    fin = _fetch_financials(ticker, cik, skip_edgar, sa)
+    return _build_record(
+        ticker, meta, sector, run_id, cik, currency, fx_rate, fx_source, market, fin, sa,
+    )
 
-    yft = yfinance_ticker  # shorthand
+
+def _fetch_market(ticker: str, yft: Optional[str], cik: Optional[str],
+                  skip_edgar: bool, sa) -> dict:
+    """yfinance-primary market data: price, basic shares, market cap (computed
+    price×shares), forward EPS, EPS-growth estimate, and Yahoo PEG. StockAnalysis
+    is the fallback for each (via `sa`)."""
+    typer.echo(f"  [{ticker}] Fetching market data (yfinance)...")
 
     current_price = try_sources("current_price", [
         ("yfinance", lambda: YF.fetch_current_price(ticker, yft)),
@@ -182,8 +197,16 @@ def _fetch_company(
         ("yfinance", lambda: YF.fetch_peg_ratio(ticker, yft)),
         ("stockanalysis", lambda: sa("peg_ratio")),
     ])
+    return {
+        "current_price": current_price, "shares": shares, "market_cap": market_cap,
+        "eps_fwd": eps_fwd, "eps_growth": eps_growth, "peg_sourced": peg_sourced,
+    }
 
-    # ── Financial statement data (EDGAR primary) ───────────────────────────────
+
+def _fetch_financials(ticker: str, cik: Optional[str], skip_edgar: bool, sa) -> dict:
+    """EDGAR-primary financial statement items (TTM), plus the matched annual
+    revenue pair for YoY growth. Returned RAW — pre-FX and pre-gross-profit
+    resolution, which `_build_record` applies."""
     typer.echo(f"  [{ticker}] Fetching financials (EDGAR)...")
 
     def edgar_or_sa(edgar_fn, sa_field: str, label: str) -> DataPoint:
@@ -193,17 +216,6 @@ def _fetch_company(
         sources.append(("stockanalysis", lambda: sa(sa_field)))
         return try_sources(label, sources)
 
-    revenue_ttm    = edgar_or_sa(lambda: EF.fetch_revenue_ttm(cik), "revenue_ttm", "revenue_ttm")
-    gp_edgar       = EF.fetch_gross_profit(cik) if (cik and not skip_edgar) else na_dp("no CIK")
-    cost_of_rev    = EF.fetch_cost_of_revenue(cik) if (cik and not skip_edgar) else na_dp("no CIK")
-    op_income      = edgar_or_sa(lambda: EF.fetch_operating_income(cik), "ebitda", "operating_income")
-    da             = edgar_or_sa(lambda: EF.fetch_da(cik), "ebitda", "depreciation_amortization")
-    net_income     = edgar_or_sa(lambda: EF.fetch_net_income(cik), "net_income_ttm", "net_income_ttm")
-    ocf            = edgar_or_sa(lambda: EF.fetch_operating_cash_flow(cik), "operating_cash_flow", "operating_cash_flow")
-    capex          = edgar_or_sa(lambda: EF.fetch_capex(cik), "capex", "capex")
-    total_cash     = edgar_or_sa(lambda: EF.fetch_total_cash(cik), "total_cash", "total_cash")
-    total_debt     = edgar_or_sa(lambda: EF.fetch_total_debt(cik), "total_debt", "total_debt")
-
     # Revenue for YoY growth: most-recent FY vs prior FY (matched annual pair, so
     # both endpoints are the same fiscal length/month — no TTM-vs-annual mismatch).
     if cik and not skip_edgar:
@@ -211,6 +223,34 @@ def _fetch_company(
     else:
         revenue_cur_fy = na_dp("No EDGAR CIK; current-FY revenue unavailable for growth")
         revenue_prior = na_dp("No EDGAR CIK; prior-year revenue unavailable for growth calculation")
+
+    return {
+        "revenue_ttm": edgar_or_sa(lambda: EF.fetch_revenue_ttm(cik), "revenue_ttm", "revenue_ttm"),
+        "gp_edgar": EF.fetch_gross_profit(cik) if (cik and not skip_edgar) else na_dp("no CIK"),
+        "cost_of_rev": EF.fetch_cost_of_revenue(cik) if (cik and not skip_edgar) else na_dp("no CIK"),
+        "op_income": edgar_or_sa(lambda: EF.fetch_operating_income(cik), "ebitda", "operating_income"),
+        "da": edgar_or_sa(lambda: EF.fetch_da(cik), "ebitda", "depreciation_amortization"),
+        "net_income": edgar_or_sa(lambda: EF.fetch_net_income(cik), "net_income_ttm", "net_income_ttm"),
+        "ocf": edgar_or_sa(lambda: EF.fetch_operating_cash_flow(cik), "operating_cash_flow", "operating_cash_flow"),
+        "capex": edgar_or_sa(lambda: EF.fetch_capex(cik), "capex", "capex"),
+        "total_cash": edgar_or_sa(lambda: EF.fetch_total_cash(cik), "total_cash", "total_cash"),
+        "total_debt": edgar_or_sa(lambda: EF.fetch_total_debt(cik), "total_debt", "total_debt"),
+        "revenue_cur_fy": revenue_cur_fy,
+        "revenue_prior": revenue_prior,
+    }
+
+
+def _build_record(ticker, meta, sector, run_id, cik, currency, fx_rate, fx_source,
+                  market: dict, fin: dict, sa) -> CompanyRecord:
+    """Resolve gross profit, apply FX, assemble EBITDA, compute every ratio + flag,
+    and build the CompanyRecord. Pure assembly over already-fetched DataPoints."""
+    current_price = market["current_price"]; shares = market["shares"]
+    market_cap = market["market_cap"]; eps_fwd = market["eps_fwd"]
+    eps_growth = market["eps_growth"]; peg_sourced = market["peg_sourced"]
+    revenue_ttm = fin["revenue_ttm"]; gp_edgar = fin["gp_edgar"]; cost_of_rev = fin["cost_of_rev"]
+    op_income = fin["op_income"]; da = fin["da"]; net_income = fin["net_income"]
+    ocf = fin["ocf"]; capex = fin["capex"]; total_cash = fin["total_cash"]; total_debt = fin["total_debt"]
+    revenue_cur_fy = fin["revenue_cur_fy"]; revenue_prior = fin["revenue_prior"]
 
     # ── Gross profit — keep it on the SAME basis as revenue ──────────────────────
     # Mixing a scraped gross profit with EDGAR revenue produced >100% margins
@@ -294,7 +334,6 @@ def _fetch_company(
     # EV = market_cap + total_debt - total_cash (computed from components)
     ev_val: Optional[float] = None
     ev_detail = "Computed: MarketCap + TotalDebt − TotalCash"
-    ev_inputs: dict = {"MarketCap": market_cap.value, "TotalDebt": total_debt.value, "TotalCash": total_cash.value}
     if market_cap.value is not None:
         debt = total_debt.value or 0.0
         cash = total_cash.value or 0.0
@@ -493,26 +532,33 @@ def main(
     companies: dict[str, CompanyRecord] = {}
     failed: list[str] = []
 
-    # yfinance calls run in parallel; EDGAR calls are sequential (rate-limited)
-    # We fetch each company fully sequentially to respect EDGAR limits
-    for ticker in tickers:
-        typer.echo(f"\n── {ticker} ──────────────────────────────────────────")
-        try:
-            meta = sector_meta.get(ticker, {})  # {} → ad-hoc ticker, CIK auto-looked-up
-            record = _fetch_company(ticker, meta, sector, run_id, skip_edgar=skip_edgar, skip_scrape=not use_scrape)
-            companies[ticker] = record
+    # Fetch companies concurrently. EDGAR is globally rate-limited inside the
+    # fetcher (see edgar_fetcher._throttle), so concurrency stays SEC-safe while
+    # yfinance/StockAnalysis I/O overlaps. Each ticker is independent and writes
+    # its own raw JSON, so the only shared state is the dicts we update on the
+    # main thread as results arrive. The dataset is assembled in `tickers` order
+    # afterwards, so output is independent of completion order.
+    run_data_dir = os.path.join(output_dir, run_id)
+    os.makedirs(run_data_dir, exist_ok=True)
 
-            # Save per-ticker raw JSON
-            run_data_dir = os.path.join(output_dir, run_id)
-            os.makedirs(run_data_dir, exist_ok=True)
-            raw_path = os.path.join(run_data_dir, f"raw_{ticker}.json")
-            with open(raw_path, "w") as f:
-                f.write(record.model_dump_json(indent=2))
-            typer.echo(f"  [{ticker}] Saved raw data → {raw_path}")
+    def _process(ticker: str) -> CompanyRecord:
+        meta = sector_meta.get(ticker, {})  # {} → ad-hoc ticker, CIK auto-looked-up
+        record = _fetch_company(ticker, meta, sector, run_id, skip_edgar=skip_edgar, skip_scrape=not use_scrape)
+        raw_path = os.path.join(run_data_dir, f"raw_{ticker}.json")
+        with open(raw_path, "w") as f:
+            f.write(record.model_dump_json(indent=2))
+        return record
 
-        except Exception as exc:
-            typer.echo(f"  [{ticker}] FAILED: {exc}", err=True)
-            failed.append(ticker)
+    with ThreadPoolExecutor(max_workers=min(FETCH_WORKERS, len(tickers))) as pool:
+        futures = {pool.submit(_process, t): t for t in tickers}
+        for fut in as_completed(futures):
+            ticker = futures[fut]
+            try:
+                companies[ticker] = fut.result()
+                typer.echo(f"  [{ticker}] ✓ done")
+            except Exception as exc:
+                typer.echo(f"  [{ticker}] FAILED: {exc}", err=True)
+                failed.append(ticker)
 
     # ── Assemble dataset ──────────────────────────────────────────────────────
     methodology_notes: list[str] = []
@@ -539,13 +585,26 @@ def main(
         methodology_notes=methodology_notes,
     )
 
-    # Save full dataset JSON
+    # Save full dataset JSON (date-stamped, gitignored working copy)
     run_data_dir = os.path.join(output_dir, run_id)
     os.makedirs(run_data_dir, exist_ok=True)
     json_path = os.path.join(run_data_dir, f"{sector}_valuation.json")
+    dataset_json = dataset.model_dump_json(indent=2)
     with open(json_path, "w") as f:
-        f.write(dataset.model_dump_json(indent=2))
+        f.write(dataset_json)
     typer.echo(f"\n📄 Dataset JSON → {json_path}")
+
+    # Also write a stable, committed copy under examples/data/ — this is the
+    # deterministic input the combined multi-sector dashboard (build_combined.py)
+    # reads. Newest run wins. Kept next to the curated HTML examples so a clone
+    # can rebuild docs/index.html from committed data with no network.
+    proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    stable_dir = os.path.join(proj_root, "examples", "data")
+    os.makedirs(stable_dir, exist_ok=True)
+    stable_path = os.path.join(stable_dir, f"{sector}_dataset.json")
+    with open(stable_path, "w") as f:
+        f.write(dataset_json)
+    typer.echo(f"📌 Stable dataset → {stable_path}")
 
     # ── Render HTML ───────────────────────────────────────────────────────────
     if not no_html:

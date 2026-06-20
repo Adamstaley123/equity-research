@@ -1,0 +1,103 @@
+{# Shared company row + detail-row markup, used by both the single-sector
+   dashboard (dashboard.html.j2) and the combined multi-sector view
+   (combined.html.j2). Keeping it in one macro means the two dashboards can
+   never drift apart. `show_sector` adds a sector chip + is a no-op for the
+   single-sector view. Every row carries data-sector for client-side filtering. #}
+{% macro company_row(c, generated_at, show_sector=False) %}
+<tr class="data-row{% if 'european' in c.flags %} european{% endif %}"
+    data-ticker="{{ c.ticker }}"
+    data-sector="{{ c.sector }}"
+    data-company="{{ c.company_name }}"
+    data-focus="{{ c.focus }}"
+    data-mktcap="{{ c.market_cap.value | fmt_num }}"
+    data-ev="{{ c.enterprise_value.value | fmt_num }}"
+    data-rev="{{ c.revenue_ttm.value | fmt_rev }}"
+    data-revgrowth="{{ c.revenue_growth_yoy_pct.value | fmt_num }}"
+    data-gm="{{ c.gross_margin_pct.value | fmt_num }}"
+    data-ebitdam="{{ c.ebitda_margin_pct.value | fmt_num }}"
+    data-fcfm="{{ c.fcf_margin_pct.value | fmt_num }}"
+    data-evrev="{{ c.ev_revenue.value | fmt_num }}"
+    data-evebitda="{{ c.ev_ebitda.value | fmt_num }}"
+    data-evfcf="{{ c.ev_fcf.value | fmt_num }}"
+    data-pe="{{ c.pe_ttm.value | fmt_num }}"
+    data-fwdpe="{{ c.pe_forward.value | fmt_num }}"
+    data-peg="{{ c.peg_ratio.value | fmt_num }}"
+    data-ps="{{ c.price_sales.value | fmt_num }}"
+    data-pfcf="{{ c.price_fcf.value | fmt_num }}"
+    data-netdebt="{{ c.net_debt_ebitda.value | fmt_num }}"
+    data-r40="{{ c.rule_of_40.value | fmt_num }}">
+
+  <td class="txt ticker" onclick="toggleDetail('{{ c.ticker }}')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>{{ c.ticker }}{% if 'european' in c.flags %} <span class="badge badge-eur">{{ c.currency }}</span>{% endif %}{% if 'sbc_heavy' in c.flags %} <span class="badge badge-sbc">SBC</span>{% endif %}
+  </td>
+  <td class="txt"><span class="company">{{ c.company_name }}</span>{% if show_sector %} <span class="sector-chip">{{ c.sector | replace('_', ' ') | title }}</span>{% endif %}</td>
+  <td class="txt focus">{{ c.focus }}</td>
+
+  <td title="{{ c.market_cap | dp_tooltip('Market Cap') }}">{{ c.market_cap.value | fmt_b_display | safe }}</td>
+  <td title="{{ c.enterprise_value | dp_tooltip('EV = MarketCap + Debt − Cash') }}">{{ c.enterprise_value.value | fmt_b_display | safe }}</td>
+  <td title="{{ c.revenue_ttm | dp_tooltip('Revenue TTM') }}">{{ c.revenue_ttm.value | fmt_b_display | safe }}{% if 'net_revenue' in c.flags %}<span class="rev-tag">net†</span>{% elif 'gross_revenue' in c.flags %}<span class="rev-tag">gross</span>{% endif %}</td>
+  <td title="{{ c.revenue_growth_yoy_pct | ratio_tooltip }}">{{ c.revenue_growth_yoy_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.gross_margin_pct | ratio_tooltip }}">{{ c.gross_margin_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.ebitda_margin_pct | ratio_tooltip }}">{{ c.ebitda_margin_pct | fmt_ratio_pct | safe }}</td>
+  <td title="{{ c.fcf_margin_pct | ratio_tooltip }}">{{ c.fcf_margin_pct | fmt_ratio_pct | safe }}</td>
+
+  <td class="{{ c.ev_revenue | color_class('ev_revenue') }}" title="{{ c.ev_revenue | ratio_tooltip }}">{{ c.ev_revenue | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.ev_ebitda | color_class('ev_ebitda') }}" title="{{ c.ev_ebitda | ratio_tooltip }}">{{ c.ev_ebitda | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.ev_fcf | color_class('ev_fcf') }}" title="{{ c.ev_fcf | ratio_tooltip }}">{{ c.ev_fcf | fmt_ratio_x | safe }}</td>
+
+  <td class="{{ c.pe_ttm | color_class('pe_ttm') }}" title="{{ c.pe_ttm | ratio_tooltip }}">{{ c.pe_ttm | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.pe_forward | color_class('fwd_pe') }}" title="{{ c.pe_forward | ratio_tooltip }} [analyst estimate]">{{ c.pe_forward | fmt_ratio_x | safe }} <span class="badge badge-est">EST</span></td>
+  <td title="{{ c.peg_ratio | ratio_tooltip }} [analyst estimate]">{{ c.peg_ratio | fmt_ratio_x | safe }}{% if c.peg_ratio.value is not none %} <span class="badge badge-est">EST</span>{% endif %}</td>
+  <td title="{{ c.price_sales | ratio_tooltip }}">{{ c.price_sales | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.price_fcf | color_class('price_fcf') }}" title="{{ c.price_fcf | ratio_tooltip }}">{{ c.price_fcf | fmt_ratio_x | safe }}</td>
+
+  <td class="{{ c.net_debt_ebitda | color_class('net_debt_ebitda') }}" title="{{ c.net_debt_ebitda | ratio_tooltip }}">{{ c.net_debt_ebitda | fmt_ratio_x | safe }}</td>
+  <td class="{{ c.rule_of_40 | color_class('rule_of_40') }}" title="{{ c.rule_of_40 | ratio_tooltip }}">{{ c.rule_of_40 | fmt_ratio_plain | safe }}</td>
+
+  <td class="source-cell">
+    {% if c.cik %}<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{ c.cik }}&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>{% endif %}
+    <a href="https://finance.yahoo.com/quote/{{ c.yfinance_ticker or c.ticker }}" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated {{ generated_at[:10] }}</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-{{ c.ticker }}">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">{{ c.ticker }}</span><span class="dn">{{ c.company_name }}</span>
+      {% if show_sector %}<span class="meta">{{ c.sector | replace('_', ' ') | title }}</span>{% endif %}
+      {% if c.cik %}<span class="meta">CIK {{ c.cik }}</span>{% endif %}
+      {% if 'european' in c.flags %}<span class="meta">{{ c.currency }} → USD @ {{ "%.4f" | format(c.fx_rate_to_usd) }}</span>{% endif %}
+      <button class="close-btn" onclick="toggleDetail('{{ c.ticker }}')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      {{ c.revenue_ttm | detail_card('Revenue TTM', '', c.cik, c.ticker) }}
+      {{ c.gross_profit | detail_card('Gross Profit', '', c.cik, c.ticker) }}
+      {{ c.ebitda | detail_card('EBITDA', '', c.cik, c.ticker) }}
+      {{ c.fcf | ratio_detail_card('Free Cash Flow (OCF − CapEx)') }}
+      {{ c.operating_cash_flow | detail_card('Operating Cash Flow', '', c.cik, c.ticker) }}
+      {{ c.capex | detail_card('CapEx', '', c.cik, c.ticker) }}
+      {{ c.net_income_ttm | detail_card('Net Income TTM', '', c.cik, c.ticker) }}
+      {{ c.total_cash | detail_card('Total Cash', '', c.cik, c.ticker) }}
+      {{ c.total_debt | detail_card('Total Debt', '', c.cik, c.ticker) }}
+      {{ c.market_cap | detail_card('Market Cap', '', c.cik, c.ticker) }}
+      {{ c.enterprise_value | detail_card('Enterprise Value', 'EV = MarketCap + Debt − Cash', c.cik, c.ticker) }}
+      {{ c.gross_margin_pct | ratio_detail_card('Gross Margin %') }}
+      {{ c.ebitda_margin_pct | ratio_detail_card('EBITDA Margin %') }}
+      {{ c.fcf_margin_pct | ratio_detail_card('FCF Margin %') }}
+      {{ c.revenue_growth_yoy_pct | ratio_detail_card('Revenue Growth YoY %') }}
+      {{ c.ev_revenue | ratio_detail_card('EV / Revenue') }}
+      {{ c.ev_ebitda | ratio_detail_card('EV / EBITDA') }}
+      {{ c.ev_fcf | ratio_detail_card('EV / FCF') }}
+      {{ c.pe_ttm | ratio_detail_card('P/E TTM') }}
+      {{ c.pe_forward | ratio_detail_card('Forward P/E (analyst estimate)') }}
+      {{ c.peg_ratio | ratio_detail_card('PEG Ratio (analyst estimate)') }}
+      {{ c.price_sales | ratio_detail_card('Price / Sales') }}
+      {{ c.price_fcf | ratio_detail_card('Price / FCF') }}
+      {{ c.net_debt | ratio_detail_card('Net Debt (Debt − Cash)') }}
+      {{ c.net_debt_ebitda | ratio_detail_card('Net Debt / EBITDA') }}
+      {{ c.rule_of_40 | ratio_detail_card('Rule of 40') }}
+    </div>
+  </td>
+</tr>
+{% endmacro %}

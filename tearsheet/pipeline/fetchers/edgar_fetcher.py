@@ -13,6 +13,7 @@ from __future__ import annotations
 import time
 import json
 import re
+import threading
 from datetime import date
 from typing import Optional
 import requests
@@ -31,9 +32,26 @@ from pipeline.fetchers.base import make_dp, na_dp
 _SESSION = requests.Session()
 _SESSION.headers.update({"User-Agent": EDGAR_USER_AGENT, "Accept": "application/json"})
 
+# Global rate limiter. The pipeline fetches companies concurrently (a small
+# thread pool), so a bare per-call sleep is NOT enough — N workers would issue
+# N× the request rate and could breach SEC's 10 req/sec limit. This lock spaces
+# request *initiations* by EDGAR_RATE_LIMIT_SLEEP across ALL threads, keeping the
+# global rate under the cap no matter how many workers call in.
+_RATE_LOCK = threading.Lock()
+_last_request_t = 0.0   # time.monotonic() of the last EDGAR request
+
+
+def _throttle() -> None:
+    global _last_request_t
+    with _RATE_LOCK:
+        wait = EDGAR_RATE_LIMIT_SLEEP - (time.monotonic() - _last_request_t)
+        if wait > 0:
+            time.sleep(wait)
+        _last_request_t = time.monotonic()
+
 
 def _get(url: str) -> dict:
-    time.sleep(EDGAR_RATE_LIMIT_SLEEP)
+    _throttle()
     r = _SESSION.get(url, timeout=15)
     r.raise_for_status()
     return r.json()
@@ -528,31 +546,6 @@ def fetch_revenue_ttm(cik: str) -> DataPoint:
     return _fetch_ttm_income_statement(cik, REVENUE_CONCEPTS, "revenue_ttm")
 
 
-def fetch_revenue_prior_annual(cik: str) -> DataPoint:
-    """Fetch the second-most-recent annual (10-K) revenue — used for YoY growth."""
-    for concept in REVENUE_CONCEPTS:
-        data = _fetch_concept(cik, concept)
-        if not data:
-            continue
-        units = data.get("units", {}).get("USD", [])
-        annual = sorted(
-            [e for e in units if e.get("form") == "10-K" and e.get("val") is not None],
-            key=lambda e: e.get("end", ""),
-            reverse=True,
-        )
-        if len(annual) >= 2:
-            prior = annual[1]  # second most recent annual
-            return make_dp(
-                value=float(prior["val"]),
-                source="edgar_10k",
-                source_detail=f"edgar_10k:accession={prior.get('accn','?')},concept={concept}",
-                period_label=f"FY prior ({prior.get('end','')})",
-                period_end=prior.get("end", ""),
-            )
-        elif len(annual) == 1:
-            return na_dp(f"Only one annual 10-K revenue entry found; cannot compute prior year")
-    return na_dp("All EDGAR revenue concepts failed for prior-year annual fetch")
-
 def fetch_revenue_annual_pair(cik: str) -> tuple[DataPoint, DataPoint]:
     """Return (most_recent_FY, prior_FY) annual revenue as a matched pair.
 
@@ -560,6 +553,17 @@ def fetch_revenue_annual_pair(cik: str) -> tuple[DataPoint, DataPoint]:
     fiscal-period length and month — avoiding the old bug of comparing a TTM
     (e.g. ending Mar-2026) against a mismatched annual (e.g. FY ending Jun-2024).
     """
+    # Build a (cur, prior) candidate from EACH concept, then pick the candidate
+    # whose most-recent fiscal year-end is NEWEST. Picking the first concept with
+    # ≥2 annuals (the old behaviour) breaks when a company ABANDONS a revenue
+    # concept: e.g. NVIDIA stopped tagging RevenueFromContractWithCustomer-
+    # ExcludingAssessedTax after FY2023 and moved to Revenues, but the old concept
+    # still carries its FY2021–FY2023 filings — so the first-match returned a
+    # 3-year-stale pair (FY2023 vs FY2021) and a wrong growth rate. The TTM path
+    # already guards against this via staleness; mirror it here by preferring the
+    # freshest concept. (Each candidate stays WITHIN one concept, so a year's
+    # gross/net basis is never mixed across the pair.)
+    candidates = []  # (cur_end, cur_entry, prior_entry, concept)
     for concept in REVENUE_CONCEPTS:
         data = _fetch_concept(cik, concept)
         if not data:
@@ -585,18 +589,23 @@ def fetch_revenue_annual_pair(cik: str) -> tuple[DataPoint, DataPoint]:
                 full_year[end] = e
         annual = [full_year[k] for k in sorted(full_year, reverse=True)]
         if len(annual) >= 2:
-            cur, prior = annual[0], annual[1]
-            cur_dp = make_dp(
-                value=float(cur["val"]), source="edgar_10k",
-                source_detail=f"edgar_10k:accession={cur.get('accn','?')},concept={concept}",
-                period_label=f"FY ({cur.get('end','')})", period_end=cur.get("end", ""),
-            )
-            prior_dp = make_dp(
-                value=float(prior["val"]), source="edgar_10k",
-                source_detail=f"edgar_10k:accession={prior.get('accn','?')},concept={concept}",
-                period_label=f"FY prior ({prior.get('end','')})", period_end=prior.get("end", ""),
-            )
-            return cur_dp, prior_dp
+            candidates.append((annual[0].get("end", ""), annual[0], annual[1], concept))
+
+    if candidates:
+        # Newest most-recent-FY wins (concept-order breaks ties for stability).
+        candidates.sort(key=lambda c: c[0], reverse=True)
+        _, cur, prior, concept = candidates[0]
+        cur_dp = make_dp(
+            value=float(cur["val"]), source="edgar_10k",
+            source_detail=f"edgar_10k:accession={cur.get('accn','?')},concept={concept}",
+            period_label=f"FY ({cur.get('end','')})", period_end=cur.get("end", ""),
+        )
+        prior_dp = make_dp(
+            value=float(prior["val"]), source="edgar_10k",
+            source_detail=f"edgar_10k:accession={prior.get('accn','?')},concept={concept}",
+            period_label=f"FY prior ({prior.get('end','')})", period_end=prior.get("end", ""),
+        )
+        return cur_dp, prior_dp
     na = na_dp("EDGAR: could not find two full-year 10-K revenue entries for FY-over-FY growth")
     return na, na
 

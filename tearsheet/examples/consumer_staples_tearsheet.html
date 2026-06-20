@@ -110,6 +110,25 @@ h1.title em { font-style: italic; color: var(--accent); }
 .swatch.y { background: var(--y-bg); border: 1px solid var(--y-fg); }
 .swatch.r { background: var(--r-bg); border: 1px solid var(--r-fg); }
 
+/* ── Filters (combined view) ──────────────────────────── */
+.filters { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 4px 2px 16px; }
+.filter-group { display: inline-flex; align-items: center; gap: 8px; }
+.filter-group label { font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-faint); }
+.filter-group select {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 7px 12px; cursor: pointer; transition: border-color .15s;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a8378' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
+}
+.filter-group select:hover, .filter-group select:focus { border-color: var(--accent); outline: none; }
+.filters .count-tag { margin-left: auto; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px; color: var(--ink-faint); }
+.filters .count-tag b { color: var(--accent); font-weight: 600; }
+
 /* ── Methodology (collapsible) ────────────────────────── */
 .method { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); margin-bottom: 22px; overflow: hidden; }
 .method summary { cursor: pointer; padding: 13px 18px; font-size: 12px; font-weight: 600;
@@ -171,6 +190,10 @@ html[data-theme="dark"] .ticker { color: var(--accent); }
 .ticker:hover { text-decoration: underline; }
 .ticker .car { color: var(--ink-faint); font-size: 10px; margin-right: 5px; }
 .company { font-weight: 600; color: var(--ink); }
+.sector-chip { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 9px;
+    font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, var(--card)); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--rule));
+    padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
 .focus { color: var(--ink-soft); font-size: 11.5px; max-width: 230px; white-space: normal; line-height: 1.35; }
 
 .badge { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 8.5px; font-weight: 700;
@@ -357,9 +380,9 @@ footer.foot a { color: var(--accent); }
 <tbody id="tbody">
 
 
-
 <tr class="data-row"
     data-ticker="PG"
+    data-sector="consumer_staples"
     data-company="Procter & Gamble Co."
     data-focus="Household & personal care"
     data-mktcap="350174714311.6400"
@@ -418,6 +441,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">PG</span><span class="dn">Procter & Gamble Co.</span>
+      
       <span class="meta">CIK 0000080424</span>
       
       <button class="close-btn" onclick="toggleDetail('PG')" title="Collapse">✕</button>
@@ -583,9 +607,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="KO"
+    data-sector="consumer_staples"
     data-company="The Coca-Cola Company"
     data-focus="Non-alcoholic beverages"
     data-mktcap="341574079165.0200"
@@ -644,6 +668,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">KO</span><span class="dn">The Coca-Cola Company</span>
+      
       <span class="meta">CIK 0000021344</span>
       
       <button class="close-btn" onclick="toggleDetail('KO')" title="Collapse">✕</button>
@@ -809,9 +834,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="PEP"
+    data-sector="consumer_staples"
     data-company="PepsiCo, Inc."
     data-focus="Beverages & convenient foods"
     data-mktcap="194108436096.3000"
@@ -870,6 +895,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">PEP</span><span class="dn">PepsiCo, Inc.</span>
+      
       <span class="meta">CIK 0000077476</span>
       
       <button class="close-btn" onclick="toggleDetail('PEP')" title="Collapse">✕</button>
@@ -1035,9 +1061,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="MO"
+    data-sector="consumer_staples"
     data-company="Altria Group, Inc."
     data-focus="Tobacco (US) — revenue incl. excise tax"
     data-mktcap="115422882163.2000"
@@ -1096,6 +1122,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">MO</span><span class="dn">Altria Group, Inc.</span>
+      
       <span class="meta">CIK 0000764180</span>
       
       <button class="close-btn" onclick="toggleDetail('MO')" title="Collapse">✕</button>
@@ -1261,9 +1288,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="PM"
+    data-sector="consumer_staples"
     data-company="Philip Morris International"
     data-focus="Tobacco & smoke-free (international)"
     data-mktcap="278046898126.4000"
@@ -1322,6 +1349,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">PM</span><span class="dn">Philip Morris International</span>
+      
       <span class="meta">CIK 0001413329</span>
       
       <button class="close-btn" onclick="toggleDetail('PM')" title="Collapse">✕</button>
@@ -1487,9 +1515,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="MDLZ"
+    data-sector="consumer_staples"
     data-company="Mondelez International"
     data-focus="Snacks & confectionery"
     data-mktcap="77173023931.9200"
@@ -1548,6 +1576,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">MDLZ</span><span class="dn">Mondelez International</span>
+      
       <span class="meta">CIK 0001103982</span>
       
       <button class="close-btn" onclick="toggleDetail('MDLZ')" title="Collapse">✕</button>
@@ -1713,9 +1742,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="CL"
+    data-sector="consumer_staples"
     data-company="Colgate-Palmolive Co."
     data-focus="Oral, personal & home care"
     data-mktcap="71600939458.8000"
@@ -1774,6 +1803,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">CL</span><span class="dn">Colgate-Palmolive Co.</span>
+      
       <span class="meta">CIK 0000021665</span>
       
       <button class="close-btn" onclick="toggleDetail('CL')" title="Collapse">✕</button>
@@ -1939,9 +1969,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="KMB"
+    data-sector="consumer_staples"
     data-company="Kimberly-Clark Corp."
     data-focus="Tissue & personal care"
     data-mktcap="34043803013.9200"
@@ -2000,6 +2030,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">KMB</span><span class="dn">Kimberly-Clark Corp.</span>
+      
       <span class="meta">CIK 0000055785</span>
       
       <button class="close-btn" onclick="toggleDetail('KMB')" title="Collapse">✕</button>
@@ -2165,9 +2196,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="GIS"
+    data-sector="consumer_staples"
     data-company="General Mills, Inc."
     data-focus="Packaged foods"
     data-mktcap="17835626305.5600"
@@ -2226,6 +2257,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">GIS</span><span class="dn">General Mills, Inc.</span>
+      
       <span class="meta">CIK 0000040704</span>
       
       <button class="close-btn" onclick="toggleDetail('GIS')" title="Collapse">✕</button>
@@ -2391,9 +2423,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="HSY"
+    data-sector="consumer_staples"
     data-company="The Hershey Company"
     data-focus="Confectionery & snacks"
     data-mktcap="25588920386.5400"
@@ -2452,6 +2484,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">HSY</span><span class="dn">The Hershey Company</span>
+      
       <span class="meta">CIK 0000047111</span>
       
       <button class="close-btn" onclick="toggleDetail('HSY')" title="Collapse">✕</button>
@@ -2616,7 +2649,6 @@ footer.foot a { color: var(--accent); }
     </div>
   </td>
 </tr>
-
 
 </tbody>
 </table>

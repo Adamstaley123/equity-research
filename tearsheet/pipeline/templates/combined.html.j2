@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ dataset.sector | replace('_', ' ') | title }} Sector Tearsheet</title>
+<title>Sector Tearsheets — Valuation Comparison</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,12 +13,12 @@
 <div class="wrap">
 
 <header class="mast">
-    <div class="eyebrow">Tearsheet · Equity Research · v{{ dataset.pipeline_version }}</div>
+    <div class="eyebrow">Tearsheet · Equity Research · v{{ pipeline_version }}</div>
     <div class="mast-row">
-        <h1 class="title">{{ dataset.sector | replace('_', ' ') | title }} <em>Sector Tearsheet</em></h1>
+        <h1 class="title">Sector <em>Tearsheets</em></h1>
         <div>
             <div class="mast-meta">
-                As of <b>{{ dataset.generated_at[:10] }}</b> · <b>{{ summary.count }}</b> companies<br>
+                As of <b>{{ as_of[:10] }}</b> · <b>{{ summary.count }}</b> companies · <b>{{ sectors | length }}</b> sectors<br>
                 Financials <b>SEC EDGAR XBRL</b> · Market data <b>Yahoo Finance</b><br>
                 Estimates <b>analyst consensus</b> · EV computed from components
             </div>
@@ -32,35 +32,57 @@
 <section class="summary">
     <div class="stat accent">
         <div class="k">Companies</div>
-        <div class="v">{{ summary.count }}</div>
-        <div class="sub">in universe</div>
+        <div class="v" id="sumCount">{{ summary.count }}</div>
+        <div class="sub">shown</div>
     </div>
     <div class="stat">
         <div class="k">Median EV / EBITDA</div>
-        <div class="v">{% if summary.median_ev_ebitda is not none %}{{ "%.1f"|format(summary.median_ev_ebitda) }}<small>×</small>{% else %}—{% endif %}</div>
+        <div class="v" id="sumEvEbitda">{% if summary.median_ev_ebitda is not none %}{{ "%.1f"|format(summary.median_ev_ebitda) }}<small>×</small>{% else %}—{% endif %}</div>
         <div class="sub">trailing</div>
     </div>
     <div class="stat">
         <div class="k">Median EV / Revenue</div>
-        <div class="v">{% if summary.median_ev_revenue is not none %}{{ "%.1f"|format(summary.median_ev_revenue) }}<small>×</small>{% else %}—{% endif %}</div>
+        <div class="v" id="sumEvRev">{% if summary.median_ev_revenue is not none %}{{ "%.1f"|format(summary.median_ev_revenue) }}<small>×</small>{% else %}—{% endif %}</div>
         <div class="sub">trailing</div>
     </div>
     <div class="stat">
         <div class="k">Median Rev Growth</div>
-        <div class="v">{% if summary.median_rev_growth is not none %}{{ "%.0f"|format(summary.median_rev_growth) }}<small>%</small>{% else %}—{% endif %}</div>
+        <div class="v" id="sumRevGrowth">{% if summary.median_rev_growth is not none %}{{ "%.0f"|format(summary.median_rev_growth) }}<small>%</small>{% else %}—{% endif %}</div>
         <div class="sub">FY over FY</div>
     </div>
     <div class="stat">
         <div class="k">Cheapest · EV/EBITDA</div>
-        <div class="v">{% if summary.cheapest_ev_ebitda %}{{ summary.cheapest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
-        <div class="sub">{% if summary.cheapest_ev_ebitda %}{{ "%.1f"|format(summary.cheapest_ev_ebitda[1]) }}× trailing{% endif %}</div>
+        <div class="v" id="sumCheap">{% if summary.cheapest_ev_ebitda %}{{ summary.cheapest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
+        <div class="sub" id="sumCheapSub">{% if summary.cheapest_ev_ebitda %}{{ "%.1f"|format(summary.cheapest_ev_ebitda[1]) }}× trailing{% endif %}</div>
     </div>
     <div class="stat">
         <div class="k">Priciest · EV/EBITDA</div>
-        <div class="v">{% if summary.priciest_ev_ebitda %}{{ summary.priciest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
-        <div class="sub">{% if summary.priciest_ev_ebitda %}{{ "%.1f"|format(summary.priciest_ev_ebitda[1]) }}× trailing{% endif %}</div>
+        <div class="v" id="sumPricey">{% if summary.priciest_ev_ebitda %}{{ summary.priciest_ev_ebitda[0] }}{% else %}—{% endif %}</div>
+        <div class="sub" id="sumPriceySub">{% if summary.priciest_ev_ebitda %}{{ "%.1f"|format(summary.priciest_ev_ebitda[1]) }}× trailing{% endif %}</div>
     </div>
 </section>
+
+<div class="filters">
+    <div class="filter-group">
+        <label for="sectorFilter">Sector</label>
+        <select id="sectorFilter" onchange="applyFilters()">
+            <option value="all">All sectors</option>
+            {% for s in sectors %}<option value="{{ s.value }}">{{ s.label }} ({{ s.count }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="capFilter">Market cap</label>
+        <select id="capFilter" onchange="applyFilters()">
+            <option value="all">All sizes</option>
+            <option value="mega">Mega · &gt; $200B</option>
+            <option value="large">Large · $10–200B</option>
+            <option value="mid">Mid · $2–10B</option>
+            <option value="small">Small · &lt; $2B</option>
+        </select>
+    </div>
+    <span class="count-tag"><b id="visCount">{{ summary.count }}</b> of {{ summary.count }} companies shown</span>
+</div>
 
 <div class="toolbar">
     <span class="hint">↕ Click a column to sort</span>
@@ -78,19 +100,17 @@
     <summary><span class="chev">▸</span> Methodology &amp; data sources <span class="tag">how every number is computed</span></summary>
     <div class="body">
         <h4>Sources</h4>
-        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. These two keyless sources are the default; an optional StockAnalysis scrape (for foreign issuers without EDGAR) is off unless explicitly enabled. Click any ticker to see each figure's exact source, filing, and formula.</p>
+        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. Click any ticker to see each figure's exact source, filing, and formula.</p>
+        <h4>Curated, not screened</h4>
+        <p>Each sector is a hand-picked peer set, not an algorithmic screen. This page is a <strong>deterministic render</strong> over those committed sector datasets — no live data is fetched when the page is built. Compare companies <strong>within</strong> a sector; multiples are not directly comparable across different sectors.</p>
         <h4>TTM &amp; freshness</h4>
         <p>TTM = the four most recent quarters (or YTD reconstruction for cash-flow items). Every value is checked against the company's latest filing date; anything stale is dropped to <strong>N/A with a reason</strong> rather than shown.</p>
         <h4>Enterprise value</h4>
         <p><code>EV = Market Cap + Total Debt − Total Cash</code>, computed from components. Pre-computed EV fields are not used (known stale-value issues). Market cap = price × basic shares.</p>
         <h4>EBITDA</h4>
         <p><code>EBITDA = Operating Income + D&amp;A</code> from EDGAR. Where D&amp;A is untagged or unreliable, operating income is used as a proxy and flagged.</p>
-        <h4>Estimates</h4>
-        <p>Forward P/E and PEG are <strong>analyst consensus</strong> (marked <span class="badge badge-est">EST</span>), not filings. PEG is Yahoo's (P/E ÷ 3–5yr est. growth).</p>
         <h4>Revenue basis</h4>
-        <p>Net revenue (†) keeps only the fee retained (Marqeta, Payoneer); gross revenue includes full processing volume (Shift4, Paymentus). EV/Revenue is not directly comparable across these.</p>
-        <h4>Rule of 40</h4>
-        <p><code>Rev Growth % + FCF Margin %</code>. For SBC-heavy names, FCF &gt; EBITDA because stock comp is added back — EV/FCF flatters them (<span class="badge badge-sbc">SBC</span>).</p>
+        <p>Some names report <strong>net</strong> revenue (†, only the fee retained) and some <strong>gross</strong> (full volume, incl. items like excise tax). EV/Revenue is not directly comparable across these.</p>
     </div>
 </details>
 
@@ -133,7 +153,7 @@
 </thead>
 <tbody id="tbody">
 {% from "_company_rows.html.j2" import company_row %}
-{% for ticker in dataset.tickers %}{{ company_row(dataset.companies[ticker], dataset.generated_at) }}{% endfor %}
+{% for ds in datasets %}{% for ticker in ds.tickers %}{{ company_row(ds.companies[ticker], ds.generated_at, show_sector=True) }}{% endfor %}{% endfor %}
 </tbody>
 </table>
 </div>
@@ -141,7 +161,7 @@
 <footer class="foot">
     <div class="disc">Not investment advice. For research and educational use only.</div>
     <div class="src">
-        Generated {{ dataset.generated_at[:10] }} · Pipeline v{{ dataset.pipeline_version }} ·
+        As of {{ as_of[:10] }} · Pipeline v{{ pipeline_version }} ·
         Deterministic open-source pipeline · Data: SEC EDGAR XBRL + Yahoo Finance ·
         Every figure is traceable — click a ticker for sources, formulas, and N/A reasons.
     </div>
@@ -164,7 +184,77 @@ function toggleTheme() {
     localStorage.setItem('valdash-theme', next);
 }
 
-// ── Sort ─────────────────────────────────────────────────────────────────────
+// ── N/A sentinel (matches config.NA_SENTINEL) ────────────────────────────────
+const SENTINEL = 999;
+function cellNum(row, key) {
+    const v = parseFloat(row.dataset[key]);
+    return (isNaN(v) || v === SENTINEL) ? null : v;
+}
+function median(arr) {
+    if (!arr.length) return null;
+    const s = [...arr].sort((a, b) => a - b);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+// Market-cap buckets — identical bounds to combined.CAP_BUCKETS (Python).
+function capBucket(mc) {
+    if (mc === null) return null;
+    if (mc >= 2e11) return 'mega';
+    if (mc >= 1e10) return 'large';
+    if (mc >= 2e9)  return 'mid';
+    return 'small';
+}
+
+// ── Live summary recompute from the visible rows ─────────────────────────────
+function setStat(id, v, unit) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = (v === null) ? '—'
+        : v.toFixed(unit === '%' ? 0 : 1) + '<small>' + unit + '</small>';
+}
+function updateSummary(rows) {
+    const evEbitda = rows.map(r => cellNum(r, 'evebitda')).filter(v => v !== null);
+    const evRev    = rows.map(r => cellNum(r, 'evrev')).filter(v => v !== null);
+    const revG     = rows.map(r => cellNum(r, 'revgrowth')).filter(v => v !== null);
+    document.getElementById('sumCount').textContent = rows.length;
+    setStat('sumEvEbitda', median(evEbitda), '×');
+    setStat('sumEvRev',    median(evRev), '×');
+    setStat('sumRevGrowth', median(revG), '%');
+
+    const pos = rows.map(r => [r.dataset.ticker, cellNum(r, 'evebitda')])
+                    .filter(p => p[1] !== null && p[1] > 0);
+    const cheap = pos.length ? pos.reduce((a, b) => b[1] < a[1] ? b : a) : null;
+    const pricey = pos.length ? pos.reduce((a, b) => b[1] > a[1] ? b : a) : null;
+    document.getElementById('sumCheap').textContent = cheap ? cheap[0] : '—';
+    document.getElementById('sumCheapSub').textContent = cheap ? cheap[1].toFixed(1) + '× trailing' : '';
+    document.getElementById('sumPricey').textContent = pricey ? pricey[0] : '—';
+    document.getElementById('sumPriceySub').textContent = pricey ? pricey[1].toFixed(1) + '× trailing' : '';
+}
+
+// ── Filters ──────────────────────────────────────────────────────────────────
+function applyFilters() {
+    const sec = document.getElementById('sectorFilter').value;
+    const cap = document.getElementById('capFilter').value;
+    const tbody = document.getElementById('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr.data-row'));
+    const visible = [];
+    let total = rows.length;
+    rows.forEach(r => {
+        const okSec = sec === 'all' || r.dataset.sector === sec;
+        const okCap = cap === 'all' || capBucket(cellNum(r, 'mktcap')) === cap;
+        const show = okSec && okCap;
+        r.style.display = show ? '' : 'none';
+        const detail = r.nextElementSibling;
+        if (detail && detail.classList.contains('detail-row') && !show) {
+            detail.classList.remove('open');   // collapse hidden rows' detail
+        }
+        if (show) visible.push(r);
+    });
+    updateSummary(visible);
+    document.getElementById('visCount').textContent = visible.length;
+}
+
+// ── Sort (skips hidden rows; keeps each detail row with its data row) ─────────
 (function () {
     const tbody = document.getElementById('tbody');
     const headers = document.querySelectorAll('thead tr.cols th[data-key]');
@@ -205,6 +295,9 @@ function toggleDetail(ticker) {
     const row = document.getElementById('detail-' + ticker);
     if (row) row.classList.toggle('open');
 }
+
+// Sync summary + count on load (server already rendered the 'All' state).
+applyFilters();
 </script>
 </body>
 </html>

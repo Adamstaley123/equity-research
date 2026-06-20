@@ -1,0 +1,3653 @@
+{
+  "sector": "semiconductors",
+  "run_id": "semiconductors_2026-06-20",
+  "generated_at": "2026-06-20T18:48:56+00:00",
+  "tickers": [
+    "NVDA",
+    "AMD",
+    "AVGO",
+    "INTC",
+    "QCOM",
+    "TXN",
+    "MU",
+    "ADI",
+    "MRVL",
+    "LRCX"
+  ],
+  "companies": {
+    "NVDA": {
+      "ticker": "NVDA",
+      "company_name": "NVIDIA Corporation",
+      "focus": "GPUs / accelerated computing & AI",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0001045810",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 5103122490000.0,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (NVDA)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (NVDA)) = 210.69 × 24221.00M = 5103.122B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 5098355490000.0,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 5103.12B + 8.47B − 13.24B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 253491000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-25)=215,938,000,000+YTD(2026-04-26)=81,615,000,000-PriorYTD(2025-04-27)=44,062,000,000,concept=Revenues",
+        "period_label": "TTM via YTD recon (2026-04-26)",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:48:59+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 130497000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0001045810-26-000021,concept=Revenues",
+        "period_label": "FY prior (2025-01-26)",
+        "period_end": "2025-01-26",
+        "fetched_at": "2026-06-20T18:49:06+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 187952000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-25)=153,463,000,000+YTD(2026-04-26)=61,157,000,000-PriorYTD(2025-04-27)=26,668,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-04-26)",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:48:59+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 165128000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(162285M)+D&A(2843M)=165128M",
+        "period_label": "TTM via YTD recon (2026-04-26)",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:49:00+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 102718000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2026-01-25)",
+        "period_end": "2026-01-25",
+        "fetched_at": "2026-06-20T18:49:02+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 820000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=CapitalExpendituresIncurredButNotYetPaid",
+        "period_label": "FY (2026-01-25)",
+        "period_end": "2026-01-25",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 159613000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-25)=120,067,000,000+YTD(2026-04-26)=58,321,000,000-PriorYTD(2025-04-27)=18,775,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-04-26)",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:49:01+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 13237000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001045810-26-000052,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-04-26",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 8470000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001045810-26-000052,concept=LongTermDebt",
+        "period_label": "As of 2026-04-26",
+        "period_end": "2026-04-26",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 12.72715,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (NVDA) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 214.5,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (NVDA) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 24221000000.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (NVDA)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 210.69,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (NVDA)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 101898000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 102718000000.0,
+          "CapEx": 820000000.0
+        },
+        "input_labels": {
+          "OCF": "$102.72B",
+          "CapEx": "$820.0M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 20.112570032072146,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 5098355490000.0,
+          "Revenue_TTM": 253491000000.0
+        },
+        "input_labels": {
+          "EV": "$5098.36B",
+          "Revenue_TTM": "$253.49B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 30.875172532823022,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 5098355490000.0,
+          "EBITDA": 165128000000.0
+        },
+        "input_labels": {
+          "EV": "$5098.36B",
+          "EBITDA": "$165.13B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 50.03391126420538,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 5098355490000.0,
+          "FCF": 101898000000.0
+        },
+        "input_labels": {
+          "EV": "$5098.36B",
+          "FCF": "$101.90B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 31.97184746856459,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 5103122490000.0,
+          "NetIncome_TTM": 159613000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$5103.12B",
+          "NetIncome_TTM": "$159.61B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 16.55437391717706,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 210.69,
+          "EPS_Forward": 12.72715
+        },
+        "input_labels": {
+          "Price": "210.69",
+          "EPS_Forward": "$12.73"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 0.6484,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 0.6484
+        },
+        "input_labels": {
+          "YahooPEG": "0.65"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 20.131375433447342,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 5103122490000.0,
+          "Revenue_TTM": 253491000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$5103.12B",
+          "Revenue_TTM": "$253.49B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 50.08069334039922,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 5103122490000.0,
+          "FCF": 101898000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$5103.12B",
+          "FCF": "$101.90B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 74.1454331711974,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 187952000000.0,
+          "Revenue_TTM": 253491000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$187.95B",
+          "Revenue_TTM": "$253.49B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 65.14156321131716,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 165128000000.0,
+          "Revenue_TTM": 253491000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$165.13B",
+          "Revenue_TTM": "$253.49B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 40.19787684769873,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 101898000000.0,
+          "Revenue_TTM": 253491000000.0
+        },
+        "input_labels": {
+          "FCF": "$101.90B",
+          "Revenue_TTM": "$253.49B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 65.4735357900948,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 215938000000.0,
+          "Revenue_PriorYear": 130497000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$215.94B",
+          "Revenue_PriorYear": "$130.50B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": -4767000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 8470000000.0,
+          "TotalCash": 13237000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$8.47B",
+          "TotalCash": "$13.24B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": null,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": -4767000000.0,
+          "EBITDA": 165128000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$-4.77B",
+          "EBITDA": "$165.13B"
+        },
+        "na_reason": "Net cash position ($-4.77B) — Net Debt/EBITDA not meaningful; company has more cash than debt"
+      },
+      "rule_of_40": {
+        "value": 105.67141263779354,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 65.4735357900948,
+          "FCFMarginPct": 40.19787684769873
+        },
+        "input_labels": {
+          "RevGrowthPct": "65.5%",
+          "FCFMarginPct": "40.2%"
+        },
+        "na_reason": null
+      }
+    },
+    "INTC": {
+      "ticker": "INTC",
+      "company_name": "Intel Corporation",
+      "focus": "x86 CPUs & foundry",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000050863",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 673433740000.0,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (INTC)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (INTC)) = 133.99 × 5026.00M = 673.434B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 702771740000.0,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 673.43B + 46.59B − 17.25B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 53763000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=52,853,000,000+YTD(2026-03-28)=13,577,000,000-PriorYTD(2025-03-29)=12,667,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:48:58+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 53101000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000050863-26-000011,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-12-28)",
+        "period_end": "2024-12-28",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 19050000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=18,375,000,000+YTD(2026-03-28)=5,347,000,000-PriorYTD(2025-03-29)=4,672,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:48:58+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": -4100000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(-5049M)+D&A(949M)=-4100M",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:00+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 9697000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-12-27)",
+        "period_end": "2025-12-27",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 14646000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2025-12-27)",
+        "period_end": "2025-12-27",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": -3174000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=-267,000,000+YTD(2026-03-28)=-3,728,000,000-PriorYTD(2025-03-29)=-821,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:02+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 17247000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000050863-26-000079,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-03-28",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 46585000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar:10-K,accession=0000050863-26-000011,concept=LongTermDebt",
+        "period_label": "As of 2025-12-27",
+        "period_end": "2025-12-27",
+        "fetched_at": "2026-06-20T18:49:05+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 1.54547,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (INTC) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 7.199999999999999,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (INTC) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 5026000000.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (INTC)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 133.99,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (INTC)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": -4949000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 9697000000.0,
+          "CapEx": 14646000000.0
+        },
+        "input_labels": {
+          "OCF": "$9.70B",
+          "CapEx": "$14.65B"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 13.071661551624723,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 702771740000.0,
+          "Revenue_TTM": 53763000000.0
+        },
+        "input_labels": {
+          "EV": "$702.77B",
+          "Revenue_TTM": "$53.76B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": null,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 702771740000.0,
+          "EBITDA": -4100000000.0
+        },
+        "input_labels": {
+          "EV": "$702.77B",
+          "EBITDA": "$-4.10B"
+        },
+        "na_reason": "Negative EBITDA ($-4.10B) — EV/EBITDA not meaningful"
+      },
+      "ev_fcf": {
+        "value": null,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 702771740000.0,
+          "FCF": -4949000000.0
+        },
+        "input_labels": {
+          "EV": "$702.77B",
+          "FCF": "$-4.95B"
+        },
+        "na_reason": "FCF not positive ($-4.95B) — EV/FCF not meaningful"
+      },
+      "pe_ttm": {
+        "value": null,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 673433740000.0,
+          "NetIncome_TTM": -3174000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$673.43B",
+          "NetIncome_TTM": "$-3.17B"
+        },
+        "na_reason": "Net loss TTM ($-3.17B) — P/E not meaningful"
+      },
+      "pe_forward": {
+        "value": 86.6985447792581,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 133.99,
+          "EPS_Forward": 1.54547
+        },
+        "input_labels": {
+          "Price": "133.99",
+          "EPS_Forward": "$1.55"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 1.36,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 1.36
+        },
+        "input_labels": {
+          "YahooPEG": "1.36"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 12.52597027695627,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 673433740000.0,
+          "Revenue_TTM": 53763000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$673.43B",
+          "Revenue_TTM": "$53.76B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": null,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 673433740000.0,
+          "FCF": -4949000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$673.43B",
+          "FCF": "$-4.95B"
+        },
+        "na_reason": "FCF not positive ($-4.95B) — Price/FCF not meaningful"
+      },
+      "gross_margin_pct": {
+        "value": 35.433290552982534,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 19050000000.0,
+          "Revenue_TTM": 53763000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$19.05B",
+          "Revenue_TTM": "$53.76B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": -7.626062533712777,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": -4100000000.0,
+          "Revenue_TTM": 53763000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$-4.10B",
+          "Revenue_TTM": "$53.76B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": -9.205215482766958,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": -4949000000.0,
+          "Revenue_TTM": 53763000000.0
+        },
+        "input_labels": {
+          "FCF": "$-4.95B",
+          "Revenue_TTM": "$53.76B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": -0.4670345191239336,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 52853000000.0,
+          "Revenue_PriorYear": 53101000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$52.85B",
+          "Revenue_PriorYear": "$53.10B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 29338000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 46585000000.0,
+          "TotalCash": 17247000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$46.59B",
+          "TotalCash": "$17.25B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": null,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 29338000000.0,
+          "EBITDA": -4100000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$29.34B",
+          "EBITDA": "$-4.10B"
+        },
+        "na_reason": "EBITDA not positive ($-4.10B) — leverage ratio not meaningful"
+      },
+      "rule_of_40": {
+        "value": -9.672250001890891,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": -0.4670345191239336,
+          "FCFMarginPct": -9.205215482766958
+        },
+        "input_labels": {
+          "RevGrowthPct": "-0.5%",
+          "FCFMarginPct": "-9.2%"
+        },
+        "na_reason": null
+      }
+    },
+    "AVGO": {
+      "ticker": "AVGO",
+      "company_name": "Broadcom Inc.",
+      "focus": "Networking & custom silicon, infra software",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0001730168",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 1957030614447.3,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (AVGO)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (AVGO)) = 411.35 × 4757.58M = 1957.031B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 2002309614447.3,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 1957.03B + 64.91B − 19.63B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 75465000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-02)=63,887,000,000+YTD(2026-05-03)=41,498,000,000-PriorYTD(2025-05-04)=29,920,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-05-03)",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:48:59+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 51574000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0001730168-25-000121,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-11-03)",
+        "period_end": "2024-11-03",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 51524000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-02)=43,294,000,000+YTD(2026-05-03)=28,572,000,000-PriorYTD(2025-05-04)=20,342,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-05-03)",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:48:59+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 40808000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(32746M)+D&A(8062M)=40808M",
+        "period_label": "TTM via YTD recon (2026-05-03)",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:49:00+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 27537000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-11-02)",
+        "period_end": "2025-11-02",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 623000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2025-11-02)",
+        "period_end": "2025-11-02",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 29317000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-02)=23,126,000,000+YTD(2026-05-03)=16,659,000,000-PriorYTD(2025-05-04)=10,468,000,000,concept=ProfitLoss",
+        "period_label": "TTM via YTD recon (2026-05-03)",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 19628000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001730168-26-000054,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-05-03",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:49:05+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 64907000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001730168-26-000054,concept=LongTermDebt",
+        "period_label": "As of 2026-05-03",
+        "period_end": "2026-05-03",
+        "fetched_at": "2026-06-20T18:49:05+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 19.38501,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (AVGO) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 85.39999999999999,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (AVGO) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 4757580198.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (AVGO)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 411.35,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (AVGO)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 26914000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 27537000000.0,
+          "CapEx": 623000000.0
+        },
+        "input_labels": {
+          "OCF": "$27.54B",
+          "CapEx": "$623.0M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 26.53295719137746,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 2002309614447.3,
+          "Revenue_TTM": 75465000000.0
+        },
+        "input_labels": {
+          "EV": "$2002.31B",
+          "Revenue_TTM": "$75.47B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 49.06659513936728,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 2002309614447.3,
+          "EBITDA": 40808000000.0
+        },
+        "input_labels": {
+          "EV": "$2002.31B",
+          "EBITDA": "$40.81B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 74.39658224148398,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 2002309614447.3,
+          "FCF": 26914000000.0
+        },
+        "input_labels": {
+          "EV": "$2002.31B",
+          "FCF": "$26.91B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 66.75412267446534,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 1957030614447.3,
+          "NetIncome_TTM": 29317000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1957.03B",
+          "NetIncome_TTM": "$29.32B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 21.220004529272877,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 411.35,
+          "EPS_Forward": 19.38501
+        },
+        "input_labels": {
+          "Price": "411.35",
+          "EPS_Forward": "$19.39"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 0.7476,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 0.7476
+        },
+        "input_labels": {
+          "YahooPEG": "0.75"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 25.93295719137746,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 1957030614447.3,
+          "Revenue_TTM": 75465000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1957.03B",
+          "Revenue_TTM": "$75.47B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 72.7142236177194,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 1957030614447.3,
+          "FCF": 26914000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1957.03B",
+          "FCF": "$26.91B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 68.27535943815015,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 51524000000.0,
+          "Revenue_TTM": 75465000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$51.52B",
+          "Revenue_TTM": "$75.47B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 54.075399191678265,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 40808000000.0,
+          "Revenue_TTM": 75465000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$40.81B",
+          "Revenue_TTM": "$75.47B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 35.66421519909892,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 26914000000.0,
+          "Revenue_TTM": 75465000000.0
+        },
+        "input_labels": {
+          "FCF": "$26.91B",
+          "Revenue_TTM": "$75.47B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 23.874432853763526,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 63887000000.0,
+          "Revenue_PriorYear": 51574000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$63.89B",
+          "Revenue_PriorYear": "$51.57B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 45279000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 64907000000.0,
+          "TotalCash": 19628000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$64.91B",
+          "TotalCash": "$19.63B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": 1.109561850617526,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 45279000000.0,
+          "EBITDA": 40808000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$45.28B",
+          "EBITDA": "$40.81B"
+        },
+        "na_reason": null
+      },
+      "rule_of_40": {
+        "value": 59.53864805286244,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 23.874432853763526,
+          "FCFMarginPct": 35.66421519909892
+        },
+        "input_labels": {
+          "RevGrowthPct": "23.9%",
+          "FCFMarginPct": "35.7%"
+        },
+        "na_reason": null
+      }
+    },
+    "AMD": {
+      "ticker": "AMD",
+      "company_name": "Advanced Micro Devices",
+      "focus": "CPUs, GPUs, data-center accelerators",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000002488",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 876235865379.43,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (AMD)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (AMD)) = 537.37 × 1630.60M = 876.236B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 873000865379.43,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 876.24B + 2.35B − 5.58B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 37454000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=34,639,000,000+YTD(2026-03-28)=10,253,000,000-PriorYTD(2025-03-29)=7,438,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:48:58+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 25785000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000002488-26-000018,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-12-28)",
+        "period_end": "2024-12-28",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 18832000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=17,152,000,000+YTD(2026-03-28)=5,416,000,000-PriorYTD(2025-03-29)=3,736,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:48:59+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 6664000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(4364M)+D&A(2300M)=6664M",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:00+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 7709000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-12-27)",
+        "period_end": "2025-12-27",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 974000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2025-12-27)",
+        "period_end": "2025-12-27",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 5009000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-27)=4,335,000,000+YTD(2026-03-28)=1,383,000,000-PriorYTD(2025-03-29)=709,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-03-28)",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:03+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 5585000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000002488-26-000076,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-03-28",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:04+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 2350000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000002488-26-000076,concept=LongTermDebtNoncurrent",
+        "period_label": "As of 2026-03-28",
+        "period_end": "2026-03-28",
+        "fetched_at": "2026-06-20T18:49:05+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 13.1035,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (AMD) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 91.2,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (AMD) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 1630600639.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (AMD)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 537.37,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (AMD)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:48:57+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 6735000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 7709000000.0,
+          "CapEx": 974000000.0
+        },
+        "input_labels": {
+          "OCF": "$7.71B",
+          "CapEx": "$974.0M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 23.308614977824266,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 873000865379.43,
+          "Revenue_TTM": 37454000000.0
+        },
+        "input_labels": {
+          "EV": "$873.00B",
+          "Revenue_TTM": "$37.45B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 131.0025308192422,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 873000865379.43,
+          "EBITDA": 6664000000.0
+        },
+        "input_labels": {
+          "EV": "$873.00B",
+          "EBITDA": "$6.66B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 129.62150933621828,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 873000865379.43,
+          "FCF": 6735000000.0
+        },
+        "input_labels": {
+          "EV": "$873.00B",
+          "FCF": "$6.74B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 174.93229494498505,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 876235865379.43,
+          "NetIncome_TTM": 5009000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$876.24B",
+          "NetIncome_TTM": "$5.01B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 41.009653909260884,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 537.37,
+          "EPS_Forward": 13.1035
+        },
+        "input_labels": {
+          "Price": "537.37",
+          "EPS_Forward": "$13.10"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 1.2927,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 1.2927
+        },
+        "input_labels": {
+          "YahooPEG": "1.29"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 23.394987594901213,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 876235865379.43,
+          "Revenue_TTM": 37454000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$876.24B",
+          "Revenue_TTM": "$37.45B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 130.10183598803712,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 876235865379.43,
+          "FCF": 6735000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$876.24B",
+          "FCF": "$6.74B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 50.28034388850323,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 18832000000.0,
+          "Revenue_TTM": 37454000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$18.83B",
+          "Revenue_TTM": "$37.45B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 17.792492123671703,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 6664000000.0,
+          "Revenue_TTM": 37454000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$6.66B",
+          "Revenue_TTM": "$37.45B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 17.982057991135793,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 6735000000.0,
+          "Revenue_TTM": 37454000000.0
+        },
+        "input_labels": {
+          "FCF": "$6.74B",
+          "Revenue_TTM": "$37.45B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 34.33779329067288,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 34639000000.0,
+          "Revenue_PriorYear": 25785000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$34.64B",
+          "Revenue_PriorYear": "$25.79B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": -3235000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 2350000000.0,
+          "TotalCash": 5585000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$2.35B",
+          "TotalCash": "$5.58B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": null,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": -3235000000.0,
+          "EBITDA": 6664000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$-3.23B",
+          "EBITDA": "$6.66B"
+        },
+        "na_reason": "Net cash position ($-3.23B) — Net Debt/EBITDA not meaningful; company has more cash than debt"
+      },
+      "rule_of_40": {
+        "value": 52.31985128180867,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 34.33779329067288,
+          "FCFMarginPct": 17.982057991135793
+        },
+        "input_labels": {
+          "RevGrowthPct": "34.3%",
+          "FCFMarginPct": "18.0%"
+        },
+        "na_reason": null
+      }
+    },
+    "QCOM": {
+      "ticker": "QCOM",
+      "company_name": "QUALCOMM Incorporated",
+      "focus": "Mobile SoCs & wireless licensing",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000804328",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 238319940000.0,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (QCOM)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (QCOM)) = 226.11 × 1054.00M = 238.320B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 247656940000.0,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 238.32B + 14.77B − 5.43B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 44486000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-09-28)=44,284,000,000+YTD(2026-03-29)=22,851,000,000-PriorYTD(2025-03-30)=22,649,000,000,concept=Revenues",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 38962000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000804328-25-000085,concept=Revenues",
+        "period_label": "FY prior (2024-09-29)",
+        "period_end": "2024-09-29",
+        "fetched_at": "2026-06-20T18:49:16+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 24378000000.0,
+        "source": "computed",
+        "source_detail": "computed:Revenue(44486M)−Cost(20108M)=24378M [GrossProfit not tagged]",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:16+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 12958000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(11356M)+D&A(1602M)=12958M",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 14012000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-09-28)",
+        "period_end": "2025-09-28",
+        "fetched_at": "2026-06-20T18:49:11+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:12+00:00",
+        "na_reason": "All sources failed for capex. edgar: All EDGAR concepts failed for capex: PaymentsToAcquirePropertyPlantAndEquipment: HTTP error or not found | CapitalExpendituresIncurredButNotYetPaid: HTTP error or not found | PaymentsForCapitalImprovements: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)"
+      },
+      "net_income_ttm": {
+        "value": 9924000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-09-28)=5,541,000,000+YTD(2026-03-29)=10,375,000,000-PriorYTD(2025-03-30)=5,992,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:10+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 5435000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000804328-26-000061,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-03-29",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:13+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 14772000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000804328-26-000061,concept=LongTermDebt",
+        "period_label": "As of 2026-03-29",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:13+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 10.66716,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (QCOM) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 173.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (QCOM) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 1054000000.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (QCOM)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 226.11,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (QCOM)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:07+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 14012000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 14012000000.0,
+          "CapEx": null
+        },
+        "input_labels": {
+          "OCF": "$14.01B",
+          "CapEx": "N/A"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 5.567075934001708,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 247656940000.0,
+          "Revenue_TTM": 44486000000.0
+        },
+        "input_labels": {
+          "EV": "$247.66B",
+          "Revenue_TTM": "$44.49B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 19.112281216237072,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 247656940000.0,
+          "EBITDA": 12958000000.0
+        },
+        "input_labels": {
+          "EV": "$247.66B",
+          "EBITDA": "$12.96B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 17.67463174421924,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 247656940000.0,
+          "FCF": 14012000000.0
+        },
+        "input_labels": {
+          "EV": "$247.66B",
+          "FCF": "$14.01B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 24.014504232164448,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 238319940000.0,
+          "NetIncome_TTM": 9924000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$238.32B",
+          "NetIncome_TTM": "$9.92B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 21.196832146513223,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 226.11,
+          "EPS_Forward": 10.66716
+        },
+        "input_labels": {
+          "Price": "226.11",
+          "EPS_Forward": "$10.67"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 0.9578,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 0.9578
+        },
+        "input_labels": {
+          "YahooPEG": "0.96"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 5.357189677651396,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 238319940000.0,
+          "Revenue_TTM": 44486000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$238.32B",
+          "Revenue_TTM": "$44.49B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 17.008274336283186,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 238319940000.0,
+          "FCF": 14012000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$238.32B",
+          "FCF": "$14.01B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 54.79926268938542,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 24378000000.0,
+          "Revenue_TTM": 44486000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$24.38B",
+          "Revenue_TTM": "$44.49B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 29.128265072157532,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 12958000000.0,
+          "Revenue_TTM": 44486000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$12.96B",
+          "Revenue_TTM": "$44.49B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 31.497549790945467,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 14012000000.0,
+          "Revenue_TTM": 44486000000.0
+        },
+        "input_labels": {
+          "FCF": "$14.01B",
+          "Revenue_TTM": "$44.49B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 13.65946306657769,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 44284000000.0,
+          "Revenue_PriorYear": 38962000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$44.28B",
+          "Revenue_PriorYear": "$38.96B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 9337000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 14772000000.0,
+          "TotalCash": 5435000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$14.77B",
+          "TotalCash": "$5.43B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": 0.7205587281987961,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 9337000000.0,
+          "EBITDA": 12958000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$9.34B",
+          "EBITDA": "$12.96B"
+        },
+        "na_reason": null
+      },
+      "rule_of_40": {
+        "value": 45.157012857523156,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 13.65946306657769,
+          "FCFMarginPct": 31.497549790945467
+        },
+        "input_labels": {
+          "RevGrowthPct": "13.7%",
+          "FCFMarginPct": "31.5%"
+        },
+        "na_reason": null
+      }
+    },
+    "MU": {
+      "ticker": "MU",
+      "company_name": "Micron Technology",
+      "focus": "DRAM & NAND memory",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000723125",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 1278839136493.49,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (MU)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MU)) = 1133.99 × 1127.73M = 1278.839B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 1273775136493.49,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 1278.84B + 8.84B − 13.91B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 58119000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-08-28)=37,378,000,000+YTD(2026-02-26)=37,503,000,000-PriorYTD(2025-02-27)=16,762,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-02-26)",
+        "period_end": "2026-02-26",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 25111000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000723125-25-000028,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-08-29)",
+        "period_end": "2024-08-29",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 33963000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-08-28)=14,873,000,000+YTD(2026-02-26)=25,401,000,000-PriorYTD(2025-02-27)=6,311,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-02-26)",
+        "period_end": "2026-02-26",
+        "fetched_at": "2026-06-20T18:49:10+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 36446000000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(28094M)+D&A(8352M)=36446M",
+        "period_label": "TTM via YTD recon (2026-02-26)",
+        "period_end": "2026-02-26",
+        "fetched_at": "2026-06-20T18:49:11+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 17525000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-08-28)",
+        "period_end": "2025-08-28",
+        "fetched_at": "2026-06-20T18:49:13+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 15857000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2025-08-28)",
+        "period_end": "2025-08-28",
+        "fetched_at": "2026-06-20T18:49:13+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 24111000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-08-28)=8,539,000,000+YTD(2026-02-26)=19,025,000,000-PriorYTD(2025-02-27)=3,453,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-02-26)",
+        "period_end": "2026-02-26",
+        "fetched_at": "2026-06-20T18:49:12+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 13908000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000723125-26-000006,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-02-26",
+        "period_end": "2026-02-26",
+        "fetched_at": "2026-06-20T18:49:14+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 8844000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000723125-25-000046,concept=LongTermDebt",
+        "period_label": "As of 2025-11-27",
+        "period_end": "2025-11-27",
+        "fetched_at": "2026-06-20T18:49:14+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 117.9539,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (MU) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 756.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (MU) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 1127734051.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (MU)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 1133.99,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (MU)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 1668000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 17525000000.0,
+          "CapEx": 15857000000.0
+        },
+        "input_labels": {
+          "OCF": "$17.52B",
+          "CapEx": "$15.86B"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 21.916673316703488,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 1273775136493.49,
+          "Revenue_TTM": 58119000000.0
+        },
+        "input_labels": {
+          "EV": "$1273.78B",
+          "Revenue_TTM": "$58.12B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 34.94965528435192,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 1273775136493.49,
+          "EBITDA": 36446000000.0
+        },
+        "input_labels": {
+          "EV": "$1273.78B",
+          "EBITDA": "$36.45B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 763.6541585692386,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 1273775136493.49,
+          "FCF": 1668000000.0
+        },
+        "input_labels": {
+          "EV": "$1273.78B",
+          "FCF": "$1.67B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 53.03965561335034,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 1278839136493.49,
+          "NetIncome_TTM": 24111000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1278.84B",
+          "NetIncome_TTM": "$24.11B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 9.613840661478763,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 1133.99,
+          "EPS_Forward": 117.9539
+        },
+        "input_labels": {
+          "Price": "$1.1K",
+          "EPS_Forward": "$117.95"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 0.3569,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 0.3569
+        },
+        "input_labels": {
+          "YahooPEG": "0.36"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 22.003804891575733,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 1278839136493.49,
+          "Revenue_TTM": 58119000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1278.84B",
+          "Revenue_TTM": "$58.12B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 766.6901297922602,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 1278839136493.49,
+          "FCF": 1668000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$1278.84B",
+          "FCF": "$1.67B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 58.436999948381775,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 33963000000.0,
+          "Revenue_TTM": 58119000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$33.96B",
+          "Revenue_TTM": "$58.12B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 62.70926891378035,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 36446000000.0,
+          "Revenue_TTM": 58119000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$36.45B",
+          "Revenue_TTM": "$58.12B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 2.869973674701905,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 1668000000.0,
+          "Revenue_TTM": 58119000000.0
+        },
+        "input_labels": {
+          "FCF": "$1.67B",
+          "Revenue_TTM": "$58.12B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 48.85110111106686,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 37378000000.0,
+          "Revenue_PriorYear": 25111000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$37.38B",
+          "Revenue_PriorYear": "$25.11B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": -5064000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 8844000000.0,
+          "TotalCash": 13908000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$8.84B",
+          "TotalCash": "$13.91B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": null,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": -5064000000.0,
+          "EBITDA": 36446000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$-5.06B",
+          "EBITDA": "$36.45B"
+        },
+        "na_reason": "Net cash position ($-5.06B) — Net Debt/EBITDA not meaningful; company has more cash than debt"
+      },
+      "rule_of_40": {
+        "value": 51.721074785768764,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 48.85110111106686,
+          "FCFMarginPct": 2.869973674701905
+        },
+        "input_labels": {
+          "RevGrowthPct": "48.9%",
+          "FCFMarginPct": "2.9%"
+        },
+        "na_reason": null
+      }
+    },
+    "TXN": {
+      "ticker": "TXN",
+      "company_name": "Texas Instruments",
+      "focus": "Analog & embedded processing",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000097476",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 293832558502.26,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (TXN)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (TXN)) = 322.86 × 910.09M = 293.833B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 304333558502.26,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 293.83B + 14.05B − 3.55B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 18438000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=17,682,000,000+YTD(2026-03-31)=4,825,000,000-PriorYTD(2025-03-31)=4,069,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 15641000000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000097476-26-000059,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-12-31)",
+        "period_end": "2024-12-31",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 10569000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=10,083,000,000+YTD(2026-03-31)=2,799,000,000-PriorYTD(2025-03-31)=2,313,000,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 6507000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=6,023,000,000+YTD(2026-03-31)=1,808,000,000-PriorYTD(2025-03-31)=1,324,000,000,concept=OperatingIncomeLoss [D&A unavailable; EBITDA≈OpIncome]",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:11+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 7824000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=7,153,000,000+YTD(2026-03-31)=1,520,000,000-PriorYTD(2025-03-31)=849,000,000,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:14+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 4103000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=4,550,000,000+YTD(2026-03-31)=676,000,000-PriorYTD(2025-03-31)=1,123,000,000,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:14+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 5367000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-12-31)=5,001,000,000+YTD(2026-03-31)=1,545,000,000-PriorYTD(2025-03-31)=1,179,000,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-03-31)",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:13+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 3549000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000097476-26-000101,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-03-31",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:15+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 14050000000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000097476-26-000101,concept=LongTermDebt",
+        "period_label": "As of 2026-03-31",
+        "period_end": "2026-03-31",
+        "fetched_at": "2026-06-20T18:49:15+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 9.4206,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (TXN) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 31.3,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (TXN) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 910092791.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (TXN)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 322.86,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (TXN)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 3721000000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 7824000000.0,
+          "CapEx": 4103000000.0
+        },
+        "input_labels": {
+          "OCF": "$7.82B",
+          "CapEx": "$4.10B"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 16.505779287463934,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 304333558502.26,
+          "Revenue_TTM": 18438000000.0
+        },
+        "input_labels": {
+          "EV": "$304.33B",
+          "Revenue_TTM": "$18.44B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 46.770179576188724,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 304333558502.26,
+          "EBITDA": 6507000000.0
+        },
+        "input_labels": {
+          "EV": "$304.33B",
+          "EBITDA": "$6.51B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 81.78811032041386,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 304333558502.26,
+          "FCF": 3721000000.0
+        },
+        "input_labels": {
+          "EV": "$304.33B",
+          "FCF": "$3.72B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 54.748007919183905,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 293832558502.26,
+          "NetIncome_TTM": 5367000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$293.83B",
+          "NetIncome_TTM": "$5.37B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 34.27170243933507,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 322.86,
+          "EPS_Forward": 9.4206
+        },
+        "input_labels": {
+          "Price": "322.86",
+          "EPS_Forward": "$9.42"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 1.5407,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 1.5407
+        },
+        "input_labels": {
+          "YahooPEG": "1.54"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 15.936248969642044,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 293832558502.26,
+          "Revenue_TTM": 18438000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$293.83B",
+          "Revenue_TTM": "$18.44B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 78.96601948461704,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 293832558502.26,
+          "FCF": 3721000000.0
+        },
+        "input_labels": {
+          "MarketCap": "$293.83B",
+          "FCF": "$3.72B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 57.32183534005858,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 10569000000.0,
+          "Revenue_TTM": 18438000000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$10.57B",
+          "Revenue_TTM": "$18.44B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 35.29124633908233,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 6507000000.0,
+          "Revenue_TTM": 18438000000.0
+        },
+        "input_labels": {
+          "EBITDA": "$6.51B",
+          "Revenue_TTM": "$18.44B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 20.181147629894785,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 3721000000.0,
+          "Revenue_TTM": 18438000000.0
+        },
+        "input_labels": {
+          "FCF": "$3.72B",
+          "Revenue_TTM": "$18.44B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 13.049037785307846,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 17682000000.0,
+          "Revenue_PriorYear": 15641000000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$17.68B",
+          "Revenue_PriorYear": "$15.64B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 10501000000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 14050000000.0,
+          "TotalCash": 3549000000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$14.05B",
+          "TotalCash": "$3.55B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": 1.6138005225142154,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 10501000000.0,
+          "EBITDA": 6507000000.0
+        },
+        "input_labels": {
+          "NetDebt": "$10.50B",
+          "EBITDA": "$6.51B"
+        },
+        "na_reason": null
+      },
+      "rule_of_40": {
+        "value": 33.23018541520263,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 13.049037785307846,
+          "FCFMarginPct": 20.181147629894785
+        },
+        "input_labels": {
+          "RevGrowthPct": "13.0%",
+          "FCFMarginPct": "20.2%"
+        },
+        "na_reason": null
+      }
+    },
+    "ADI": {
+      "ticker": "ADI",
+      "company_name": "Analog Devices, Inc.",
+      "focus": "High-performance analog & mixed-signal",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000006281",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 211619835398.4,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (ADI)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (ADI)) = 434.46 × 487.09M = 211.620B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 216418343398.4,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 211.62B + 7.24B − 2.44B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 12740193000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-01)=11,019,707,000+YTD(2026-05-02)=6,783,728,000-PriorYTD(2025-05-03)=5,063,242,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:10+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 9427157000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000006281-25-000153,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-11-02)",
+        "period_end": "2024-11-02",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 8216338000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-01)=6,773,478,000+YTD(2026-05-02)=4,484,773,000-PriorYTD(2025-05-03)=3,041,913,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:10+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 5731988000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(4140M)+D&A(1592M)=5732M",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:12+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 4812202000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-11-01)",
+        "period_end": "2025-11-01",
+        "fetched_at": "2026-06-20T18:49:15+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 533552000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2025-11-01)",
+        "period_end": "2025-11-01",
+        "fetched_at": "2026-06-20T18:49:15+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 3313432000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-11-01)=2,267,342,000+YTD(2026-05-02)=2,007,176,000-PriorYTD(2025-05-03)=961,086,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:14+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 2436916000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000006281-26-000052,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-05-02",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:16+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 7235424000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000006281-26-000052,concept=LongTermDebtNoncurrent",
+        "period_label": "As of 2026-05-02",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 14.7813,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (ADI) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 110.5,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (ADI) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:09+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 487087040.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (ADI)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 434.46,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (ADI)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:08+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 4278650000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 4812202000.0,
+          "CapEx": 533552000.0
+        },
+        "input_labels": {
+          "OCF": "$4.81B",
+          "CapEx": "$533.6M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 16.987053759578053,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 216418343398.4,
+          "Revenue_TTM": 12740193000.0
+        },
+        "input_labels": {
+          "EV": "$216.42B",
+          "Revenue_TTM": "$12.74B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 37.75624502326244,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 216418343398.4,
+          "EBITDA": 5731988000.0
+        },
+        "input_labels": {
+          "EV": "$216.42B",
+          "EBITDA": "$5.73B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 50.580987787830274,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 216418343398.4,
+          "FCF": 4278650000.0
+        },
+        "input_labels": {
+          "EV": "$216.42B",
+          "FCF": "$4.28B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 63.867263730898955,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 211619835398.4,
+          "NetIncome_TTM": 3313432000.0
+        },
+        "input_labels": {
+          "MarketCap": "$211.62B",
+          "NetIncome_TTM": "$3.31B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 29.392543281037526,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 434.46,
+          "EPS_Forward": 14.7813
+        },
+        "input_labels": {
+          "Price": "434.46",
+          "EPS_Forward": "$14.78"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 0.9508,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 0.9508
+        },
+        "input_labels": {
+          "YahooPEG": "0.95"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 16.61041048580661,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 211619835398.4,
+          "Revenue_TTM": 12740193000.0
+        },
+        "input_labels": {
+          "MarketCap": "$211.62B",
+          "Revenue_TTM": "$12.74B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 49.459487314550145,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 211619835398.4,
+          "FCF": 4278650000.0
+        },
+        "input_labels": {
+          "MarketCap": "$211.62B",
+          "FCF": "$4.28B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 64.49147198947458,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 8216338000.0,
+          "Revenue_TTM": 12740193000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$8.22B",
+          "Revenue_TTM": "$12.74B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 44.991374934429956,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 5731988000.0,
+          "Revenue_TTM": 12740193000.0
+        },
+        "input_labels": {
+          "EBITDA": "$5.73B",
+          "Revenue_TTM": "$12.74B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 33.583871139157786,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 4278650000.0,
+          "Revenue_TTM": 12740193000.0
+        },
+        "input_labels": {
+          "FCF": "$4.28B",
+          "Revenue_TTM": "$12.74B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 16.89321605654812,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 11019707000.0,
+          "Revenue_PriorYear": 9427157000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$11.02B",
+          "Revenue_PriorYear": "$9.43B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 4798508000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 7235424000.0,
+          "TotalCash": 2436916000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$7.24B",
+          "TotalCash": "$2.44B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": 0.837145506934069,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 4798508000.0,
+          "EBITDA": 5731988000.0
+        },
+        "input_labels": {
+          "NetDebt": "$4.80B",
+          "EBITDA": "$5.73B"
+        },
+        "na_reason": null
+      },
+      "rule_of_40": {
+        "value": 50.477087195705906,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 16.89321605654812,
+          "FCFMarginPct": 33.583871139157786
+        },
+        "input_labels": {
+          "RevGrowthPct": "16.9%",
+          "FCFMarginPct": "33.6%"
+        },
+        "na_reason": null
+      }
+    },
+    "MRVL": {
+      "ticker": "MRVL",
+      "company_name": "Marvell Technology, Inc.",
+      "focus": "Data-center & networking silicon",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0001835632",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 271929304470.34,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (MRVL)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MRVL)) = 310.58 × 875.55M = 271.929B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 273047004470.33997,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 271.93B + 4.96B − 3.84B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 8717100000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-31)=8,194,600,000+YTD(2026-05-02)=2,417,800,000-PriorYTD(2025-05-03)=1,895,300,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 5767300000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0001835632-26-000011,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2025-02-01)",
+        "period_end": "2025-02-01",
+        "fetched_at": "2026-06-20T18:49:23+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 4489100000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-31)=4,180,700,000+YTD(2026-05-02)=1,260,800,000-PriorYTD(2025-05-03)=952,400,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 1391700000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-31)=1,322,900,000+YTD(2026-05-02)=339,400,000-PriorYTD(2025-05-03)=270,600,000,concept=OperatingIncomeLoss [D&A unavailable; EBITDA≈OpIncome]",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:19+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 1750500000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2026-01-31)",
+        "period_end": "2026-01-31",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 354100000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment",
+        "period_label": "FY (2026-01-31)",
+        "period_end": "2026-01-31",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 2526700000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2026-01-31)=2,670,100,000+YTD(2026-05-02)=34,500,000-PriorYTD(2025-05-03)=177,900,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-05-02)",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 3843600000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001835632-26-000019,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-05-02",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 4961300000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0001835632-26-000019,concept=LongTermDebt",
+        "period_label": "As of 2026-05-02",
+        "period_end": "2026-05-02",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 6.17263,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (MRVL) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": -80.4,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (MRVL) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 875553173.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (MRVL)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 310.58,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (MRVL)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:17+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 1396400000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 1750500000.0,
+          "CapEx": 354100000.0
+        },
+        "input_labels": {
+          "OCF": "$1.75B",
+          "CapEx": "$354.1M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 31.323146972082455,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 273047004470.33997,
+          "Revenue_TTM": 8717100000.0
+        },
+        "input_labels": {
+          "EV": "$273.05B",
+          "Revenue_TTM": "$8.72B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 196.19674101483076,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 273047004470.33997,
+          "EBITDA": 1391700000.0
+        },
+        "input_labels": {
+          "EV": "$273.05B",
+          "EBITDA": "$1.39B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 195.5363824622887,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 273047004470.33997,
+          "FCF": 1396400000.0
+        },
+        "input_labels": {
+          "EV": "$273.05B",
+          "FCF": "$1.40B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 107.62231545903352,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 271929304470.34,
+          "NetIncome_TTM": 2526700000.0
+        },
+        "input_labels": {
+          "MarketCap": "$271.93B",
+          "NetIncome_TTM": "$2.53B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 50.3156677137622,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 310.58,
+          "EPS_Forward": 6.17263
+        },
+        "input_labels": {
+          "Price": "310.58",
+          "EPS_Forward": "$6.17"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 1.7552,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 1.7552
+        },
+        "input_labels": {
+          "YahooPEG": "1.76"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 31.19492772485574,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 271929304470.34,
+          "Revenue_TTM": 8717100000.0
+        },
+        "input_labels": {
+          "MarketCap": "$271.93B",
+          "Revenue_TTM": "$8.72B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 194.73596710852192,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 271929304470.34,
+          "FCF": 1396400000.0
+        },
+        "input_labels": {
+          "MarketCap": "$271.93B",
+          "FCF": "$1.40B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 51.49763109290934,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 4489100000.0,
+          "Revenue_TTM": 8717100000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$4.49B",
+          "Revenue_TTM": "$8.72B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 15.965171903500016,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 1391700000.0,
+          "Revenue_TTM": 8717100000.0
+        },
+        "input_labels": {
+          "EBITDA": "$1.39B",
+          "Revenue_TTM": "$8.72B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 16.019088917185762,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 1396400000.0,
+          "Revenue_TTM": 8717100000.0
+        },
+        "input_labels": {
+          "FCF": "$1.40B",
+          "Revenue_TTM": "$8.72B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 42.08728521145076,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 8194600000.0,
+          "Revenue_PriorYear": 5767300000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$8.19B",
+          "Revenue_PriorYear": "$5.77B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": 1117700000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 4961300000.0,
+          "TotalCash": 3843600000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$4.96B",
+          "TotalCash": "$3.84B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": 0.8031184881799238,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": 1117700000.0,
+          "EBITDA": 1391700000.0
+        },
+        "input_labels": {
+          "NetDebt": "$1.12B",
+          "EBITDA": "$1.39B"
+        },
+        "na_reason": null
+      },
+      "rule_of_40": {
+        "value": 58.106374128636524,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 42.08728521145076,
+          "FCFMarginPct": 16.019088917185762
+        },
+        "input_labels": {
+          "RevGrowthPct": "42.1%",
+          "FCFMarginPct": "16.0%"
+        },
+        "na_reason": null
+      }
+    },
+    "LRCX": {
+      "ticker": "LRCX",
+      "company_name": "Lam Research Corporation",
+      "focus": "Wafer-fabrication equipment",
+      "exchange": "NASDAQ",
+      "currency": "USD",
+      "fx_rate_to_usd": 1.0,
+      "fx_rate_source": "identity",
+      "flags": [],
+      "cik": "0000707549",
+      "sector": "semiconductors",
+      "run_id": "semiconductors_2026-06-20",
+      "market_cap": {
+        "value": 486522141840.0,
+        "source": "computed",
+        "source_detail": "computed:price(yfinance:ticker.info.currentPrice (LRCX)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (LRCX)) = 389.04 × 1250.57M = 486.522B",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "enterprise_value": {
+        "value": 486240569840.0,
+        "source": "computed",
+        "source_detail": "Computed: MarketCap + TotalDebt − TotalCash = 486.52B + 4.47B − 4.75B",
+        "period_label": "live",
+        "period_end": null,
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "revenue_ttm": {
+        "value": 21681845000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-06-29)=18,435,591,000+YTD(2026-03-29)=16,510,452,000-PriorYTD(2025-03-30)=13,264,198,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:19+00:00",
+        "na_reason": null
+      },
+      "revenue_prior_year": {
+        "value": 14905386000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar_10k:accession=0000707549-25-000075,concept=RevenueFromContractWithCustomerExcludingAssessedTax",
+        "period_label": "FY prior (2024-06-30)",
+        "period_end": "2024-06-30",
+        "fetched_at": "2026-06-20T18:49:23+00:00",
+        "na_reason": null
+      },
+      "gross_profit": {
+        "value": 10836277000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-06-29)=8,979,059,000+YTD(2026-03-29)=8,246,568,000-PriorYTD(2025-03-30)=6,389,350,000,concept=GrossProfit",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:19+00:00",
+        "na_reason": null
+      },
+      "ebitda": {
+        "value": 7813712000.0,
+        "source": "edgar_10q",
+        "source_detail": "computed:OpIncome(7427M)+D&A(386M)=7814M",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:20+00:00",
+        "na_reason": null
+      },
+      "operating_cash_flow": {
+        "value": 6173264000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities",
+        "period_label": "FY (2025-06-29)",
+        "period_end": "2025-06-29",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "capex": {
+        "value": 80799000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10k:annual_fallback,concept=CapitalExpendituresIncurredButNotYetPaid",
+        "period_label": "FY (2025-06-29)",
+        "period_end": "2025-06-29",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "net_income_ttm": {
+        "value": 6708202000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar_10q:ytd_reconstruction,FY(2025-06-29)=5,358,217,000+YTD(2026-03-29)=4,988,114,000-PriorYTD(2025-03-30)=3,638,129,000,concept=NetIncomeLoss",
+        "period_label": "TTM via YTD recon (2026-03-29)",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:20+00:00",
+        "na_reason": null
+      },
+      "total_cash": {
+        "value": 4750936000.0,
+        "source": "edgar_10q",
+        "source_detail": "edgar:10-Q,accession=0000707549-26-000022,concept=CashAndCashEquivalentsAtCarryingValue",
+        "period_label": "As of 2026-03-29",
+        "period_end": "2026-03-29",
+        "fetched_at": "2026-06-20T18:49:21+00:00",
+        "na_reason": null
+      },
+      "total_debt": {
+        "value": 4469364000.0,
+        "source": "edgar_10k",
+        "source_detail": "edgar:10-K,accession=0000707549-25-000075,concept=LongTermDebt",
+        "period_label": "As of 2025-06-29",
+        "period_end": "2025-06-29",
+        "fetched_at": "2026-06-20T18:49:22+00:00",
+        "na_reason": null
+      },
+      "eps_ttm": {
+        "value": null,
+        "source": null,
+        "source_detail": null,
+        "period_label": null,
+        "period_end": null,
+        "fetched_at": null,
+        "na_reason": null
+      },
+      "eps_forward": {
+        "value": 8.008,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.forwardEps (LRCX) [analyst consensus]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "eps_growth_estimate": {
+        "value": 40.8,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.earningsGrowth (LRCX) [analyst estimate]",
+        "period_label": "NTM estimate",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "shares_outstanding": {
+        "value": 1250571000.0,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.sharesOutstanding (LRCX)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "current_price": {
+        "value": 389.04,
+        "source": "yfinance",
+        "source_detail": "yfinance:ticker.info.currentPrice (LRCX)",
+        "period_label": "live",
+        "period_end": "",
+        "fetched_at": "2026-06-20T18:49:18+00:00",
+        "na_reason": null
+      },
+      "fcf": {
+        "value": 6092465000.0,
+        "formula": "OCF - CapEx",
+        "inputs": {
+          "OCF": 6173264000.0,
+          "CapEx": 80799000.0
+        },
+        "input_labels": {
+          "OCF": "$6.17B",
+          "CapEx": "$80.8M"
+        },
+        "na_reason": null
+      },
+      "ev_revenue": {
+        "value": 22.42616206508256,
+        "formula": "EV / Revenue_TTM",
+        "inputs": {
+          "EV": 486240569840.0,
+          "Revenue_TTM": 21681845000.0
+        },
+        "input_labels": {
+          "EV": "$486.24B",
+          "Revenue_TTM": "$21.68B"
+        },
+        "na_reason": null
+      },
+      "ev_ebitda": {
+        "value": 62.22913895981833,
+        "formula": "EV / EBITDA",
+        "inputs": {
+          "EV": 486240569840.0,
+          "EBITDA": 7813712000.0
+        },
+        "input_labels": {
+          "EV": "$486.24B",
+          "EBITDA": "$7.81B"
+        },
+        "na_reason": null
+      },
+      "ev_fcf": {
+        "value": 79.81015399185715,
+        "formula": "EV / FCF",
+        "inputs": {
+          "EV": 486240569840.0,
+          "FCF": 6092465000.0
+        },
+        "input_labels": {
+          "EV": "$486.24B",
+          "FCF": "$6.09B"
+        },
+        "na_reason": null
+      },
+      "pe_ttm": {
+        "value": 72.52645967429126,
+        "formula": "MarketCap / NetIncome_TTM",
+        "inputs": {
+          "MarketCap": 486522141840.0,
+          "NetIncome_TTM": 6708202000.0
+        },
+        "input_labels": {
+          "MarketCap": "$486.52B",
+          "NetIncome_TTM": "$6.71B"
+        },
+        "na_reason": null
+      },
+      "pe_forward": {
+        "value": 48.58141858141859,
+        "formula": "Price / EPS_Forward",
+        "inputs": {
+          "Price": 389.04,
+          "EPS_Forward": 8.008
+        },
+        "input_labels": {
+          "Price": "389.04",
+          "EPS_Forward": "$8.01"
+        },
+        "na_reason": null
+      },
+      "peg_ratio": {
+        "value": 2.2581,
+        "formula": "Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)",
+        "inputs": {
+          "YahooPEG": 2.2581
+        },
+        "input_labels": {
+          "YahooPEG": "2.26"
+        },
+        "na_reason": null
+      },
+      "price_sales": {
+        "value": 22.4391485982858,
+        "formula": "MarketCap / Revenue_TTM",
+        "inputs": {
+          "MarketCap": 486522141840.0,
+          "Revenue_TTM": 21681845000.0
+        },
+        "input_labels": {
+          "MarketCap": "$486.52B",
+          "Revenue_TTM": "$21.68B"
+        },
+        "na_reason": null
+      },
+      "price_fcf": {
+        "value": 79.8563704247788,
+        "formula": "MarketCap / FCF",
+        "inputs": {
+          "MarketCap": 486522141840.0,
+          "FCF": 6092465000.0
+        },
+        "input_labels": {
+          "MarketCap": "$486.52B",
+          "FCF": "$6.09B"
+        },
+        "na_reason": null
+      },
+      "gross_margin_pct": {
+        "value": 49.97857424033794,
+        "formula": "GrossProfit / Revenue_TTM",
+        "inputs": {
+          "GrossProfit": 10836277000.0,
+          "Revenue_TTM": 21681845000.0
+        },
+        "input_labels": {
+          "GrossProfit": "$10.84B",
+          "Revenue_TTM": "$21.68B"
+        },
+        "na_reason": null
+      },
+      "ebitda_margin_pct": {
+        "value": 36.03804012066316,
+        "formula": "EBITDA / Revenue_TTM",
+        "inputs": {
+          "EBITDA": 7813712000.0,
+          "Revenue_TTM": 21681845000.0
+        },
+        "input_labels": {
+          "EBITDA": "$7.81B",
+          "Revenue_TTM": "$21.68B"
+        },
+        "na_reason": null
+      },
+      "fcf_margin_pct": {
+        "value": 28.099384531159593,
+        "formula": "FCF / Revenue_TTM",
+        "inputs": {
+          "FCF": 6092465000.0,
+          "Revenue_TTM": 21681845000.0
+        },
+        "input_labels": {
+          "FCF": "$6.09B",
+          "Revenue_TTM": "$21.68B"
+        },
+        "na_reason": null
+      },
+      "revenue_growth_yoy_pct": {
+        "value": 23.684089764599186,
+        "formula": "(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear",
+        "inputs": {
+          "Revenue_TTM": 18435591000.0,
+          "Revenue_PriorYear": 14905386000.0
+        },
+        "input_labels": {
+          "Revenue_TTM": "$18.44B",
+          "Revenue_PriorYear": "$14.91B"
+        },
+        "na_reason": null
+      },
+      "net_debt": {
+        "value": -281572000.0,
+        "formula": "TotalDebt - TotalCash",
+        "inputs": {
+          "TotalDebt": 4469364000.0,
+          "TotalCash": 4750936000.0
+        },
+        "input_labels": {
+          "TotalDebt": "$4.47B",
+          "TotalCash": "$4.75B"
+        },
+        "na_reason": null
+      },
+      "net_debt_ebitda": {
+        "value": null,
+        "formula": "NetDebt / EBITDA",
+        "inputs": {
+          "NetDebt": -281572000.0,
+          "EBITDA": 7813712000.0
+        },
+        "input_labels": {
+          "NetDebt": "$-281.6M",
+          "EBITDA": "$7.81B"
+        },
+        "na_reason": "Net cash position ($-281.6M) — Net Debt/EBITDA not meaningful; company has more cash than debt"
+      },
+      "rule_of_40": {
+        "value": 51.78347429575878,
+        "formula": "RevGrowthPct + FCFMarginPct",
+        "inputs": {
+          "RevGrowthPct": 23.684089764599186,
+          "FCFMarginPct": 28.099384531159593
+        },
+        "input_labels": {
+          "RevGrowthPct": "23.7%",
+          "FCFMarginPct": "28.1%"
+        },
+        "na_reason": null
+      }
+    }
+  },
+  "pipeline_version": "1.0.0",
+  "methodology_notes": [
+    "INTC: N/A fields — ev_ebitda, ev_fcf, pe_ttm"
+  ]
+}

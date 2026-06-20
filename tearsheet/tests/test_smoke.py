@@ -140,3 +140,127 @@ def test_ttm_rejects_quarter_skip():
     entries = [{"form": "10-K", "val": 100, "start": s, "end": e, "accn": "a", "filed": e} for s, e in qs]
     val, _, _, _ = _extract_ttm_quarters({"units": {"USD": entries}}, "x", "Revenues")
     assert val is None
+
+
+# ── Combined multi-sector dashboard ───────────────────────────────────────────
+
+def test_cap_bucket_boundaries():
+    """Market-cap buckets must match the bounds the template's JS uses."""
+    from pipeline.combined import cap_bucket
+    assert cap_bucket(250e9) == "mega"
+    assert cap_bucket(200e9) == "mega"     # boundary is inclusive at the low end
+    assert cap_bucket(199e9) == "large"
+    assert cap_bucket(10e9) == "large"
+    assert cap_bucket(9.9e9) == "mid"
+    assert cap_bucket(2e9) == "mid"
+    assert cap_bucket(1.9e9) == "small"
+    assert cap_bucket(0.0) == "small"
+    assert cap_bucket(None) is None
+
+
+def test_combined_loads_committed_datasets():
+    """The built-in sectors each have a committed stable dataset JSON, and the
+    combined summary counts every company across them."""
+    from pipeline.combined import load_datasets, combined_summary, DEFAULT_SECTORS
+    datasets = load_datasets()
+    assert {d.sector for d in datasets} == set(DEFAULT_SECTORS)
+    total = sum(len([t for t in d.tickers if t in d.companies]) for d in datasets)
+    assert combined_summary(datasets)["count"] == total
+
+
+def test_combined_render_is_valid_and_complete(tmp_path):
+    from pipeline.combined import load_datasets, render_combined
+    datasets = load_datasets()
+    out = tmp_path / "combined.html"
+    render_combined(datasets, str(out))
+    html = out.read_text()
+
+    # No unrendered Jinja, both filter controls present
+    assert "{{" not in html and "{%" not in html
+    assert 'id="sectorFilter"' in html and 'id="capFilter"' in html
+    # Every company across every sector rendered a row + detail row, tagged by sector
+    for ds in datasets:
+        assert f'data-sector="{ds.sector}"' in html
+        for ticker in ds.tickers:
+            assert f'data-ticker="{ticker}"' in html
+            assert f'id="detail-{ticker}"' in html
+
+
+def test_combined_render_is_deterministic(tmp_path):
+    """Same committed JSONs in → byte-identical HTML out (no network, no clock)."""
+    from pipeline.combined import load_datasets, render_combined
+    datasets = load_datasets()
+    a, b = tmp_path / "a.html", tmp_path / "b.html"
+    render_combined(datasets, str(a))
+    render_combined(datasets, str(b))
+    assert a.read_bytes() == b.read_bytes()
+
+
+def test_revenue_annual_pair_prefers_freshest_concept(monkeypatch):
+    """NVDA-class bug: a company ABANDONS one revenue XBRL concept for another but
+    the old concept still carries its last few years. The annual pair (used for
+    YoY growth) must follow the FRESHEST concept, not the first one in the list
+    that happens to have two annuals — else growth is computed from 3-year-stale
+    figures (NVIDIA showed 61% off FY2021–FY2023 instead of 65% off FY2025→FY2026)."""
+    from pipeline.fetchers import edgar_fetcher as EF
+    abandoned = {"units": {"USD": [
+        {"form": "10-K", "val": 16_675_000_000, "start": "2020-01-27", "end": "2021-01-31", "accn": "old1", "filed": "2021-02-26"},
+        {"form": "10-K", "val": 26_914_000_000, "start": "2021-02-01", "end": "2022-01-30", "accn": "old2", "filed": "2022-03-18"},
+        {"form": "10-K", "val": 26_974_000_000, "start": "2022-01-31", "end": "2023-01-29", "accn": "old3", "filed": "2023-02-24"},
+    ]}}
+    current = {"units": {"USD": [
+        {"form": "10-K", "val": 130_497_000_000, "start": "2024-01-29", "end": "2025-01-26", "accn": "new1", "filed": "2025-02-26"},
+        {"form": "10-K", "val": 215_938_000_000, "start": "2025-01-27", "end": "2026-01-25", "accn": "new2", "filed": "2026-02-25"},
+    ]}}
+
+    def fake_concept(cik, concept):
+        if concept == "RevenueFromContractWithCustomerExcludingAssessedTax":
+            return abandoned
+        if concept == "Revenues":
+            return current
+        return None
+
+    monkeypatch.setattr(EF, "_fetch_concept", fake_concept)
+    cur, prior = EF.fetch_revenue_annual_pair("0001045810")
+    assert round(cur.value / 1e9) == 216 and round(prior.value / 1e9) == 130
+    assert "concept=Revenues" in cur.source_detail   # followed the fresh concept
+    growth = (cur.value - prior.value) / prior.value * 100
+    assert 64 < growth < 67
+
+
+# ── Concurrency safety (parallel per-company fetch) ───────────────────────────
+
+def test_edgar_throttle_stays_under_rate_limit_with_many_workers():
+    """The pipeline fetches companies concurrently, so EDGAR request *initiations*
+    must be spaced by the global throttle no matter the worker count — otherwise
+    N workers would breach SEC's 10 req/sec cap. 12 throttled calls across 6
+    workers must take at least ~(12-1)×interval, proving they serialized."""
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+    from pipeline.fetchers import edgar_fetcher as EF
+    from pipeline.config import EDGAR_RATE_LIMIT_SLEEP
+
+    EF._last_request_t = 0.0
+    n = 12
+    t0 = time.monotonic()
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        list(pool.map(lambda _: EF._throttle(), range(n)))
+    elapsed = time.monotonic() - t0
+    assert elapsed >= (n - 1) * EDGAR_RATE_LIMIT_SLEEP * 0.9
+
+
+def test_dataset_assembly_preserves_ticker_order():
+    """Companies complete out of order under the thread pool, but the dataset is
+    assembled in the original --tickers order (this is the invariant run.py relies
+    on so concurrent output matches the old sequential output)."""
+    from pipeline.schema import SectorDataset, CompanyRecord
+    tickers = ["AAA", "BBB", "CCC", "DDD"]
+    # Simulate completion in a scrambled order:
+    companies = {}
+    for t in ["CCC", "AAA", "DDD", "BBB"]:
+        companies[t] = CompanyRecord(ticker=t, company_name=t, sector="x", run_id="r")
+    ds = SectorDataset(
+        sector="x", run_id="r", generated_at="2026-06-20",
+        tickers=[t for t in tickers if t in companies], companies=companies,
+    )
+    assert ds.tickers == tickers

@@ -110,6 +110,25 @@ h1.title em { font-style: italic; color: var(--accent); }
 .swatch.y { background: var(--y-bg); border: 1px solid var(--y-fg); }
 .swatch.r { background: var(--r-bg); border: 1px solid var(--r-fg); }
 
+/* ── Filters (combined view) ──────────────────────────── */
+.filters { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 4px 2px 16px; }
+.filter-group { display: inline-flex; align-items: center; gap: 8px; }
+.filter-group label { font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-faint); }
+.filter-group select {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--ink); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 8px; padding: 7px 12px; cursor: pointer; transition: border-color .15s;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238a8378' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; padding-right: 30px;
+}
+.filter-group select:hover, .filter-group select:focus { border-color: var(--accent); outline: none; }
+.filters .count-tag { margin-left: auto; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px; color: var(--ink-faint); }
+.filters .count-tag b { color: var(--accent); font-weight: 600; }
+
 /* ── Methodology (collapsible) ────────────────────────── */
 .method { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); margin-bottom: 22px; overflow: hidden; }
 .method summary { cursor: pointer; padding: 13px 18px; font-size: 12px; font-weight: 600;
@@ -171,6 +190,10 @@ html[data-theme="dark"] .ticker { color: var(--accent); }
 .ticker:hover { text-decoration: underline; }
 .ticker .car { color: var(--ink-faint); font-size: 10px; margin-right: 5px; }
 .company { font-weight: 600; color: var(--ink); }
+.sector-chip { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 9px;
+    font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, var(--card)); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--rule));
+    padding: 1px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
 .focus { color: var(--ink-soft); font-size: 11.5px; max-width: 230px; white-space: normal; line-height: 1.35; }
 
 .badge { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 8.5px; font-weight: 700;
@@ -357,15 +380,15 @@ footer.foot a { color: var(--accent); }
 <tbody id="tbody">
 
 
-
 <tr class="data-row"
     data-ticker="NVDA"
+    data-sector="semiconductors"
     data-company="NVIDIA Corporation"
     data-focus="GPUs / accelerated computing & AI"
     data-mktcap="5103122490000.0000"
     data-ev="5098355490000.0000"
     data-rev="253.4910"
-    data-revgrowth="61.4033"
+    data-revgrowth="65.4735"
     data-gm="74.1454"
     data-ebitdam="65.1416"
     data-fcfm="40.1979"
@@ -378,7 +401,7 @@ footer.foot a { color: var(--accent); }
     data-ps="20.1314"
     data-pfcf="50.0807"
     data-netdebt="999"
-    data-r40="101.6012">
+    data-r40="105.6714">
 
   <td class="txt ticker" onclick="toggleDetail('NVDA')" title="Click to expand sources &amp; formulas">
     <span class="car">▸</span>NVDA
@@ -389,7 +412,7 @@ footer.foot a { color: var(--accent); }
   <td title="Market Cap | = 5103.122B | Source: computed:price(yfinance:ticker.info.currentPrice (NVDA)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (NVDA)) = 210.69 × 24221.00M = 5103.122B | Period: live">$5103.1B</td>
   <td title="EV = MarketCap + Debt − Cash | = 5098.355B | Source: Computed: MarketCap + TotalDebt − TotalCash = 5103.12B + 8.47B − 13.24B | Period: live">$5098.4B</td>
   <td title="Revenue TTM | = 253.491B | Source: edgar_10q:ytd_reconstruction,FY(2026-01-25)=215,938,000,000+YTD(2026-04-26)=81,615,000,000-PriorYTD(2025-04-27)=44,062,000,000,concept=Revenues | Period: TTM via YTD recon (2026-04-26)">$253.5B</td>
-  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 61.403 | Inputs: Revenue_TTM=2.69e+10, Revenue_PriorYear=1.67e+10">61.4%</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 65.474 | Inputs: Revenue_TTM=2.16e+11, Revenue_PriorYear=1.3e+11">65.5%</td>
   <td title="GrossProfit / Revenue_TTM | = 74.145 | Inputs: GrossProfit=1.88e+11, Revenue_TTM=2.53e+11">74.1%</td>
   <td title="EBITDA / Revenue_TTM | = 65.142 | Inputs: EBITDA=1.65e+11, Revenue_TTM=2.53e+11">65.1%</td>
   <td title="FCF / Revenue_TTM | = 40.198 | Inputs: FCF=1.02e+11, Revenue_TTM=2.53e+11">40.2%</td>
@@ -405,7 +428,7 @@ footer.foot a { color: var(--accent); }
   <td class="r" title="MarketCap / FCF | = 50.081 | Inputs: MarketCap=5.1e+12, FCF=1.02e+11">50.08x</td>
 
   <td class="" title="NetDebt / EBITDA | Inputs: NetDebt=-4.77e+09, EBITDA=1.65e+11 | N/A: Net cash position ($-4.77B) — Net Debt/EBITDA not meaningful; company has more cash than debt"><span class="na" title="Net cash position ($-4.77B) — Net Debt/EBITDA not meaningful…">N/A</span></td>
-  <td class="g" title="RevGrowthPct + FCFMarginPct | = 101.601 | Inputs: RevGrowthPct=61.4, FCFMarginPct=40.2">102</td>
+  <td class="g" title="RevGrowthPct + FCFMarginPct | = 105.671 | Inputs: RevGrowthPct=65.5, FCFMarginPct=40.2">106</td>
 
   <td class="source-cell">
     <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001045810&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
@@ -418,6 +441,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">NVDA</span><span class="dn">NVIDIA Corporation</span>
+      
       <span class="meta">CIK 0001045810</span>
       
       <button class="close-btn" onclick="toggleDetail('NVDA')" title="Collapse">✕</button>
@@ -510,8 +534,8 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Revenue Growth YoY %</div>
-  <div class="detail-value">61.4%</div>
-  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $26.91B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $16.68B</div>
+  <div class="detail-value">65.5%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $215.94B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $130.50B</div>
 </div>
       
 <div class="detail-card">
@@ -577,16 +601,16 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Rule of 40</div>
-  <div class="detail-value">101.6%</div>
-  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 61.4% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 40.2%</div>
+  <div class="detail-value">105.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 65.5% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 40.2%</div>
 </div>
     </div>
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="AMD"
+    data-sector="semiconductors"
     data-company="Advanced Micro Devices"
     data-focus="CPUs, GPUs, data-center accelerators"
     data-mktcap="876235865379.4301"
@@ -645,6 +669,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">AMD</span><span class="dn">Advanced Micro Devices</span>
+      
       <span class="meta">CIK 0000002488</span>
       
       <button class="close-btn" onclick="toggleDetail('AMD')" title="Collapse">✕</button>
@@ -811,9 +836,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="AVGO"
+    data-sector="semiconductors"
     data-company="Broadcom Inc."
     data-focus="Networking & custom silicon, infra software"
     data-mktcap="1957030614447.3000"
@@ -827,7 +852,7 @@ footer.foot a { color: var(--accent); }
     data-evebitda="49.0666"
     data-evfcf="74.3966"
     data-pe="66.7541"
-    data-fwdpe="21.2579"
+    data-fwdpe="21.2200"
     data-peg="0.7476"
     data-ps="25.9330"
     data-pfcf="72.7142"
@@ -853,7 +878,7 @@ footer.foot a { color: var(--accent); }
   <td class="r" title="EV / FCF | = 74.397 | Inputs: EV=2e+12, FCF=2.69e+10">74.40x</td>
 
   <td class="r" title="MarketCap / NetIncome_TTM | = 66.754 | Inputs: MarketCap=1.96e+12, NetIncome_TTM=2.93e+10">66.75x</td>
-  <td class="y" title="Price / EPS_Forward | = 21.258 | Inputs: Price=411, EPS_Forward=19.4 [analyst estimate]">21.26x <span class="badge badge-est">EST</span></td>
+  <td class="y" title="Price / EPS_Forward | = 21.220 | Inputs: Price=411, EPS_Forward=19.4 [analyst estimate]">21.22x <span class="badge badge-est">EST</span></td>
   <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 0.748 | Inputs: YahooPEG=0.748 [analyst estimate]">0.75x <span class="badge badge-est">EST</span></td>
   <td title="MarketCap / Revenue_TTM | = 25.933 | Inputs: MarketCap=1.96e+12, Revenue_TTM=7.55e+10">25.93x</td>
   <td class="r" title="MarketCap / FCF | = 72.714 | Inputs: MarketCap=1.96e+12, FCF=2.69e+10">72.71x</td>
@@ -872,6 +897,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">AVGO</span><span class="dn">Broadcom Inc.</span>
+      
       <span class="meta">CIK 0001730168</span>
       
       <button class="close-btn" onclick="toggleDetail('AVGO')" title="Collapse">✕</button>
@@ -994,8 +1020,8 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Forward P/E (analyst estimate)</div>
-  <div class="detail-value">21.26x</div>
-  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 411.35 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $19.35</div>
+  <div class="detail-value">21.22x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 411.35 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $19.39</div>
 </div>
       
 <div class="detail-card">
@@ -1037,9 +1063,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="INTC"
+    data-sector="semiconductors"
     data-company="Intel Corporation"
     data-focus="x86 CPUs & foundry"
     data-mktcap="673433740000.0000"
@@ -1098,6 +1124,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">INTC</span><span class="dn">Intel Corporation</span>
+      
       <span class="meta">CIK 0000050863</span>
       
       <button class="close-btn" onclick="toggleDetail('INTC')" title="Collapse">✕</button>
@@ -1268,9 +1295,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="QCOM"
+    data-sector="semiconductors"
     data-company="QUALCOMM Incorporated"
     data-focus="Mobile SoCs & wireless licensing"
     data-mktcap="238319940000.0000"
@@ -1329,6 +1356,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">QCOM</span><span class="dn">QUALCOMM Incorporated</span>
+      
       <span class="meta">CIK 0000804328</span>
       
       <button class="close-btn" onclick="toggleDetail('QCOM')" title="Collapse">✕</button>
@@ -1494,9 +1522,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="TXN"
+    data-sector="semiconductors"
     data-company="Texas Instruments"
     data-focus="Analog & embedded processing"
     data-mktcap="293832558502.2600"
@@ -1555,6 +1583,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">TXN</span><span class="dn">Texas Instruments</span>
+      
       <span class="meta">CIK 0000097476</span>
       
       <button class="close-btn" onclick="toggleDetail('TXN')" title="Collapse">✕</button>
@@ -1720,9 +1749,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="MU"
+    data-sector="semiconductors"
     data-company="Micron Technology"
     data-focus="DRAM & NAND memory"
     data-mktcap="1278839136493.4900"
@@ -1736,7 +1765,7 @@ footer.foot a { color: var(--accent); }
     data-evebitda="34.9497"
     data-evfcf="763.6542"
     data-pe="53.0397"
-    data-fwdpe="9.8961"
+    data-fwdpe="9.6138"
     data-peg="0.3569"
     data-ps="22.0038"
     data-pfcf="766.6901"
@@ -1762,7 +1791,7 @@ footer.foot a { color: var(--accent); }
   <td class="r" title="EV / FCF | = 763.654 | Inputs: EV=1.27e+12, FCF=1.67e+09">763.65x</td>
 
   <td class="r" title="MarketCap / NetIncome_TTM | = 53.040 | Inputs: MarketCap=1.28e+12, NetIncome_TTM=2.41e+10">53.04x</td>
-  <td class="g" title="Price / EPS_Forward | = 9.896 | Inputs: Price=1.13e+03, EPS_Forward=115 [analyst estimate]">9.90x <span class="badge badge-est">EST</span></td>
+  <td class="g" title="Price / EPS_Forward | = 9.614 | Inputs: Price=1.13e+03, EPS_Forward=118 [analyst estimate]">9.61x <span class="badge badge-est">EST</span></td>
   <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 0.357 | Inputs: YahooPEG=0.357 [analyst estimate]">0.36x <span class="badge badge-est">EST</span></td>
   <td title="MarketCap / Revenue_TTM | = 22.004 | Inputs: MarketCap=1.28e+12, Revenue_TTM=5.81e+10">22.00x</td>
   <td class="r" title="MarketCap / FCF | = 766.690 | Inputs: MarketCap=1.28e+12, FCF=1.67e+09">766.69x</td>
@@ -1781,6 +1810,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">MU</span><span class="dn">Micron Technology</span>
+      
       <span class="meta">CIK 0000723125</span>
       
       <button class="close-btn" onclick="toggleDetail('MU')" title="Collapse">✕</button>
@@ -1903,8 +1933,8 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Forward P/E (analyst estimate)</div>
-  <div class="detail-value">9.896x</div>
-  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: $1.1K &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $114.59</div>
+  <div class="detail-value">9.614x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: $1.1K &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $117.95</div>
 </div>
       
 <div class="detail-card">
@@ -1947,9 +1977,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="ADI"
+    data-sector="semiconductors"
     data-company="Analog Devices, Inc."
     data-focus="High-performance analog & mixed-signal"
     data-mktcap="211619835398.4000"
@@ -1963,7 +1993,7 @@ footer.foot a { color: var(--accent); }
     data-evebitda="37.7562"
     data-evfcf="50.5810"
     data-pe="63.8673"
-    data-fwdpe="29.4084"
+    data-fwdpe="29.3925"
     data-peg="0.9508"
     data-ps="16.6104"
     data-pfcf="49.4595"
@@ -1989,7 +2019,7 @@ footer.foot a { color: var(--accent); }
   <td class="r" title="EV / FCF | = 50.581 | Inputs: EV=2.16e+11, FCF=4.28e+09">50.58x</td>
 
   <td class="r" title="MarketCap / NetIncome_TTM | = 63.867 | Inputs: MarketCap=2.12e+11, NetIncome_TTM=3.31e+09">63.87x</td>
-  <td class="y" title="Price / EPS_Forward | = 29.408 | Inputs: Price=434, EPS_Forward=14.8 [analyst estimate]">29.41x <span class="badge badge-est">EST</span></td>
+  <td class="y" title="Price / EPS_Forward | = 29.393 | Inputs: Price=434, EPS_Forward=14.8 [analyst estimate]">29.39x <span class="badge badge-est">EST</span></td>
   <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 0.951 | Inputs: YahooPEG=0.951 [analyst estimate]">0.95x <span class="badge badge-est">EST</span></td>
   <td title="MarketCap / Revenue_TTM | = 16.610 | Inputs: MarketCap=2.12e+11, Revenue_TTM=1.27e+10">16.61x</td>
   <td class="r" title="MarketCap / FCF | = 49.459 | Inputs: MarketCap=2.12e+11, FCF=4.28e+09">49.46x</td>
@@ -2008,6 +2038,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">ADI</span><span class="dn">Analog Devices, Inc.</span>
+      
       <span class="meta">CIK 0000006281</span>
       
       <button class="close-btn" onclick="toggleDetail('ADI')" title="Collapse">✕</button>
@@ -2130,8 +2161,8 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Forward P/E (analyst estimate)</div>
-  <div class="detail-value">29.41x</div>
-  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 434.46 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $14.77</div>
+  <div class="detail-value">29.39x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 434.46 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $14.78</div>
 </div>
       
 <div class="detail-card">
@@ -2173,9 +2204,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="MRVL"
+    data-sector="semiconductors"
     data-company="Marvell Technology, Inc."
     data-focus="Data-center & networking silicon"
     data-mktcap="271929304470.3400"
@@ -2234,6 +2265,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">MRVL</span><span class="dn">Marvell Technology, Inc.</span>
+      
       <span class="meta">CIK 0001835632</span>
       
       <button class="close-btn" onclick="toggleDetail('MRVL')" title="Collapse">✕</button>
@@ -2399,9 +2431,9 @@ footer.foot a { color: var(--accent); }
   </td>
 </tr>
 
-
 <tr class="data-row"
     data-ticker="LRCX"
+    data-sector="semiconductors"
     data-company="Lam Research Corporation"
     data-focus="Wafer-fabrication equipment"
     data-mktcap="486522141840.0000"
@@ -2415,7 +2447,7 @@ footer.foot a { color: var(--accent); }
     data-evebitda="62.2291"
     data-evfcf="79.8102"
     data-pe="72.5265"
-    data-fwdpe="48.7750"
+    data-fwdpe="48.5814"
     data-peg="2.2581"
     data-ps="22.4391"
     data-pfcf="79.8564"
@@ -2441,7 +2473,7 @@ footer.foot a { color: var(--accent); }
   <td class="r" title="EV / FCF | = 79.810 | Inputs: EV=4.86e+11, FCF=6.09e+09">79.81x</td>
 
   <td class="r" title="MarketCap / NetIncome_TTM | = 72.526 | Inputs: MarketCap=4.87e+11, NetIncome_TTM=6.71e+09">72.53x</td>
-  <td class="r" title="Price / EPS_Forward | = 48.775 | Inputs: Price=389, EPS_Forward=7.98 [analyst estimate]">48.78x <span class="badge badge-est">EST</span></td>
+  <td class="r" title="Price / EPS_Forward | = 48.581 | Inputs: Price=389, EPS_Forward=8.01 [analyst estimate]">48.58x <span class="badge badge-est">EST</span></td>
   <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 2.258 | Inputs: YahooPEG=2.26 [analyst estimate]">2.26x <span class="badge badge-est">EST</span></td>
   <td title="MarketCap / Revenue_TTM | = 22.439 | Inputs: MarketCap=4.87e+11, Revenue_TTM=2.17e+10">22.44x</td>
   <td class="r" title="MarketCap / FCF | = 79.856 | Inputs: MarketCap=4.87e+11, FCF=6.09e+09">79.86x</td>
@@ -2460,6 +2492,7 @@ footer.foot a { color: var(--accent); }
   <td colspan="21">
     <div class="detail-bar">
       <span class="dt">LRCX</span><span class="dn">Lam Research Corporation</span>
+      
       <span class="meta">CIK 0000707549</span>
       
       <button class="close-btn" onclick="toggleDetail('LRCX')" title="Collapse">✕</button>
@@ -2582,8 +2615,8 @@ footer.foot a { color: var(--accent); }
       
 <div class="detail-card">
   <div class="detail-metric">Forward P/E (analyst estimate)</div>
-  <div class="detail-value">48.78x</div>
-  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 389.04 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $7.98</div>
+  <div class="detail-value">48.58x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 389.04 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $8.01</div>
 </div>
       
 <div class="detail-card">
@@ -2625,7 +2658,6 @@ footer.foot a { color: var(--accent); }
     </div>
   </td>
 </tr>
-
 
 </tbody>
 </table>

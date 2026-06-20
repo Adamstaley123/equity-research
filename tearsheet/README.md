@@ -13,17 +13,18 @@ It is **deterministic** (same inputs → same output, no LLM in the data path) a
 clone and run in two minutes. Every figure links back to its **exact SEC filing**.
 
 Ships with three sectors out of the box — **payments**, **semiconductors**, and
-**consumer staples** — and running your own is a single command (just a ticker
-list, no file needed). See [`DATA_SOURCES.md`](DATA_SOURCES.md) for the
-(open-source-safe) data sources and terms.
+**consumer staples** — which can be browsed together in one **combined dashboard**
+with a sector dropdown and a market-cap filter. Running your own sector is a single
+command (just a ticker list, no file needed). See [`DATA_SOURCES.md`](DATA_SOURCES.md)
+for the (open-source-safe) data sources and terms.
 
 > **Not investment advice.** Research and educational use only.
 
 <!-- Add a screenshot here after running: docs/preview.png
-![Tearsheet — Payments sector](docs/preview.png) -->
+![Tearsheet — combined dashboard](docs/preview.png) -->
 
-🔗 **[Live demo — Payments sector tearsheet](https://adamstaley123.github.io/equity-research/)**
-&nbsp;·&nbsp; or open [`examples/payments_tearsheet.html`](examples/payments_tearsheet.html) locally.
+🔗 **[Live demo — combined multi-sector dashboard](https://adamstaley123.github.io/equity-research/)**
+&nbsp;·&nbsp; or open the per-sector files in [`examples/`](examples/) locally.
 
 ---
 
@@ -57,6 +58,30 @@ Run a subset, or open the result automatically:
 ```bash
 .venv/bin/python pipeline/run.py --sector payments --tickers FOUR --tickers TOST --open-browser
 ```
+
+## Combined multi-sector dashboard
+
+Browse several curated sectors in **one** page, with a **sector dropdown** and a
+**market-cap filter** (Mega / Large / Mid / Small). The summary band (counts,
+medians, cheapest/priciest) recomputes live as you filter, and every row still
+expands to its per-metric sources and formulas.
+
+```bash
+# Each run of a sector writes a stable dataset to examples/data/<sector>_dataset.json.
+.venv/bin/python pipeline/run.py --sector payments
+.venv/bin/python pipeline/run.py --sector semiconductors
+.venv/bin/python pipeline/run.py --sector consumer_staples
+
+# Combine them into the hosted landing page (docs/index.html):
+.venv/bin/python pipeline/build_combined.py
+# or a subset / custom output:
+.venv/bin/python pipeline/build_combined.py --sectors payments,semiconductors --out /tmp/combined.html
+```
+
+This step does **no network I/O** — it is a deterministic render over the committed
+per-sector datasets (same JSONs in → byte-identical HTML out). The "sector" is still
+a hand-picked peer set, so compare *within* a sector; multiples aren't directly
+comparable across different sectors.
 
 ## Run your own sector
 
@@ -148,17 +173,19 @@ inputs, and N/A reasons**. Sort by any column; toggle light/dark.
 ```
 tearsheet/
 ├── pipeline/
-│   ├── run.py        CLI + orchestration
-│   ├── sectors.py    Sector YAML loader
-│   ├── config.py     EDGAR concepts, thresholds, staleness windows
-│   ├── schema.py     Pydantic models (provenance on every field)
-│   ├── compute.py    Ratio math (pure functions)
-│   ├── render.py     Jinja2 rendering + summary stats
-│   ├── fetchers/     edgar / yfinance / stockanalysis
-│   └── templates/    dashboard.html.j2
-├── sectors/          one YAML per sector (the company universe)
-├── examples/         committed sample output
-└── tests/            unit + smoke tests
+│   ├── run.py            CLI + orchestration (concurrent per-company fetch)
+│   ├── build_combined.py CLI for the combined multi-sector dashboard
+│   ├── combined.py       Load sector datasets + render the combined view
+│   ├── sectors.py        Sector YAML loader
+│   ├── config.py         EDGAR concepts, thresholds, staleness windows
+│   ├── schema.py         Pydantic models (provenance on every field)
+│   ├── compute.py        Ratio math (pure functions)
+│   ├── render.py         Jinja2 rendering + summary stats (shared env)
+│   ├── fetchers/         edgar / yfinance / stockanalysis
+│   └── templates/        dashboard / combined + shared _styles & _company_rows
+├── sectors/              one YAML per sector (the company universe)
+├── examples/             committed sample HTML + data/<sector>_dataset.json
+└── tests/                unit + smoke tests
 ```
 
 ## Tests
@@ -170,6 +197,7 @@ tearsheet/
 
 ## Roadmap
 
+- [x] Combined multi-sector dashboard (sector dropdown + market-cap filter)
 - [ ] Optional pre-computed-data adapter (Financial Modeling Prep / Alpha Vantage) with EDGAR cross-verification
 - [ ] More sectors out of the box
 - [ ] Historical / time-series snapshots

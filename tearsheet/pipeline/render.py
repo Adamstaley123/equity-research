@@ -338,13 +338,17 @@ def build_summary(dataset: SectorDataset) -> dict:
 
 # ── Renderer ──────────────────────────────────────────────────────────────────
 
-def render(dataset: SectorDataset, output_path: str) -> None:
+def _make_env() -> Environment:
+    """Build the Jinja environment with every formatting filter registered.
+
+    Shared by the single-sector renderer (`render`) and the combined
+    multi-sector renderer (`pipeline.combined.render_combined`) so both use one
+    source of truth for formatting/escaping.
+    """
     env = Environment(
         loader=FileSystemLoader(_TEMPLATE_DIR),
         autoescape=False,   # we escape manually in filter functions
     )
-
-    # Register filters
     env.filters["color_class"] = color_class_filter
     env.filters["fmt_num"] = fmt_num
     env.filters["fmt_rev"] = fmt_rev
@@ -356,7 +360,11 @@ def render(dataset: SectorDataset, output_path: str) -> None:
     env.filters["ratio_tooltip"] = ratio_tooltip
     env.filters["detail_card"] = detail_card
     env.filters["ratio_detail_card"] = ratio_detail_card
+    return env
 
+
+def render(dataset: SectorDataset, output_path: str) -> None:
+    env = _make_env()
     template = env.get_template("dashboard.html.j2")
     html = template.render(dataset=dataset, summary=build_summary(dataset))
 
