@@ -207,9 +207,15 @@ def _extract_ttm_quarters(
 ) -> tuple[Optional[float], str, str, str]:
     """
     TTM assembly for income-statement items.
-    Primary: sum 4 non-overlapping individual quarters.
-    Fallback: most recent 10-K annual.
+    Path 1: sum 4 contiguous single quarters (from 10-Q OR 10-K-carried entries),
+            validated so a skipped/unequal quarter can't silently drop a period
+            (e.g. PepsiCo's 16-week Q4 — see Path 2).
+    Path 2: YTD reconstruction  TTM = FY_prior + YTD_current − YTD_prior, which is
+            calendar-correct even when fiscal quarters are unequal length.
+    Path 3: most recent FULL-YEAR (~365-day) annual 10-K — never a stray quarter.
     """
+    from datetime import date as _date
+
     units = concept_data.get("units", {})
     usd_entries = units.get("USD", units.get("shares", []))
     if not usd_entries:
@@ -221,30 +227,109 @@ def _extract_ttm_quarters(
 
     valid.sort(key=lambda e: e.get("end", ""), reverse=True)
 
-    # Path 1: 4 individual single-quarter entries
-    q_single = [e for e in valid if e.get("form") == "10-Q" and _is_single_quarter(e)]
-    if len(q_single) >= 4:
-        # Verify non-overlapping by unique end dates
-        seen_ends: set = set()
-        selected = []
-        for e in q_single:
-            if e["end"] not in seen_ends:
-                seen_ends.add(e["end"])
-                selected.append(e)
-            if len(selected) == 4:
-                break
+    # ── Path 1: 4 contiguous single quarters (any form) ──────────────────────
+    # Some filers (e.g. General Mills) tag quarterly gross profit only inside the
+    # 10-K, so we accept single-quarter durations regardless of form, then verify
+    # the 4 picked quarters actually tile ~one year with no gap/overlap.
+    q_single = [e for e in valid if e.get("start") and e.get("end") and _is_single_quarter(e)]
+    # Deterministic order: end date descending, and for the same end prefer the
+    # as-reported 10-Q over a 10-K-carried (often restated) value.
+    q_single.sort(key=lambda e: 0 if e.get("form") == "10-Q" else 1)
+    q_single.sort(key=lambda e: e["end"], reverse=True)
+    seen_ends: set = set()
+    selected = []
+    for e in q_single:
+        if e["end"] in seen_ends:
+            continue
+        seen_ends.add(e["end"])
+        selected.append(e)
         if len(selected) == 4:
-            ttm = sum(e["val"] for e in selected)
-            accessions = [e.get("accn", "?") for e in selected]
-            return ttm, f"TTM ({selected[0]['end']} latest quarter)", selected[0]["end"], f"edgar_10q:accessions={accessions[:2]}...,concept={concept}"
+            break
+    if len(selected) == 4:
+        try:
+            newest_end = _date.fromisoformat(selected[0]["end"])
+            oldest_start = _date.fromisoformat(selected[3]["start"])
+            span = (newest_end - oldest_start).days
+            coverage = sum(max(_period_days(e), 0) for e in selected)
+            # Genuine trailing-4-quarters: the 4 pieces tile ~one year (span ≈
+            # coverage ≈ 365d). Rejects sets that skip a long quarter (coverage ≪
+            # span, e.g. PepsiCo) or repeat a quarter across years (span ≫ 1y).
+            if 340 <= span <= 380 and abs(span - coverage) <= 20:
+                ttm = sum(e["val"] for e in selected)
+                accessions = [e.get("accn", "?") for e in selected]
+                return ttm, f"TTM ({selected[0]['end']} latest quarter)", selected[0]["end"], f"edgar_10q:accessions={accessions[:2]}...,concept={concept}"
+        except Exception:
+            pass
 
-    # Fallback: most recent annual 10-K
-    annual = [e for e in valid if e.get("form") == "10-K"]
+    # ── Path 2: YTD reconstruction (handles unequal quarters) ────────────────
+    quarterly = [e for e in valid if e.get("form") == "10-Q" and e.get("start") and e.get("end")]
+    if quarterly:
+        latest_end = quarterly[0]["end"]
+        # Income-statement 10-Qs carry both a 3-month AND a YTD-cumulative value
+        # for the same end date; pick the longest (the YTD) for the reconstruction.
+        ytd_cur = max(
+            (e for e in quarterly if e["end"] == latest_end),
+            key=lambda e: _period_days(e),
+            default=quarterly[0],
+        )
+        try:
+            mr_end_dt = _date.fromisoformat(ytd_cur["end"])
+            mr_val = ytd_cur["val"]
+            mr_end = ytd_cur["end"]
+            cur_days = _period_days(ytd_cur)
+
+            # Prior-year same fiscal portion. 52/53-week calendars drift a few days
+            # year to year, so match the prior YTD entry FUZZILY: same duration
+            # (±12d) and end date nearest to (mr_end − 1 year), within ±20 days —
+            # rather than requiring an exact date match (which silently failed for
+            # Coca-Cola / PepsiCo and dropped them to the prior full year).
+            try:
+                target_prior_end = mr_end_dt.replace(year=mr_end_dt.year - 1)
+            except ValueError:
+                target_prior_end = mr_end_dt.replace(year=mr_end_dt.year - 1, day=28)
+            prior_candidates = [
+                e for e in quarterly
+                if e["end"] < mr_end
+                and abs(_period_days(e) - cur_days) <= 12
+                and abs((_date.fromisoformat(e["end"]) - target_prior_end).days) <= 20
+            ]
+            prior_q = min(
+                prior_candidates,
+                key=lambda e: abs((_date.fromisoformat(e["end"]) - target_prior_end).days),
+                default=None,
+            )
+            prior_end = prior_q["end"] if prior_q else "?"
+            # The annual base must be the fiscal year IMMEDIATELY before the current
+            # quarter (end within ~400 days). Otherwise a concept the company
+            # abandoned years ago (e.g. Fiserv's old revenue tag, last full year
+            # 2021) would pair a 5-year-old base with recent quarters and produce a
+            # garbage TTM that slips past the staleness guard (its label looks current).
+            fy_prior = next(
+                (e for e in sorted(
+                    [a for a in valid if a.get("form") == "10-K" and 330 <= _period_days(a) <= 400],
+                    key=lambda a: a.get("end", ""), reverse=True)
+                 if e["end"] < mr_end and 0 < (mr_end_dt - _date.fromisoformat(e["end"])).days <= 400),
+                None,
+            )
+            if prior_q and fy_prior:
+                ttm = float(fy_prior["val"]) + float(mr_val) - float(prior_q["val"])
+                detail = (
+                    f"edgar_10q:ytd_reconstruction,"
+                    f"FY({fy_prior['end']})={fy_prior['val']:,}+"
+                    f"YTD({mr_end})={mr_val:,}-"
+                    f"PriorYTD({prior_end})={prior_q['val']:,},concept={concept}"
+                )
+                return ttm, f"TTM via YTD recon ({mr_end})", mr_end, detail
+        except Exception:
+            pass
+
+    # ── Path 3: most recent FULL-YEAR annual 10-K ────────────────────────────
+    annual = [e for e in valid if e.get("form") == "10-K" and 330 <= _period_days(e) <= 400]
     if annual:
         best = annual[0]
         return float(best["val"]), f"FY ({best.get('end','')})", best.get("end", ""), f"edgar_10k:accession={best.get('accn','?')},concept={concept}"
 
-    return None, "", "", f"Could not assemble TTM from {len(q_single)} single-quarter entries"
+    return None, "", "", f"Could not assemble TTM for {concept} (no contiguous quarters, YTD recon, or full-year annual)"
 
 
 def _extract_ttm_cashflow(
@@ -329,13 +414,15 @@ def _extract_ttm_cashflow(
                 None
             )
 
-            # Find most recent 10-K annual that ended BEFORE or AT the start of current period
+            # Most recent FULL-YEAR 10-K immediately preceding the current quarter
+            # (end within ~400 days) — never a stale base from an abandoned concept.
             annual_entries = sorted(
-                [e for e in valid if e.get("form") == "10-K"],
+                [e for e in valid if e.get("form") == "10-K" and 330 <= _period_days(e) <= 400],
                 key=lambda e: e.get("end", ""), reverse=True
             )
             fy_prior = next(
-                (e for e in annual_entries if e["end"] < mr_end),
+                (e for e in annual_entries
+                 if e["end"] < mr_end and 0 < (mr_end_dt - _date.fromisoformat(e["end"])).days <= 400),
                 None
             )
 
@@ -352,8 +439,8 @@ def _extract_ttm_cashflow(
         except Exception:
             pass
 
-    # Path 3: annual fallback
-    annual = [e for e in valid if e.get("form") == "10-K"]
+    # Path 3: annual fallback — full-year (~365d) entries only, never a stray quarter
+    annual = [e for e in valid if e.get("form") == "10-K" and 330 <= _period_days(e) <= 400]
     if annual:
         best = annual[0]
         return float(best["val"]), f"FY ({best['end']})", best["end"], f"edgar_10k:annual_fallback,concept={concept}"
@@ -478,16 +565,23 @@ def fetch_revenue_annual_pair(cik: str) -> tuple[DataPoint, DataPoint]:
         if not data:
             continue
         units = data.get("units", {}).get("USD", [])
-        # Keep only full-year (~365d) 10-K entries, dedupe by period-end (a 10-K
-        # restates the prior year, so the same end date appears in several filings).
-        full_year = {}
+        # Keep only full-year (~365d) 10-K entries, dedupe by period-end. A later
+        # 10-K can RESTATE a prior year onto a new basis (e.g. Kimberly-Clark
+        # recasting FY2024 to continuing operations after divesting its IFP unit),
+        # so prefer the MOST-RECENTLY-FILED value for each fiscal year-end —
+        # otherwise YoY growth compares mismatched bases (a −18% mirage vs the
+        # real −2% continuing-ops decline).
+        full_year: dict = {}
         for e in units:
             if e.get("form") != "10-K" or e.get("val") is None:
                 continue
             if not (330 <= _period_days(e) <= 400):
                 continue
             end = e.get("end", "")
-            if end and end not in full_year:
+            if not end:
+                continue
+            prev = full_year.get(end)
+            if prev is None or e.get("filed", "") > prev.get("filed", ""):
                 full_year[end] = e
         annual = [full_year[k] for k in sorted(full_year, reverse=True)]
         if len(annual) >= 2:

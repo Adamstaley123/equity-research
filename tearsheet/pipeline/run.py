@@ -14,6 +14,7 @@ The pipeline:
 from __future__ import annotations
 import json
 import os
+import re
 import sys
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -43,6 +44,13 @@ def _run_id(sector: str) -> str:
     return f"{sector}_{today}"
 
 
+def _slug(s: str) -> str:
+    """Filesystem/run-id-safe slug from a display name (e.g. 'Consumer Staples'
+    → 'consumer_staples'). Used to name ad-hoc sectors from --name/--tickers."""
+    s = re.sub(r"[^a-z0-9]+", "_", (s or "").strip().lower()).strip("_")
+    return s or "custom"
+
+
 def _fetch_company(
     ticker: str,
     meta: dict,
@@ -51,8 +59,32 @@ def _fetch_company(
     skip_edgar: bool = False,
     skip_scrape: bool = False,
 ) -> CompanyRecord:
+    # ── Auto-enrich missing metadata from yfinance ───────────────────────────
+    # For ad-hoc runs (user passed only --tickers, no YAML) the per-company meta
+    # is empty. Fill name/focus/exchange/currency from Yahoo so the dashboard is
+    # complete. Curated YAML values ALWAYS win — we only fill blanks, and one
+    # extra yfinance call happens only when something is actually missing (so the
+    # curated payments path makes no extra calls and renders identically).
+    _missing = [k for k in ("name", "focus", "exchange", "currency") if not meta.get(k)]
+    if _missing:
+        try:
+            _profile = YF.fetch_profile(ticker, meta.get("yfinance_ticker"))
+        except Exception:
+            _profile = {}
+        if _profile:
+            meta = {**meta, **{k: _profile[k] for k in _missing if _profile.get(k)}}
+
     currency = meta.get("currency", "USD")
-    is_intl = meta.get("exchange") == "AMS"
+    # Foreign (non-EDGAR) issuer: set `foreign: true` in the sector YAML, or tag
+    # `european` in flags, or use a non-US exchange. Controls the scrape fallback's
+    # URL form. Generalizes the old AMS-only check so any sector can include
+    # foreign names, not just payments/Adyen.
+    flags_meta = meta.get("flags", [])
+    is_intl = bool(
+        meta.get("foreign")
+        or "european" in flags_meta
+        or meta.get("exchange") in {"AMS", "LSE", "ETR", "EPA", "TSE", "HKG", "TYO"}
+    )
 
     # Use hardcoded CIK override if available — avoids false matches for short tickers (FI→eBay, etc.)
     cik_override = meta.get("cik")
@@ -93,7 +125,12 @@ def _fetch_company(
             typer.echo(f"  [{ticker}] StockAnalysis scrape failed: {exc}", err=True)
 
     def sa(field: str) -> DataPoint:
-        return sa_data.get(field, na_dp(f"StockAnalysis: field {field!r} not scraped"))
+        fallback = na_dp(
+            f"StockAnalysis fallback disabled (run with --use-scrape to enable)"
+            if skip_scrape else
+            f"StockAnalysis: field {field!r} not available"
+        )
+        return sa_data.get(field, fallback)
 
     # ── Market data (yfinance primary) ────────────────────────────────────────
     typer.echo(f"  [{ticker}] Fetching market data (yfinance)...")
@@ -310,7 +347,7 @@ def _fetch_company(
     return CompanyRecord(
         ticker=ticker,
         company_name=meta.get("name", ticker),
-        payments_focus=meta.get("focus", ""),
+        focus=meta.get("focus", ""),
         exchange=meta.get("exchange", "NASDAQ"),
         currency=currency,
         fx_rate_to_usd=fx_rate,
@@ -355,34 +392,81 @@ def _fetch_company(
 
 @app.command()
 def main(
-    sector: str = typer.Option(..., help="Sector name (e.g. 'payments') — loads sectors/<name>.yaml"),
-    tickers: Optional[list[str]] = typer.Option(None, help="Ticker subset to run; omit to run the whole sector"),
+    sector: Optional[str] = typer.Option(
+        None, help="Sector name (e.g. 'payments') — loads sectors/<name>.yaml. "
+                   "Optional: omit it and pass --tickers for an ad-hoc run with no YAML."),
+    name: Optional[str] = typer.Option(
+        None, "--name", help="Display title for an ad-hoc run (used with --tickers when "
+                             "there's no YAML), e.g. --name \"Utilities\"."),
+    tickers: Optional[list[str]] = typer.Option(
+        None, help="Tickers to run — comma-separated (NEE,DUK,SO) or repeated "
+                   "(--tickers NEE --tickers DUK). With a curated --sector, omit to run "
+                   "the whole sector; without a YAML, this list IS the universe."),
     output_dir: str = typer.Option("data", help="Base output directory"),
     from_json: Optional[str] = typer.Option(None, help="Re-render HTML from existing JSON, skip fetching"),
     no_html: bool = typer.Option(False, help="Output JSON only, skip HTML generation"),
     skip_edgar: bool = typer.Option(False, help="Disable SEC EDGAR fetching"),
-    skip_scrape: bool = typer.Option(False, help="Disable StockAnalysis fallback"),
+    use_scrape: bool = typer.Option(
+        False,
+        help="Opt in to the StockAnalysis.com scrape fallback (off by default; "
+             "scraping may violate their ToS — you are responsible for your use).",
+    ),
     open_browser: bool = typer.Option(False, help="Open HTML in browser when done"),
 ):
-    run_id = _run_id(sector)
     generated_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
-    # ── Load sector config (declarative: sectors/<name>.yaml) ─────────────────
-    # Skipped for --from-json (re-render only needs the saved dataset).
+    # Normalize --tickers: accept comma-separated AND/OR repeated, uppercased.
+    if tickers:
+        tickers = [t.strip().upper() for item in tickers for t in item.split(",") if t.strip()]
+
+    # ── Resolve the company universe ──────────────────────────────────────────
+    # Three paths:
+    #   1. Curated YAML   — `--sector payments` (sectors/payments.yaml exists)
+    #   2. Ad-hoc tickers — `--tickers NEE,DUK,SO --name Utilities` (no YAML)
+    #   3. --from-json     — re-render only, needs --sector for the output path
     sector_meta: dict = {}
-    if not from_json:
-        try:
-            cfg = load_sector(sector)
-        except FileNotFoundError as exc:
-            typer.echo(f"Error: {exc}", err=True)
+    if from_json:
+        if not sector:
+            typer.echo("Error: --sector is required with --from-json.", err=True)
             raise typer.Exit(code=1)
-        sector_meta = cfg["companies"]
-        # No explicit --tickers → run the whole sector universe from the YAML.
-        if not tickers:
-            tickers = list(sector_meta.keys())
+    else:
+        cfg = None
+        if sector:
+            try:
+                cfg = load_sector(sector)
+            except FileNotFoundError as exc:
+                # A named sector with no YAML is only an error if we also have no
+                # tickers to fall back on; otherwise treat `sector` as the title.
+                if not tickers:
+                    typer.echo(f"Error: {exc}", err=True)
+                    raise typer.Exit(code=1)
+                cfg = None
+
+        if cfg is not None:
+            # ── Path 1: curated sector from YAML ──
+            sector_meta = cfg["companies"]
             if not tickers:
-                typer.echo(f"Error: sector '{sector}' has no companies defined.", err=True)
+                tickers = list(sector_meta.keys())
+                if not tickers:
+                    typer.echo(f"Error: sector '{sector}' has no companies defined.", err=True)
+                    raise typer.Exit(code=1)
+        else:
+            # ── Path 2: ad-hoc universe straight from --tickers (no YAML) ──
+            if not tickers:
+                typer.echo(
+                    "Error: pass --sector <name> (loads sectors/<name>.yaml) OR "
+                    "--tickers T1,T2,... [--name \"Title\"] for an ad-hoc run.",
+                    err=True,
+                )
                 raise typer.Exit(code=1)
+            sector = _slug(name or sector or "custom")
+            sector_meta = {t: {} for t in tickers}
+            typer.echo(
+                f"Ad-hoc run ({len(tickers)} ticker(s), no YAML) — company metadata "
+                f"will be auto-filled from Yahoo Finance."
+            )
+
+    run_id = _run_id(sector)
 
     # ── Re-render from existing JSON ──────────────────────────────────────────
     if from_json:
@@ -402,6 +486,8 @@ def main(
     typer.echo(f"\n{'='*60}")
     typer.echo(f"  Valuation Pipeline — {sector.title()} — {run_id}")
     typer.echo(f"  Tickers: {', '.join(tickers)}")
+    typer.echo(f"  Sources: SEC EDGAR + Yahoo Finance"
+               f"{' + StockAnalysis scrape (opt-in)' if use_scrape else ' (StockAnalysis scrape OFF — pass --use-scrape to enable)'}")
     typer.echo(f"{'='*60}\n")
 
     companies: dict[str, CompanyRecord] = {}
@@ -413,7 +499,7 @@ def main(
         typer.echo(f"\n── {ticker} ──────────────────────────────────────────")
         try:
             meta = sector_meta.get(ticker, {})  # {} → ad-hoc ticker, CIK auto-looked-up
-            record = _fetch_company(ticker, meta, sector, run_id, skip_edgar=skip_edgar, skip_scrape=skip_scrape)
+            record = _fetch_company(ticker, meta, sector, run_id, skip_edgar=skip_edgar, skip_scrape=not use_scrape)
             companies[ticker] = record
 
             # Save per-ticker raw JSON

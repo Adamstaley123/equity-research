@@ -132,6 +132,41 @@ def fetch_peg_ratio(ticker: str, yfinance_ticker: Optional[str] = None) -> DataP
     )
 
 
+# yfinance exchange codes → friendly display names (best-effort; falls back to
+# fullExchangeName or the raw code for anything not listed).
+_EXCHANGE_NAMES = {
+    "NMS": "NASDAQ", "NGM": "NASDAQ", "NCM": "NASDAQ", "NSC": "NASDAQ",
+    "NYQ": "NYSE", "PCX": "NYSE Arca", "ASE": "NYSE American",
+    "AMS": "AMS", "LSE": "LSE", "GER": "ETR", "EBS": "SWX",
+}
+
+
+def fetch_profile(ticker: str, yfinance_ticker: Optional[str] = None) -> dict:
+    """Best-effort company profile from yfinance, used ONLY to auto-fill metadata
+    a user didn't supply for an ad-hoc (no-YAML) run. Returns a dict with any of
+    {name, focus, exchange, currency} — missing keys are omitted. Never overrides
+    a value the sector YAML already provided (the caller fills blanks only).
+    """
+    try:
+        info = _get_info(ticker, yfinance_ticker)
+    except Exception:
+        return {}
+    out: dict = {}
+    name = info.get("longName") or info.get("shortName")
+    if name:
+        out["name"] = name
+    focus = info.get("industry") or info.get("sector")
+    if focus:
+        out["focus"] = focus
+    exch = info.get("exchange")
+    if exch:
+        out["exchange"] = _EXCHANGE_NAMES.get(exch, info.get("fullExchangeName") or exch)
+    cur = info.get("currency")
+    if cur:
+        out["currency"] = cur
+    return out
+
+
 def fetch_fx_rate(from_currency: str, to_currency: str = "USD") -> DataPoint:
     """Fetch FX rate, e.g. EUR→USD via yfinance EURUSD=X ticker."""
     if from_currency == to_currency:

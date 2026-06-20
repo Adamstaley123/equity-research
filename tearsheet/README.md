@@ -10,7 +10,12 @@ its filing/period, and every `N/A` carries an explicit reason.
 
 It is **deterministic** (same inputs → same output, no LLM in the data path) and
 **keyless** by default — EDGAR and Yahoo Finance need no API keys, so you can
-clone and run in two minutes.
+clone and run in two minutes. Every figure links back to its **exact SEC filing**.
+
+Ships with three sectors out of the box — **payments**, **semiconductors**, and
+**consumer staples** — and running your own is a single command (just a ticker
+list, no file needed). See [`DATA_SOURCES.md`](DATA_SOURCES.md) for the
+(open-source-safe) data sources and terms.
 
 > **Not investment advice.** Research and educational use only.
 
@@ -29,10 +34,23 @@ cd tearsheet
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 
-# Run a whole sector (companies defined in sectors/payments.yaml)
+# (Recommended) tell SEC who's calling — any descriptive string + contact:
+export EDGAR_USER_AGENT="YourName your@email.com"
+
+# Run a built-in sector (companies defined in sectors/<name>.yaml)
 .venv/bin/python pipeline/run.py --sector payments
 # → output/Payments/payments_valuation.html
+# other built-ins: --sector semiconductors  |  --sector consumer_staples
+
+# …or run ANY tickers with no file at all — name/industry/currency are
+# auto-filled from Yahoo Finance:
+.venv/bin/python pipeline/run.py --tickers NEE,DUK,SO,D,AEP --name "Utilities"
+# → output/Utilities/utilities_valuation.html
 ```
+
+By default only **SEC EDGAR + Yahoo Finance** are used (keyless, no scraping).
+An optional StockAnalysis fallback for foreign issuers is **off** unless you pass
+`--use-scrape` (see [`DATA_SOURCES.md`](DATA_SOURCES.md)).
 
 Run a subset, or open the result automatically:
 
@@ -40,20 +58,45 @@ Run a subset, or open the result automatically:
 .venv/bin/python pipeline/run.py --sector payments --tickers FOUR --tickers TOST --open-browser
 ```
 
-## Add your own sector
+## Run your own sector
 
-Sectors are declarative — **no code changes**. Copy the example and edit the
-company list:
+**There is no built-in screener — you choose the companies.** The "sector" is just
+the list of tickers you give it. Two ways to do that:
+
+**1. Quick — pass tickers on the command line (no file):**
 
 ```bash
-cp sectors/payments.yaml sectors/cloud.yaml
-# edit sectors/cloud.yaml, then:
-.venv/bin/python pipeline/run.py --sector cloud
+.venv/bin/python pipeline/run.py --tickers NEE,DUK,SO,D,AEP --name "Utilities"
 ```
 
-Each company needs only `name`, `focus`, `exchange`, `currency`. Add a `cik:` or
-`yfinance_ticker:` override only when auto-lookup picks the wrong entity or Yahoo
-uses a different symbol. The file is fully commented.
+That's the whole thing. For each ticker the pipeline looks up the SEC entity by
+exact ticker match against SEC's official company list, pulls financials from
+EDGAR and market data from Yahoo, and **auto-fills the company name, business
+description, exchange, and currency from Yahoo** — so you only type tickers.
+
+**2. Curated — a YAML file (for a polished, repeatable sector):**
+
+```bash
+cp sectors/payments.yaml sectors/utilities.yaml
+# edit the companies list, then:
+.venv/bin/python pipeline/run.py --sector utilities
+```
+
+In a YAML, **every field except the ticker key is optional** (anything you omit is
+auto-filled from Yahoo, same as above). A minimal file is just:
+
+```yaml
+name: Utilities
+companies:
+  NEE:
+  DUK:
+  SO:
+```
+
+Add `name` / `focus` to control the display text, or a `cik:` / `yfinance_ticker:`
+override **only** when auto-lookup picks the wrong entity (rare — usually short,
+ambiguous tickers) or Yahoo lists the symbol differently. `sectors/payments.yaml`
+is fully commented as a reference.
 
 ## What it computes
 
@@ -72,7 +115,9 @@ inputs, and N/A reasons**. Sort by any column; toggle light/dark.
 ## How the numbers are built
 
 - **Sources** — financials from SEC EDGAR XBRL (10-Q/10-K); market data from
-  Yahoo Finance; foreign issuers without EDGAR XBRL fall back to a public source.
+  Yahoo Finance. Both are keyless and on by default. Foreign issuers without
+  EDGAR XBRL need the opt-in `--use-scrape` fallback, otherwise their financials
+  show `N/A` with a clear reason. Every value links to its exact filing/page.
 - **TTM** — four most recent quarters, or YTD reconstruction for cash-flow items
   (`TTM = FY_prior + YTD_current − YTD_prior`).
 - **Freshness guard** — every value is checked against the company's latest
@@ -90,9 +135,13 @@ inputs, and N/A reasons**. Sort by any column; toggle light/dark.
 
 - Revenue basis differs across companies (net vs gross) — EV/Revenue isn't
   directly comparable across those; net-revenue names are tagged `net†`.
-- Non-US issuers have thinner coverage and lean on the scrape fallback.
+- Non-US issuers have no EDGAR XBRL; their financials are `N/A` unless you opt in
+  to the StockAnalysis scrape (`--use-scrape`), which may be subject to that
+  site's ToS — see [`DATA_SOURCES.md`](DATA_SOURCES.md).
 - yfinance is an unofficial Yahoo Finance wrapper; market data can occasionally
-  lag or gap. An optional pre-computed-data adapter is on the roadmap.
+  lag, gap, or spike. Headline market caps are price × shares from Yahoo — sanity
+  check anything surprising against the linked filing. An optional pre-computed-data
+  adapter with cross-verification is on the roadmap.
 
 ## Layout
 

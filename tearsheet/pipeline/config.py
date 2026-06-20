@@ -1,6 +1,15 @@
+import os
+
 PIPELINE_VERSION = "1.0.0"
 
-EDGAR_USER_AGENT = "ValuationPipeline staley.adam47@gmail.com"
+# SEC requires a User-Agent that identifies the requester with a contact.
+# Read it from the environment so each user declares their own identity
+# (cloners should `export EDGAR_USER_AGENT="YourApp your@email.com"`); the
+# fallback is generic and contains no personal address.
+EDGAR_USER_AGENT = os.environ.get(
+    "EDGAR_USER_AGENT",
+    "Tearsheet/1.0 (open-source equity research; set EDGAR_USER_AGENT to your contact)",
+)
 EDGAR_RATE_LIMIT_SLEEP = 0.12   # seconds between EDGAR calls (stays under 10 req/sec)
 EDGAR_BASE_URL = "https://data.sec.gov"
 

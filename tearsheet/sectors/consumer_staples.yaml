@@ -1,0 +1,71 @@
+# Consumer staples sector — company universe for the valuation dashboard.
+#
+# To run this sector:        python pipeline/run.py --sector consumer_staples
+# To run a subset:           python pipeline/run.py --sector consumer_staples --tickers KO,PEP
+#
+# To add your OWN sector you don't even need a file like this — you can run
+# `python pipeline/run.py --tickers KO,PEP,PG --name "My Staples"` and the
+# metadata is auto-filled from Yahoo. A curated YAML like this one just makes the
+# output polished and repeatable. Every field below except the ticker key is
+# optional; see sectors/payments.yaml for the full field reference.
+#
+# All names here are domestic SEC filers, so the keyless run (SEC EDGAR + Yahoo)
+# covers them fully — no --use-scrape needed.
+
+name: Consumer Staples
+description: Large-cap US food, beverage, household, and tobacco staples.
+
+companies:
+  PG:
+    name: Procter & Gamble Co.
+    focus: Household & personal care
+    exchange: NYSE
+    currency: USD
+  KO:
+    name: The Coca-Cola Company
+    focus: Non-alcoholic beverages
+    exchange: NYSE
+    currency: USD
+  PEP:
+    name: PepsiCo, Inc.
+    focus: Beverages & convenient foods
+    exchange: NASDAQ
+    currency: USD
+  MO:
+    name: Altria Group, Inc.
+    focus: Tobacco (US) — revenue incl. excise tax
+    exchange: NYSE
+    currency: USD
+    flags: [gross_revenue]
+  PM:
+    name: Philip Morris International
+    focus: Tobacco & smoke-free (international)
+    exchange: NYSE
+    currency: USD
+    # PMI net revenues are reported NET of excise taxes, so no gross_revenue flag
+    # (unlike Altria, whose $24B top line includes excise — see MO above).
+  MDLZ:
+    name: Mondelez International
+    focus: Snacks & confectionery
+    exchange: NASDAQ
+    currency: USD
+  CL:
+    name: Colgate-Palmolive Co.
+    focus: Oral, personal & home care
+    exchange: NYSE
+    currency: USD
+  KMB:
+    name: Kimberly-Clark Corp.
+    focus: Tissue & personal care
+    exchange: NYSE
+    currency: USD
+  GIS:
+    name: General Mills, Inc.
+    focus: Packaged foods
+    exchange: NYSE
+    currency: USD
+  HSY:
+    name: The Hershey Company
+    focus: Confectionery & snacks
+    exchange: NYSE
+    currency: USD

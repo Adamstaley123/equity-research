@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
 SourceType = Literal[
@@ -34,7 +34,9 @@ class ComputedRatio(BaseModel):
 class CompanyRecord(BaseModel):
     ticker: str
     company_name: str
-    payments_focus: str
+    # Short description of what the company does within its sector (any sector).
+    # Accepts the legacy key "payments_focus" so older saved datasets still load.
+    focus: str = Field(default="", validation_alias=AliasChoices("focus", "payments_focus"))
     exchange: str = "NASDAQ"
     currency: str = "USD"
     fx_rate_to_usd: float = 1.0

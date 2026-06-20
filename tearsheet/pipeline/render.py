@@ -6,6 +6,7 @@ as Jinja2 filters so the template stays declarative.
 """
 from __future__ import annotations
 import os
+import re
 import statistics
 from typing import Optional, Union
 from jinja2 import Environment, FileSystemLoader
@@ -126,6 +127,64 @@ def _escape(s: str) -> str:
     return s.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# Accession numbers look like 0001650164-26-000114
+_ACCN_RE = re.compile(r"\d{10}-\d{2}-\d{6}")
+# Pull the XBRL concept out of a source_detail string (…,concept=Revenues)
+_CONCEPT_RE = re.compile(r"concept=([A-Za-z0-9_]+)")
+
+
+def friendly_source(dp: DataPoint, cik: Optional[str], ticker: str) -> tuple[str, Optional[str], str]:
+    """Turn a machine source_detail into (label, url, raw_detail).
+
+    Keeps full accuracy — the raw machine string is returned for the tooltip —
+    while giving a clean human label and a link to the actual primary source:
+      • EDGAR  → "SEC 10-Q" / "SEC 10-K", linked to the exact filing index on
+                 sec.gov (or the company's filing list if no accession is tagged).
+      • Yahoo  → "Yahoo Finance", linked to the quote page.
+      • scrape → "StockAnalysis", linked to the stats page.
+      • computed → "Computed" (no external link; the formula is shown separately).
+    """
+    src = (dp.source or "").lower()
+    detail = dp.source_detail or ""
+
+    if src.startswith("edgar"):
+        is_10k = "10k" in src or "10-K" in detail
+        label = "SEC 10-K" if is_10k else "SEC 10-Q"
+        url = None
+        if cik:
+            m = _ACCN_RE.search(detail)
+            if m:
+                url = f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{m.group(0).replace('-', '')}/"
+            else:
+                form = "10-K" if is_10k else "10-Q"
+                url = f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={cik}&type={form}"
+        cm = _CONCEPT_RE.search(detail)
+        if cm:
+            label += f" · {cm.group(1)}"
+        return label, url, detail
+
+    if src == "yfinance":
+        return "Yahoo Finance", f"https://finance.yahoo.com/quote/{ticker}", detail
+    if "stockanalysis" in src:
+        return "StockAnalysis", f"https://stockanalysis.com/stocks/{ticker.lower()}/statistics/", detail
+    if src == "computed":
+        return "Computed", None, detail
+    return (dp.source or "—"), None, detail
+
+
+def _source_line(dp: DataPoint, cik: Optional[str], ticker: str) -> str:
+    """Render the Source line of a detail card: clean label, linked to the real
+    filing/page, with the full machine provenance in the hover tooltip."""
+    label, url, raw = friendly_source(dp, cik, ticker)
+    tip = _escape(raw)
+    inner = _escape(label)
+    if url:
+        body = f'<a href="{_escape(url)}" target="_blank" rel="noopener" title="{tip}">{inner} <span class="ext">↗</span></a>'
+    else:
+        body = f'<span title="{tip}">{inner}</span>'
+    return f'<div class="detail-line"><strong>Source:</strong> {body}</div>'
+
+
 def dp_tooltip(dp: DataPoint, label: str) -> str:
     parts = [label]
     if dp.value is not None:
@@ -163,12 +222,12 @@ def _fmt_raw(value: Optional[float]) -> str:
     return f"{value:,.0f}"
 
 
-def detail_card(dp: DataPoint, label: str, note: str = "") -> str:
+def detail_card(dp: DataPoint, label: str, note: str = "", cik: Optional[str] = None, ticker: str = "") -> str:
     if dp.value is not None:
         display = _fmt_raw(dp.value)
         src_html = ""
         if dp.source_detail:
-            src_html = f'<div class="detail-line"><strong>Source:</strong> {_escape(dp.source_detail)}</div>'
+            src_html = _source_line(dp, cik, ticker)
         period_html = ""
         if dp.period_label:
             period_html = f'<div class="detail-line"><strong>Period:</strong> {_escape(dp.period_label)}</div>'

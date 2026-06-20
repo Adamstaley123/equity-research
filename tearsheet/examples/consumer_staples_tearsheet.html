@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consumer Staples Sector Tearsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper:      #f6f3ea;
+    --paper-2:    #fbf9f3;
+    --card:       #ffffff;
+    --ink:        #1f1d18;
+    --ink-soft:   #565049;
+    --ink-faint:  #8a8378;
+    --rule:       #e2dccd;
+    --rule-soft:  #ece7da;
+    --accent:     #0f4f47;   /* petrol */
+    --accent-2:   #b0822f;   /* brass  */
+    --accent-ink: #0b3a34;
+    --g-bg: rgba(47,125,91,.14);  --g-fg: #1f6b4d;
+    --y-bg: rgba(192,138,45,.16); --y-fg: #876217;
+    --r-bg: rgba(180,81,63,.14);  --r-fg: #8f3a2c;
+    --shadow: 0 1px 2px rgba(31,29,24,.04), 0 8px 28px rgba(31,29,24,.06);
+    --na: #b3ada1;
+}
+html[data-theme="dark"] {
+    --paper:      #14130f;
+    --paper-2:    #1a1813;
+    --card:       #201d17;
+    --ink:        #efe9da;
+    --ink-soft:   #b8b0a0;
+    --ink-faint:  #837c6e;
+    --rule:       #322d24;
+    --rule-soft:  #2a261f;
+    --accent:     #5cc3b2;
+    --accent-2:   #d8a64a;
+    --accent-ink: #8fd8c9;
+    --g-bg: rgba(92,195,150,.15); --g-fg: #6fce9f;
+    --y-bg: rgba(216,166,74,.16); --y-fg: #e0b25e;
+    --r-bg: rgba(214,110,90,.16); --r-fg: #e08a73;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    --na: #6a6457;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    transition: background .3s ease, color .3s ease;
+}
+/* subtle paper grain */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(var(--rule-soft) 0.5px, transparent 0.5px);
+    background-size: 22px 22px;
+}
+.wrap { position: relative; z-index: 1; max-width: 1680px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 52px); }
+
+/* ── Masthead ─────────────────────────────────────────── */
+header.mast { padding: 40px 0 26px; border-bottom: 2px solid var(--ink); margin-bottom: 0; }
+.eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--accent); display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--accent-2); display: inline-block; }
+.mast-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+h1.title {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(34px, 5.2vw, 60px);
+    line-height: .98; letter-spacing: -.015em; color: var(--ink); font-optical-sizing: auto;
+}
+h1.title em { font-style: italic; color: var(--accent); }
+.mast-meta { font-size: 12px; color: var(--ink-soft); text-align: right; line-height: 1.85; }
+.mast-meta b { color: var(--ink); font-weight: 600; }
+.controls { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
+.btn {
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; font-weight: 600;
+    color: var(--ink-soft); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 999px; padding: 6px 14px; cursor: pointer; transition: all .15s;
+    display: inline-flex; align-items: center; gap: 6px; letter-spacing: .02em;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Summary band ─────────────────────────────────────── */
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    margin: 28px 0 0; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.stat { background: var(--card); padding: 18px 20px; }
+.stat .k { font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+.stat .v { font-family: 'Fraunces', serif; font-weight: 600; font-size: 30px; line-height: 1.1; margin-top: 6px; color: var(--ink); letter-spacing: -.01em; }
+.stat .v small { font-size: 15px; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+.stat .sub { font-size: 11px; color: var(--ink-soft); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+.stat.accent .v { color: var(--accent); }
+
+/* ── Toolbar ──────────────────────────────────────────── */
+.toolbar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 16px 2px 14px; font-size: 11.5px; color: var(--ink-soft); }
+.toolbar .hint { display: inline-flex; align-items: center; gap: 6px; }
+.toolbar .sep { color: var(--rule); }
+.legend { display: flex; gap: 14px; align-items: center; margin-left: auto; }
+.legend b { color: var(--ink); font-weight: 600; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 11px; height: 11px; border-radius: 3px; }
+.swatch.g { background: var(--g-bg); border: 1px solid var(--g-fg); }
+.swatch.y { background: var(--y-bg); border: 1px solid var(--y-fg); }
+.swatch.r { background: var(--r-bg); border: 1px solid var(--r-fg); }
+
+/* ── Methodology (collapsible) ────────────────────────── */
+.method { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); margin-bottom: 22px; overflow: hidden; }
+.method summary { cursor: pointer; padding: 13px 18px; font-size: 12px; font-weight: 600;
+    color: var(--ink); list-style: none; display: flex; align-items: center; gap: 9px; user-select: none; }
+.method summary::-webkit-details-marker { display: none; }
+.method summary .chev { transition: transform .2s; color: var(--accent); font-size: 13px; }
+.method[open] summary .chev { transform: rotate(90deg); }
+.method summary .tag { margin-left: auto; font-weight: 500; font-size: 11px; color: var(--ink-faint); letter-spacing: .04em; }
+.method .body { padding: 4px 20px 18px; border-top: 1px solid var(--rule-soft); columns: 2; column-gap: 36px; }
+.method .body h4 { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); margin: 14px 0 4px; break-after: avoid; }
+.method .body p { font-size: 12px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 4px; break-inside: avoid; }
+.method .body code { font-family: 'IBM Plex Mono', monospace; font-size: 11px; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; color: var(--accent-ink); }
+@media (max-width: 720px) { .method .body { columns: 1; } }
+
+/* ── Table ────────────────────────────────────────────── */
+.table-wrapper { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px;
+    box-shadow: var(--shadow); background: var(--card); margin-bottom: 26px; }
+.table-wrapper::-webkit-scrollbar { height: 10px; }
+.table-wrapper::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 6px; }
+.table-wrapper::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 2280px;
+    font-size: 12.5px; background: var(--card); }
+
+/* group label row */
+.group-label-row th { background: var(--paper-2); color: var(--ink-faint);
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+    padding: 9px 10px 7px; text-align: left; border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; z-index: 3; }
+.group-label-row th:not(:first-child) { border-left: 1px solid var(--rule-soft); }
+
+/* column header row */
+thead tr.cols th { background: var(--card); color: var(--ink); cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 11px; line-height: 1.25;
+    padding: 11px 10px; text-align: right; white-space: nowrap; vertical-align: bottom;
+    position: sticky; top: 31px; z-index: 3; border-bottom: 2px solid var(--ink);
+    user-select: none; transition: color .12s; }
+thead tr.cols th .u { font-weight: 400; font-size: 9px; color: var(--ink-faint); letter-spacing: .02em; }
+thead tr.cols th.txt { text-align: left; }
+thead tr.cols th:hover { color: var(--accent); }
+thead tr.cols th.sorted-asc, thead tr.cols th.sorted-desc { color: var(--accent); }
+thead tr.cols th.sorted-asc::after { content: " ↑"; font-size: 10px; }
+thead tr.cols th.sorted-desc::after { content: " ↓"; font-size: 10px; }
+thead tr.cols th.nosort { cursor: default; }
+thead tr.cols th.nosort:hover { color: var(--ink); }
+
+/* body cells */
+tbody td { padding: 11px 10px; text-align: right; white-space: nowrap; vertical-align: middle;
+    border-bottom: 1px solid var(--rule-soft);
+    font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+    font-size: 12.5px; color: var(--ink); }
+tbody td.txt { text-align: left; font-family: 'IBM Plex Sans', sans-serif; }
+tbody tr.data-row:hover td { background: color-mix(in srgb, var(--accent) 6%, var(--card)); }
+tbody tr.data-row.european td:first-child { box-shadow: inset 3px 0 0 var(--accent-2); }
+
+.ticker { font-family: 'IBM Plex Mono', monospace !important; font-weight: 600; font-size: 13.5px;
+    color: var(--accent-ink); cursor: pointer; letter-spacing: .01em; }
+html[data-theme="dark"] .ticker { color: var(--accent); }
+.ticker:hover { text-decoration: underline; }
+.ticker .car { color: var(--ink-faint); font-size: 10px; margin-right: 5px; }
+.company { font-weight: 600; color: var(--ink); }
+.focus { color: var(--ink-soft); font-size: 11.5px; max-width: 230px; white-space: normal; line-height: 1.35; }
+
+.badge { display: inline-block; font-family: 'IBM Plex Sans', sans-serif; font-size: 8.5px; font-weight: 700;
+    padding: 1.5px 5px; border-radius: 4px; margin-left: 4px; vertical-align: middle; letter-spacing: .04em; }
+.badge-eur  { background: var(--accent-2); color: #fff; }
+.badge-sbc  { background: var(--y-bg); color: var(--y-fg); border: 1px solid var(--y-fg); }
+.badge-est  { background: transparent; color: var(--ink-faint); border: 1px solid var(--rule); font-weight: 600; }
+.rev-tag { font-family: 'IBM Plex Sans', sans-serif; font-size: 9px; color: var(--ink-faint); margin-left: 3px; }
+
+.na { color: var(--na); font-style: italic; font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; cursor: help; }
+
+td.g { background: var(--g-bg); color: var(--g-fg); font-weight: 600; }
+td.y { background: var(--y-bg); color: var(--y-fg); font-weight: 600; }
+td.r { background: var(--r-bg); color: var(--r-fg); font-weight: 600; }
+
+.source-cell { text-align: left; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; min-width: 170px; }
+.source-cell a { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; line-height: 1.7; }
+.source-cell a:hover { text-decoration: underline; }
+.source-cell .gen { display: block; color: var(--ink-faint); margin-top: 4px; font-size: 10px; }
+
+/* ── Detail row ───────────────────────────────────────── */
+tr.detail-row { display: none; }
+tr.detail-row.open { display: table-row; }
+tr.detail-row > td { padding: 0; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+.detail-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px;
+    font-family: 'IBM Plex Sans', sans-serif; border-bottom: 1px solid var(--rule); }
+.detail-bar .dt { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--accent-ink); font-size: 13px; }
+html[data-theme="dark"] .detail-bar .dt { color: var(--accent); }
+.detail-bar .dn { font-weight: 600; color: var(--ink); }
+.detail-bar .meta { font-size: 11px; color: var(--ink-faint); font-family: 'IBM Plex Mono', monospace; }
+.detail-bar .close-btn { margin-left: auto; cursor: pointer; background: none; border: 1px solid var(--rule);
+    border-radius: 6px; color: var(--ink-soft); width: 26px; height: 26px; font-size: 14px; line-height: 1; }
+.detail-bar .close-btn:hover { border-color: var(--r-fg); color: var(--r-fg); }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; padding: 16px 20px 20px; }
+.detail-card { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px;
+    font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; line-height: 1.55; }
+.detail-card.na-card { border-color: color-mix(in srgb, var(--r-fg) 35%, var(--rule)); background: color-mix(in srgb, var(--r-fg) 5%, var(--card)); }
+.detail-metric { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 4px; }
+.detail-value { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.detail-value.na { font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-style: italic; color: var(--na); }
+.detail-line { color: var(--ink-soft); font-size: 11px; margin-top: 3px; word-break: break-word; }
+.detail-line strong { color: var(--ink); font-weight: 600; }
+.detail-line.reason { color: var(--r-fg); }
+.detail-line a { color: var(--accent); text-decoration: none; font-weight: 500; cursor: help; }
+html[data-theme="dark"] .detail-line a { color: var(--accent); }
+.detail-line a:hover { text-decoration: underline; }
+.detail-line a .ext { font-size: 9px; opacity: .7; }
+
+/* ── Footer ───────────────────────────────────────────── */
+footer.foot { border-top: 2px solid var(--ink); padding: 22px 0 60px; font-size: 11.5px; color: var(--ink-soft); line-height: 1.7; }
+footer.foot .disc { font-family: 'Fraunces', serif; font-style: italic; font-size: 14px; color: var(--ink); margin-bottom: 10px; }
+footer.foot .src { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-faint); }
+footer.foot a { color: var(--accent); }
+
+@media (max-width: 640px) {
+    h1.title { font-size: 32px; }
+    .mast-meta { text-align: left; }
+    .stat .v { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+    <div class="eyebrow">Tearsheet · Equity Research · v1.0.0</div>
+    <div class="mast-row">
+        <h1 class="title">Consumer Staples <em>Sector Tearsheet</em></h1>
+        <div>
+            <div class="mast-meta">
+                As of <b>2026-06-20</b> · <b>10</b> companies<br>
+                Financials <b>SEC EDGAR XBRL</b> · Market data <b>Yahoo Finance</b><br>
+                Estimates <b>analyst consensus</b> · EV computed from components
+            </div>
+            <div class="controls">
+                <button class="btn" id="themeBtn" onclick="toggleTheme()">◐ Theme</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="summary">
+    <div class="stat accent">
+        <div class="k">Companies</div>
+        <div class="v">10</div>
+        <div class="sub">in universe</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median EV / EBITDA</div>
+        <div class="v">15.4<small>×</small></div>
+        <div class="sub">trailing</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median EV / Revenue</div>
+        <div class="v">3.2<small>×</small></div>
+        <div class="sub">trailing</div>
+    </div>
+    <div class="stat">
+        <div class="k">Median Rev Growth</div>
+        <div class="v">2<small>%</small></div>
+        <div class="sub">FY over FY</div>
+    </div>
+    <div class="stat">
+        <div class="k">Cheapest · EV/EBITDA</div>
+        <div class="v">GIS</div>
+        <div class="sub">7.0× trailing</div>
+    </div>
+    <div class="stat">
+        <div class="k">Priciest · EV/EBITDA</div>
+        <div class="v">KO</div>
+        <div class="sub">23.8× trailing</div>
+    </div>
+</section>
+
+<div class="toolbar">
+    <span class="hint">↕ Click a column to sort</span>
+    <span class="sep">·</span>
+    <span class="hint">▸ Click a ticker for per-metric sources &amp; formulas</span>
+    <span class="legend">
+        <b>Valuation:</b>
+        <span class="legend-item"><span class="swatch g"></span> Favorable</span>
+        <span class="legend-item"><span class="swatch y"></span> Moderate</span>
+        <span class="legend-item"><span class="swatch r"></span> Elevated</span>
+    </span>
+</div>
+
+<details class="method">
+    <summary><span class="chev">▸</span> Methodology &amp; data sources <span class="tag">how every number is computed</span></summary>
+    <div class="body">
+        <h4>Sources</h4>
+        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. These two keyless sources are the default; an optional StockAnalysis scrape (for foreign issuers without EDGAR) is off unless explicitly enabled. Click any ticker to see each figure's exact source, filing, and formula.</p>
+        <h4>TTM &amp; freshness</h4>
+        <p>TTM = the four most recent quarters (or YTD reconstruction for cash-flow items). Every value is checked against the company's latest filing date; anything stale is dropped to <strong>N/A with a reason</strong> rather than shown.</p>
+        <h4>Enterprise value</h4>
+        <p><code>EV = Market Cap + Total Debt − Total Cash</code>, computed from components. Pre-computed EV fields are not used (known stale-value issues). Market cap = price × basic shares.</p>
+        <h4>EBITDA</h4>
+        <p><code>EBITDA = Operating Income + D&amp;A</code> from EDGAR. Where D&amp;A is untagged or unreliable, operating income is used as a proxy and flagged.</p>
+        <h4>Estimates</h4>
+        <p>Forward P/E and PEG are <strong>analyst consensus</strong> (marked <span class="badge badge-est">EST</span>), not filings. PEG is Yahoo's (P/E ÷ 3–5yr est. growth).</p>
+        <h4>Revenue basis</h4>
+        <p>Net revenue (†) keeps only the fee retained (Marqeta, Payoneer); gross revenue includes full processing volume (Shift4, Paymentus). EV/Revenue is not directly comparable across these.</p>
+        <h4>Rule of 40</h4>
+        <p><code>Rev Growth % + FCF Margin %</code>. For SBC-heavy names, FCF &gt; EBITDA because stock comp is added back — EV/FCF flatters them (<span class="badge badge-sbc">SBC</span>).</p>
+    </div>
+</details>
+
+<div class="table-wrapper">
+<table>
+<thead>
+    <tr class="group-label-row">
+        <th colspan="3">Identity</th>
+        <th colspan="2">Size</th>
+        <th colspan="2">Revenue</th>
+        <th colspan="3">Margins</th>
+        <th colspan="3">EV Multiples</th>
+        <th colspan="5">Price Multiples</th>
+        <th colspan="2">Leverage &amp; Quality</th>
+        <th>Sources</th>
+    </tr>
+    <tr class="cols">
+        <th class="txt" data-key="ticker"    data-type="text">Ticker</th>
+        <th class="txt" data-key="company"   data-type="text">Company</th>
+        <th class="txt" data-key="focus"     data-type="text">Focus</th>
+        <th data-key="mktcap"    data-type="num">Mkt Cap<br><span class="u">$B</span></th>
+        <th data-key="ev"        data-type="num">EV<br><span class="u">$B</span></th>
+        <th data-key="rev"       data-type="num">Rev TTM<br><span class="u">$B</span></th>
+        <th data-key="revgrowth" data-type="num">Rev Grth<br><span class="u">YoY %</span></th>
+        <th data-key="gm"        data-type="num">Gross<br><span class="u">margin %</span></th>
+        <th data-key="ebitdam"   data-type="num">EBITDA<br><span class="u">margin %</span></th>
+        <th data-key="fcfm"      data-type="num">FCF<br><span class="u">margin %</span></th>
+        <th data-key="evrev"     data-type="num">EV /<br>Revenue</th>
+        <th data-key="evebitda"  data-type="num">EV /<br>EBITDA</th>
+        <th data-key="evfcf"     data-type="num">EV /<br>FCF</th>
+        <th data-key="pe"        data-type="num">P / E<br><span class="u">TTM</span></th>
+        <th data-key="fwdpe"     data-type="num">Fwd P/E<br><span class="u">est.</span></th>
+        <th data-key="peg"       data-type="num">PEG<br><span class="u">est.</span></th>
+        <th data-key="ps"        data-type="num">Price /<br>Sales</th>
+        <th data-key="pfcf"      data-type="num">Price /<br>FCF</th>
+        <th data-key="netdebt"   data-type="num">Net Debt /<br>EBITDA</th>
+        <th data-key="r40"       data-type="num">Rule<br>of 40</th>
+        <th class="txt nosort">Data Sources</th>
+    </tr>
+</thead>
+<tbody id="tbody">
+
+
+
+<tr class="data-row"
+    data-ticker="PG"
+    data-company="Procter & Gamble Co."
+    data-focus="Household & personal care"
+    data-mktcap="350174714311.6400"
+    data-ev="374026714311.6400"
+    data-rev="86.7170"
+    data-revgrowth="0.2915"
+    data-gm="50.3292"
+    data-ebitdam="26.7445"
+    data-fcfm="17.3299"
+    data-evrev="4.3132"
+    data-evebitda="16.1274"
+    data-evfcf="24.8887"
+    data-pe="21.0733"
+    data-fwdpe="21.1893"
+    data-peg="4.2242"
+    data-ps="4.0381"
+    data-pfcf="23.3015"
+    data-netdebt="1.0285"
+    data-r40="17.6215">
+
+  <td class="txt ticker" onclick="toggleDetail('PG')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>PG
+  </td>
+  <td class="txt"><span class="company">Procter & Gamble Co.</span></td>
+  <td class="txt focus">Household & personal care</td>
+
+  <td title="Market Cap | = 350.175B | Source: computed:price(yfinance:ticker.info.currentPrice (PG)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PG)) = 150.38 × 2328.60M = 350.175B | Period: live">$350.2B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 374.027B | Source: Computed: MarketCap + TotalDebt − TotalCash = 350.17B + 23.85B − 0.00B | Period: live">$374.0B</td>
+  <td title="Revenue TTM | = 86.717B | Source: edgar_10q:ytd_reconstruction,FY(2025-06-30)=84,284,000,000+YTD(2026-03-31)=65,828,000,000-PriorYTD(2025-03-31)=63,395,000,000,concept=Revenues | Period: TTM via YTD recon (2026-03-31)">$86.7B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 0.292 | Inputs: Revenue_TTM=8.43e+10, Revenue_PriorYear=8.4e+10">0.3%</td>
+  <td title="GrossProfit / Revenue_TTM | = 50.329 | Inputs: GrossProfit=4.36e+10, Revenue_TTM=8.67e+10">50.3%</td>
+  <td title="EBITDA / Revenue_TTM | = 26.744 | Inputs: EBITDA=2.32e+10, Revenue_TTM=8.67e+10">26.7%</td>
+  <td title="FCF / Revenue_TTM | = 17.330 | Inputs: FCF=1.5e+10, Revenue_TTM=8.67e+10">17.3%</td>
+
+  <td class="y" title="EV / Revenue_TTM | = 4.313 | Inputs: EV=3.74e+11, Revenue_TTM=8.67e+10">4.31x</td>
+  <td class="y" title="EV / EBITDA | = 16.127 | Inputs: EV=3.74e+11, EBITDA=2.32e+10">16.13x</td>
+  <td class="y" title="EV / FCF | = 24.889 | Inputs: EV=3.74e+11, FCF=1.5e+10">24.89x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 21.073 | Inputs: MarketCap=3.5e+11, NetIncome_TTM=1.66e+10">21.07x</td>
+  <td class="y" title="Price / EPS_Forward | = 21.189 | Inputs: Price=150, EPS_Forward=7.1 [analyst estimate]">21.19x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 4.224 | Inputs: YahooPEG=4.22 [analyst estimate]">4.22x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 4.038 | Inputs: MarketCap=3.5e+11, Revenue_TTM=8.67e+10">4.04x</td>
+  <td class="y" title="MarketCap / FCF | = 23.301 | Inputs: MarketCap=3.5e+11, FCF=1.5e+10">23.30x</td>
+
+  <td class="g" title="NetDebt / EBITDA | = 1.028 | Inputs: NetDebt=2.39e+10, EBITDA=2.32e+10">1.03x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 17.621 | Inputs: RevGrowthPct=0.292, FCFMarginPct=17.3">18</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000080424&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/PG" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-PG">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">PG</span><span class="dn">Procter & Gamble Co.</span>
+      <span class="meta">CIK 0000080424</span>
+      
+      <button class="close-btn" onclick="toggleDetail('PG')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$86.717B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000080424&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-06-30)=84,284,000,000+YTD(2026-03-31)=65,828,000,000-PriorYTD(2025-03-31)=63,395,000,000,concept=Revenues">SEC 10-Q · Revenues <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$43.644B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:Revenue(86717M)−Cost(43073M)=43644M [GrossProfit not tagged]">Computed</span></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$23.192B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000080424&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(20153M)+D&amp;A(3039M)=23192M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$15.028B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $19.41B &nbsp;|&nbsp; <strong>CapEx</strong>: $4.38B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$19.410B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000080424&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-06-30)=17,817,000,000+YTD(2026-03-31)=14,425,000,000-PriorYTD(2025-03-31)=12,832,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$4.382B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000080424&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-06-30)=3,773,000,000+YTD(2026-03-31)=3,386,000,000-PriorYTD(2025-03-31)=2,777,000,000,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$16.617B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000080424&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-06-30)=15,974,000,000+YTD(2026-03-31)=13,002,000,000-PriorYTD(2025-03-31)=12,359,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for total_cash. edgar: All EDGAR concepts failed for total_cash: CashAndCashEquivalentsAtCarryingValue: value period 2019-09-30 is 78mo behind latest filing 2026-03-31 (max 12mo) — concept likely no longer tagged; skipped to avoid stale data | CashCashEquivalentsAndShortTermInvestments: HTTP error or not found | CashAndCashEquivalentsAndShortTermInvestments: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$23.852B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/80424/000008042426000060/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0000080424-26-000060,concept=LongTermDebtNoncurrent">SEC 10-Q · LongTermDebtNoncurrent <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$350.175B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (PG)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PG)) = 150.38 × 2328.60M = 350.175B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$374.027B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 350.17B + 23.85B − 0.00B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">50.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $43.64B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $86.72B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">26.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $23.19B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $86.72B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">17.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $15.03B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $86.72B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">0.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $84.28B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $84.04B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">4.313x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $374.03B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $86.72B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">16.13x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $374.03B &nbsp;|&nbsp; <strong>EBITDA</strong>: $23.19B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">24.89x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $374.03B &nbsp;|&nbsp; <strong>FCF</strong>: $15.03B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">21.07x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $350.17B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $16.62B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">21.19x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 150.38 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $7.10</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">4.224x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 4.22</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">4.038x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $350.17B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $86.72B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">23.30x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $350.17B &nbsp;|&nbsp; <strong>FCF</strong>: $15.03B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$23.852B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $23.85B &nbsp;|&nbsp; <strong>TotalCash</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">1.028x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $23.85B &nbsp;|&nbsp; <strong>EBITDA</strong>: $23.19B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">17.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 0.3% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 17.3%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="KO"
+    data-company="The Coca-Cola Company"
+    data-focus="Non-alcoholic beverages"
+    data-mktcap="341574079165.0200"
+    data-ev="370065079165.0200"
+    data-rev="49.2840"
+    data-revgrowth="1.8699"
+    data-gm="61.7442"
+    data-ebitdam="31.5315"
+    data-fcfm="10.7459"
+    data-evrev="7.5088"
+    data-evebitda="23.8137"
+    data-evfcf="69.8763"
+    data-pe="24.9306"
+    data-fwdpe="22.7904"
+    data-peg="4.0588"
+    data-ps="6.9307"
+    data-pfcf="64.4966"
+    data-netdebt="1.8334"
+    data-r40="12.6158">
+
+  <td class="txt ticker" onclick="toggleDetail('KO')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>KO
+  </td>
+  <td class="txt"><span class="company">The Coca-Cola Company</span></td>
+  <td class="txt focus">Non-alcoholic beverages</td>
+
+  <td title="Market Cap | = 341.574B | Source: computed:price(yfinance:ticker.info.currentPrice (KO)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (KO)) = 79.39 × 4302.48M = 341.574B | Period: live">$341.6B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 370.065B | Source: Computed: MarketCap + TotalDebt − TotalCash = 341.57B + 39.06B − 10.57B | Period: live">$370.1B</td>
+  <td title="Revenue TTM | = 49.284B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=47,941,000,000+YTD(2026-04-03)=12,472,000,000-PriorYTD(2025-03-28)=11,129,000,000,concept=Revenues | Period: TTM via YTD recon (2026-04-03)">$49.3B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 1.870 | Inputs: Revenue_TTM=4.79e+10, Revenue_PriorYear=4.71e+10">1.9%</td>
+  <td title="GrossProfit / Revenue_TTM | = 61.744 | Inputs: GrossProfit=3.04e+10, Revenue_TTM=4.93e+10">61.7%</td>
+  <td title="EBITDA / Revenue_TTM | = 31.532 | Inputs: EBITDA=1.55e+10, Revenue_TTM=4.93e+10">31.5%</td>
+  <td title="FCF / Revenue_TTM | = 10.746 | Inputs: FCF=5.3e+09, Revenue_TTM=4.93e+10">10.7%</td>
+
+  <td class="r" title="EV / Revenue_TTM | = 7.509 | Inputs: EV=3.7e+11, Revenue_TTM=4.93e+10">7.51x</td>
+  <td class="y" title="EV / EBITDA | = 23.814 | Inputs: EV=3.7e+11, EBITDA=1.55e+10">23.81x</td>
+  <td class="r" title="EV / FCF | = 69.876 | Inputs: EV=3.7e+11, FCF=5.3e+09">69.88x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 24.931 | Inputs: MarketCap=3.42e+11, NetIncome_TTM=1.37e+10">24.93x</td>
+  <td class="y" title="Price / EPS_Forward | = 22.790 | Inputs: Price=79.4, EPS_Forward=3.48 [analyst estimate]">22.79x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 4.059 | Inputs: YahooPEG=4.06 [analyst estimate]">4.06x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 6.931 | Inputs: MarketCap=3.42e+11, Revenue_TTM=4.93e+10">6.93x</td>
+  <td class="r" title="MarketCap / FCF | = 64.497 | Inputs: MarketCap=3.42e+11, FCF=5.3e+09">64.50x</td>
+
+  <td class="g" title="NetDebt / EBITDA | = 1.833 | Inputs: NetDebt=2.85e+10, EBITDA=1.55e+10">1.83x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 12.616 | Inputs: RevGrowthPct=1.87, FCFMarginPct=10.7">13</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000021344&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/KO" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-KO">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">KO</span><span class="dn">The Coca-Cola Company</span>
+      <span class="meta">CIK 0000021344</span>
+      
+      <button class="close-btn" onclick="toggleDetail('KO')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$49.284B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=47,941,000,000+YTD(2026-04-03)=12,472,000,000-PriorYTD(2025-03-28)=11,129,000,000,concept=Revenues">SEC 10-Q · Revenues <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-04-03)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$30.430B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=29,544,000,000+YTD(2026-04-03)=7,852,000,000-PriorYTD(2025-03-28)=6,966,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-04-03)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$15.540B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(14462M)+D&amp;A(1078M)=15540M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-04-03)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$5.296B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $7.41B &nbsp;|&nbsp; <strong>CapEx</strong>: $2.11B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$7.408B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-12-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$2.112B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-12-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$13.701B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021344&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=13,107,000,000+YTD(2026-04-03)=3,924,000,000-PriorYTD(2025-03-28)=3,330,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-04-03)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$10.574B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/21344/000162828026028802/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-028802,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-04-03</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$39.065B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/21344/000162828026028802/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-028802,concept=LongTermDebtAndCapitalLeaseObligations">SEC 10-Q · LongTermDebtAndCapitalLeaseObligations <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-04-03</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$341.574B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (KO)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (KO)) = 79.39 × 4302.48M = 341.574B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$370.065B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 341.57B + 39.06B − 10.57B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">61.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $30.43B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $49.28B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">31.5%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $15.54B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $49.28B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">10.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $5.30B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $49.28B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">1.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $47.94B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $47.06B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">7.509x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $370.07B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $49.28B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">23.81x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $370.07B &nbsp;|&nbsp; <strong>EBITDA</strong>: $15.54B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">69.88x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $370.07B &nbsp;|&nbsp; <strong>FCF</strong>: $5.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">24.93x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $341.57B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $13.70B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">22.79x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 79.39 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $3.48</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">4.059x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 4.06</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">6.931x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $341.57B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $49.28B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">64.50x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $341.57B &nbsp;|&nbsp; <strong>FCF</strong>: $5.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$28.491B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $39.06B &nbsp;|&nbsp; <strong>TotalCash</strong>: $10.57B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">1.833x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $28.49B &nbsp;|&nbsp; <strong>EBITDA</strong>: $15.54B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">12.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 1.9% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 10.7%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="PEP"
+    data-company="PepsiCo, Inc."
+    data-focus="Beverages & convenient foods"
+    data-mktcap="194108436096.3000"
+    data-ev="229984436096.3000"
+    data-rev="95.4490"
+    data-revgrowth="2.2547"
+    data-gm="54.0571"
+    data-ebitdam="16.3218"
+    data-fcfm="12.6633"
+    data-evrev="2.4095"
+    data-evebitda="14.7625"
+    data-evfcf="19.0274"
+    data-pe="22.2270"
+    data-fwdpe="15.5869"
+    data-peg="1.5291"
+    data-ps="2.0336"
+    data-pfcf="16.0593"
+    data-netdebt="2.3028"
+    data-r40="14.9180">
+
+  <td class="txt ticker" onclick="toggleDetail('PEP')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>PEP
+  </td>
+  <td class="txt"><span class="company">PepsiCo, Inc.</span></td>
+  <td class="txt focus">Beverages & convenient foods</td>
+
+  <td title="Market Cap | = 194.108B | Source: computed:price(yfinance:ticker.info.currentPrice (PEP)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PEP)) = 142.02 × 1366.77M = 194.108B | Period: live">$194.1B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 229.984B | Source: Computed: MarketCap + TotalDebt − TotalCash = 194.11B + 46.35B − 10.47B | Period: live">$230.0B</td>
+  <td title="Revenue TTM | = 95.449B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-27)=93,925,000,000+YTD(2026-03-21)=19,443,000,000-PriorYTD(2025-03-22)=17,919,000,000,concept=Revenues | Period: TTM via YTD recon (2026-03-21)">$95.4B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 2.255 | Inputs: Revenue_TTM=9.39e+10, Revenue_PriorYear=9.19e+10">2.3%</td>
+  <td title="GrossProfit / Revenue_TTM | = 54.057 | Inputs: GrossProfit=5.16e+10, Revenue_TTM=9.54e+10">54.1%</td>
+  <td title="EBITDA / Revenue_TTM | = 16.322 | Inputs: EBITDA=1.56e+10, Revenue_TTM=9.54e+10">16.3%</td>
+  <td title="FCF / Revenue_TTM | = 12.663 | Inputs: FCF=1.21e+10, Revenue_TTM=9.54e+10">12.7%</td>
+
+  <td class="g" title="EV / Revenue_TTM | = 2.410 | Inputs: EV=2.3e+11, Revenue_TTM=9.54e+10">2.41x</td>
+  <td class="g" title="EV / EBITDA | = 14.762 | Inputs: EV=2.3e+11, EBITDA=1.56e+10">14.76x</td>
+  <td class="y" title="EV / FCF | = 19.027 | Inputs: EV=2.3e+11, FCF=1.21e+10">19.03x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 22.227 | Inputs: MarketCap=1.94e+11, NetIncome_TTM=8.73e+09">22.23x</td>
+  <td class="y" title="Price / EPS_Forward | = 15.587 | Inputs: Price=142, EPS_Forward=9.11 [analyst estimate]">15.59x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 1.529 | Inputs: YahooPEG=1.53 [analyst estimate]">1.53x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 2.034 | Inputs: MarketCap=1.94e+11, Revenue_TTM=9.54e+10">2.03x</td>
+  <td class="y" title="MarketCap / FCF | = 16.059 | Inputs: MarketCap=1.94e+11, FCF=1.21e+10">16.06x</td>
+
+  <td class="y" title="NetDebt / EBITDA | = 2.303 | Inputs: NetDebt=3.59e+10, EBITDA=1.56e+10">2.30x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 14.918 | Inputs: RevGrowthPct=2.25, FCFMarginPct=12.7">15</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000077476&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/PEP" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-PEP">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">PEP</span><span class="dn">PepsiCo, Inc.</span>
+      <span class="meta">CIK 0000077476</span>
+      
+      <button class="close-btn" onclick="toggleDetail('PEP')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$95.449B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000077476&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-27)=93,925,000,000+YTD(2026-03-21)=19,443,000,000-PriorYTD(2025-03-22)=17,919,000,000,concept=Revenues">SEC 10-Q · Revenues <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-21)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$51.597B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000077476&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-27)=50,859,000,000+YTD(2026-03-21)=10,731,000,000-PriorYTD(2025-03-22)=9,993,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-21)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$15.579B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000077476&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(12128M)+D&amp;A(3451M)=15579M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-21)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$12.087B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $12.09B &nbsp;|&nbsp; <strong>CapEx</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$12.087B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000077476&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-12-27)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for capex. edgar: All EDGAR concepts failed for capex: PaymentsToAcquirePropertyPlantAndEquipment: HTTP error or not found | CapitalExpendituresIncurredButNotYetPaid: HTTP error or not found | PaymentsForCapitalImprovements: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$8.733B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000077476&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-27)=8,240,000,000+YTD(2026-03-21)=2,327,000,000-PriorYTD(2025-03-22)=1,834,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-21)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$10.475B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/77476/000007747626000017/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0000077476-26-000017,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-21</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$46.351B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/77476/000007747626000007/" target="_blank" rel="noopener" title="edgar:10-K,accession=0000077476-26-000007,concept=LongTermDebt">SEC 10-K · LongTermDebt <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2025-12-27</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$194.108B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (PEP)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PEP)) = 142.02 × 1366.77M = 194.108B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$229.984B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 194.11B + 46.35B − 10.47B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">54.1%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $51.60B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $95.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">16.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $15.58B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $95.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">12.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $12.09B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $95.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">2.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $93.92B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $91.85B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">2.410x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $229.98B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $95.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">14.76x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $229.98B &nbsp;|&nbsp; <strong>EBITDA</strong>: $15.58B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">19.03x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $229.98B &nbsp;|&nbsp; <strong>FCF</strong>: $12.09B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">22.23x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $194.11B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $8.73B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">15.59x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 142.02 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $9.11</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">1.529x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 1.53</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">2.034x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $194.11B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $95.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">16.06x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $194.11B &nbsp;|&nbsp; <strong>FCF</strong>: $12.09B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$35.876B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $46.35B &nbsp;|&nbsp; <strong>TotalCash</strong>: $10.47B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">2.303x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $35.88B &nbsp;|&nbsp; <strong>EBITDA</strong>: $15.58B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">14.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 2.3% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 12.7%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="MO"
+    data-company="Altria Group, Inc."
+    data-focus="Tobacco (US) — revenue incl. excise tax"
+    data-mktcap="115422882163.2000"
+    data-ev="136493882163.2000"
+    data-rev="23.4480"
+    data-revgrowth="-3.0769"
+    data-gm="63.1141"
+    data-ebitdam="48.2685"
+    data-fcfm="36.7750"
+    data-evrev="5.8211"
+    data-evebitda="12.0599"
+    data-evfcf="15.8290"
+    data-pe="14.3329"
+    data-fwdpe="11.7680"
+    data-peg="1.5824"
+    data-ps="4.9225"
+    data-pfcf="13.3855"
+    data-netdebt="1.8617"
+    data-r40="33.6981">
+
+  <td class="txt ticker" onclick="toggleDetail('MO')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>MO
+  </td>
+  <td class="txt"><span class="company">Altria Group, Inc.</span></td>
+  <td class="txt focus">Tobacco (US) — revenue incl. excise tax</td>
+
+  <td title="Market Cap | = 115.423B | Source: computed:price(yfinance:ticker.info.currentPrice (MO)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MO)) = 69.12 × 1669.89M = 115.423B | Period: live">$115.4B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 136.494B | Source: Computed: MarketCap + TotalDebt − TotalCash = 115.42B + 24.60B − 3.53B | Period: live">$136.5B</td>
+  <td title="Revenue TTM | = 23.448B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=23,279,000,000+YTD(2026-03-31)=5,428,000,000-PriorYTD(2025-03-31)=5,259,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax | Period: TTM via YTD recon (2026-03-31)">$23.4B<span class="rev-tag">gross</span></td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = -3.077 | Inputs: Revenue_TTM=2.33e+10, Revenue_PriorYear=2.4e+10">-3.1%</td>
+  <td title="GrossProfit / Revenue_TTM | = 63.114 | Inputs: GrossProfit=1.48e+10, Revenue_TTM=2.34e+10">63.1%</td>
+  <td title="EBITDA / Revenue_TTM | = 48.269 | Inputs: EBITDA=1.13e+10, Revenue_TTM=2.34e+10">48.3%</td>
+  <td title="FCF / Revenue_TTM | = 36.775 | Inputs: FCF=8.62e+09, Revenue_TTM=2.34e+10">36.8%</td>
+
+  <td class="y" title="EV / Revenue_TTM | = 5.821 | Inputs: EV=1.36e+11, Revenue_TTM=2.34e+10">5.82x</td>
+  <td class="g" title="EV / EBITDA | = 12.060 | Inputs: EV=1.36e+11, EBITDA=1.13e+10">12.06x</td>
+  <td class="y" title="EV / FCF | = 15.829 | Inputs: EV=1.36e+11, FCF=8.62e+09">15.83x</td>
+
+  <td class="g" title="MarketCap / NetIncome_TTM | = 14.333 | Inputs: MarketCap=1.15e+11, NetIncome_TTM=8.05e+09">14.33x</td>
+  <td class="g" title="Price / EPS_Forward | = 11.768 | Inputs: Price=69.1, EPS_Forward=5.87 [analyst estimate]">11.77x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 1.582 | Inputs: YahooPEG=1.58 [analyst estimate]">1.58x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 4.923 | Inputs: MarketCap=1.15e+11, Revenue_TTM=2.34e+10">4.92x</td>
+  <td class="g" title="MarketCap / FCF | = 13.385 | Inputs: MarketCap=1.15e+11, FCF=8.62e+09">13.39x</td>
+
+  <td class="g" title="NetDebt / EBITDA | = 1.862 | Inputs: NetDebt=2.11e+10, EBITDA=1.13e+10">1.86x</td>
+  <td class="y" title="RevGrowthPct + FCFMarginPct | = 33.698 | Inputs: RevGrowthPct=-3.08, FCFMarginPct=36.8">34</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000764180&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/MO" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-MO">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">MO</span><span class="dn">Altria Group, Inc.</span>
+      <span class="meta">CIK 0000764180</span>
+      
+      <button class="close-btn" onclick="toggleDetail('MO')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$23.448B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=23,279,000,000+YTD(2026-03-31)=5,428,000,000-PriorYTD(2025-03-31)=5,259,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax">SEC 10-Q · RevenueFromContractWithCustomerExcludingAssessedTax <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$14.799B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=14,542,000,000+YTD(2026-03-31)=3,506,000,000-PriorYTD(2025-03-31)=3,249,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$11.318B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(11067M)+D&amp;A(251M)=11318M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$8.623B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $8.89B &nbsp;|&nbsp; <strong>CapEx</strong>: $271.0M</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$8.894B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=9,290,000,000+YTD(2026-03-31)=2,324,000,000-PriorYTD(2025-03-31)=2,720,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$271.0M</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=216,000,000+YTD(2026-03-31)=93,000,000-PriorYTD(2025-03-31)=38,000,000,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$8.053B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000764180&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=6,947,000,000+YTD(2026-03-31)=2,183,000,000-PriorYTD(2025-03-31)=1,077,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$3.531B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/764180/000076418026000058/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0000764180-26-000058,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$24.602B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/764180/000076418026000058/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0000764180-26-000058,concept=LongTermDebt">SEC 10-Q · LongTermDebt <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$115.423B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (MO)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MO)) = 69.12 × 1669.89M = 115.423B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$136.494B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 115.42B + 24.60B − 3.53B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">63.1%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $14.80B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $23.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">48.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $11.32B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $23.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">36.8%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $8.62B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $23.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">-3.1%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $23.28B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $24.02B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">5.821x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $136.49B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $23.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">12.06x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $136.49B &nbsp;|&nbsp; <strong>EBITDA</strong>: $11.32B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">15.83x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $136.49B &nbsp;|&nbsp; <strong>FCF</strong>: $8.62B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">14.33x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $115.42B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $8.05B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">11.77x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 69.12 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $5.87</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">1.582x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 1.58</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">4.923x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $115.42B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $23.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">13.39x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $115.42B &nbsp;|&nbsp; <strong>FCF</strong>: $8.62B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$21.071B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $24.60B &nbsp;|&nbsp; <strong>TotalCash</strong>: $3.53B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">1.862x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $21.07B &nbsp;|&nbsp; <strong>EBITDA</strong>: $11.32B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">33.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: -3.1% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 36.8%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="PM"
+    data-company="Philip Morris International"
+    data-focus="Tobacco & smoke-free (international)"
+    data-mktcap="278046898126.4000"
+    data-ev="316404898126.4000"
+    data-rev="41.4930"
+    data-revgrowth="7.3130"
+    data-gm="67.3029"
+    data-ebitdam="41.5154"
+    data-fcfm="25.7055"
+    data-evrev="7.6255"
+    data-evebitda="18.3679"
+    data-evfcf="29.6648"
+    data-pe="25.0583"
+    data-fwdpe="19.5428"
+    data-peg="2.4897"
+    data-ps="6.7011"
+    data-pfcf="26.0685"
+    data-netdebt="2.2268"
+    data-r40="33.0185">
+
+  <td class="txt ticker" onclick="toggleDetail('PM')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>PM
+  </td>
+  <td class="txt"><span class="company">Philip Morris International</span></td>
+  <td class="txt focus">Tobacco & smoke-free (international)</td>
+
+  <td title="Market Cap | = 278.047B | Source: computed:price(yfinance:ticker.info.currentPrice (PM)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PM)) = 178.40 × 1558.56M = 278.047B | Period: live">$278.0B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 316.405B | Source: Computed: MarketCap + TotalDebt − TotalCash = 278.05B + 43.81B − 5.45B | Period: live">$316.4B</td>
+  <td title="Revenue TTM | = 41.493B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=40,648,000,000+YTD(2026-03-31)=10,146,000,000-PriorYTD(2025-03-31)=9,301,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax | Period: TTM via YTD recon (2026-03-31)">$41.5B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 7.313 | Inputs: Revenue_TTM=4.06e+10, Revenue_PriorYear=3.79e+10">7.3%</td>
+  <td title="GrossProfit / Revenue_TTM | = 67.303 | Inputs: GrossProfit=2.79e+10, Revenue_TTM=4.15e+10">67.3%</td>
+  <td title="EBITDA / Revenue_TTM | = 41.515 | Inputs: EBITDA=1.72e+10, Revenue_TTM=4.15e+10">41.5%</td>
+  <td title="FCF / Revenue_TTM | = 25.706 | Inputs: FCF=1.07e+10, Revenue_TTM=4.15e+10">25.7%</td>
+
+  <td class="r" title="EV / Revenue_TTM | = 7.626 | Inputs: EV=3.16e+11, Revenue_TTM=4.15e+10">7.63x</td>
+  <td class="y" title="EV / EBITDA | = 18.368 | Inputs: EV=3.16e+11, EBITDA=1.72e+10">18.37x</td>
+  <td class="y" title="EV / FCF | = 29.665 | Inputs: EV=3.16e+11, FCF=1.07e+10">29.66x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 25.058 | Inputs: MarketCap=2.78e+11, NetIncome_TTM=1.11e+10">25.06x</td>
+  <td class="y" title="Price / EPS_Forward | = 19.543 | Inputs: Price=178, EPS_Forward=9.13 [analyst estimate]">19.54x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 2.490 | Inputs: YahooPEG=2.49 [analyst estimate]">2.49x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 6.701 | Inputs: MarketCap=2.78e+11, Revenue_TTM=4.15e+10">6.70x</td>
+  <td class="y" title="MarketCap / FCF | = 26.069 | Inputs: MarketCap=2.78e+11, FCF=1.07e+10">26.07x</td>
+
+  <td class="y" title="NetDebt / EBITDA | = 2.227 | Inputs: NetDebt=3.84e+10, EBITDA=1.72e+10">2.23x</td>
+  <td class="y" title="RevGrowthPct + FCFMarginPct | = 33.018 | Inputs: RevGrowthPct=7.31, FCFMarginPct=25.7">33</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001413329&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/PM" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-PM">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">PM</span><span class="dn">Philip Morris International</span>
+      <span class="meta">CIK 0001413329</span>
+      
+      <button class="close-btn" onclick="toggleDetail('PM')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$41.493B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=40,648,000,000+YTD(2026-03-31)=10,146,000,000-PriorYTD(2025-03-31)=9,301,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax">SEC 10-Q · RevenueFromContractWithCustomerExcludingAssessedTax <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$27.926B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=27,282,000,000+YTD(2026-03-31)=6,905,000,000-PriorYTD(2025-03-31)=6,261,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$17.226B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(15241M)+D&amp;A(1985M)=17226M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$10.666B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $12.18B &nbsp;|&nbsp; <strong>CapEx</strong>: $1.52B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$12.184B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=12,233,000,000+YTD(2026-03-31)=-399,000,000-PriorYTD(2025-03-31)=-350,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$1.518B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=1,569,000,000+YTD(2026-03-31)=353,000,000-PriorYTD(2025-03-31)=404,000,000,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$11.096B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001413329&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=11,348,000,000+YTD(2026-03-31)=2,438,000,000-PriorYTD(2025-03-31)=2,690,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$5.450B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/1413329/000162828026027019/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-027019,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$43.808B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/1413329/000162828026027019/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-027019,concept=LongTermDebtAndCapitalLeaseObligations">SEC 10-Q · LongTermDebtAndCapitalLeaseObligations <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$278.047B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (PM)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (PM)) = 178.40 × 1558.56M = 278.047B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$316.405B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 278.05B + 43.81B − 5.45B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">67.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $27.93B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $41.49B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">41.5%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $17.23B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $41.49B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">25.7%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $10.67B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $41.49B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">7.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $40.65B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $37.88B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">7.626x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $316.40B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $41.49B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">18.37x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $316.40B &nbsp;|&nbsp; <strong>EBITDA</strong>: $17.23B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">29.66x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $316.40B &nbsp;|&nbsp; <strong>FCF</strong>: $10.67B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">25.06x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $278.05B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $11.10B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">19.54x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 178.40 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $9.13</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">2.490x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 2.49</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">6.701x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $278.05B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $41.49B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">26.07x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $278.05B &nbsp;|&nbsp; <strong>FCF</strong>: $10.67B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$38.358B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $43.81B &nbsp;|&nbsp; <strong>TotalCash</strong>: $5.45B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">2.227x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $38.36B &nbsp;|&nbsp; <strong>EBITDA</strong>: $17.23B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">33.0%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 7.3% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 25.7%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="MDLZ"
+    data-company="Mondelez International"
+    data-focus="Snacks & confectionery"
+    data-mktcap="77173023931.9200"
+    data-ev="92641023931.9200"
+    data-rev="39.3040"
+    data-revgrowth="5.7518"
+    data-gm="28.7706"
+    data-ebitdam="12.8562"
+    data-fcfm="6.5515"
+    data-evrev="2.3570"
+    data-evebitda="18.3339"
+    data-evfcf="35.9771"
+    data-pe="29.5795"
+    data-fwdpe="17.7540"
+    data-peg="0.9871"
+    data-ps="1.9635"
+    data-pfcf="29.9701"
+    data-netdebt="3.0612"
+    data-r40="12.3033">
+
+  <td class="txt ticker" onclick="toggleDetail('MDLZ')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>MDLZ
+  </td>
+  <td class="txt"><span class="company">Mondelez International</span></td>
+  <td class="txt focus">Snacks & confectionery</td>
+
+  <td title="Market Cap | = 77.173B | Source: computed:price(yfinance:ticker.info.currentPrice (MDLZ)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MDLZ)) = 60.12 × 1283.65M = 77.173B | Period: live">$77.2B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 92.641B | Source: Computed: MarketCap + TotalDebt − TotalCash = 77.17B + 15.47B − 0.00B | Period: live">$92.6B</td>
+  <td title="Revenue TTM | = 39.304B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=38,537,000,000+YTD(2026-03-31)=10,080,000,000-PriorYTD(2025-03-31)=9,313,000,000,concept=Revenues | Period: TTM via YTD recon (2026-03-31)">$39.3B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 5.752 | Inputs: Revenue_TTM=3.85e+10, Revenue_PriorYear=3.64e+10">5.8%</td>
+  <td title="GrossProfit / Revenue_TTM | = 28.771 | Inputs: GrossProfit=1.13e+10, Revenue_TTM=3.93e+10">28.8%</td>
+  <td title="EBITDA / Revenue_TTM | = 12.856 | Inputs: EBITDA=5.05e+09, Revenue_TTM=3.93e+10">12.9%</td>
+  <td title="FCF / Revenue_TTM | = 6.551 | Inputs: FCF=2.58e+09, Revenue_TTM=3.93e+10">6.6%</td>
+
+  <td class="g" title="EV / Revenue_TTM | = 2.357 | Inputs: EV=9.26e+10, Revenue_TTM=3.93e+10">2.36x</td>
+  <td class="y" title="EV / EBITDA | = 18.334 | Inputs: EV=9.26e+10, EBITDA=5.05e+09">18.33x</td>
+  <td class="r" title="EV / FCF | = 35.977 | Inputs: EV=9.26e+10, FCF=2.58e+09">35.98x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 29.580 | Inputs: MarketCap=7.72e+10, NetIncome_TTM=2.61e+09">29.58x</td>
+  <td class="y" title="Price / EPS_Forward | = 17.754 | Inputs: Price=60.1, EPS_Forward=3.39 [analyst estimate]">17.75x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 0.987 | Inputs: YahooPEG=0.987 [analyst estimate]">0.99x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 1.963 | Inputs: MarketCap=7.72e+10, Revenue_TTM=3.93e+10">1.96x</td>
+  <td class="y" title="MarketCap / FCF | = 29.970 | Inputs: MarketCap=7.72e+10, FCF=2.58e+09">29.97x</td>
+
+  <td class="y" title="NetDebt / EBITDA | = 3.061 | Inputs: NetDebt=1.55e+10, EBITDA=5.05e+09">3.06x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 12.303 | Inputs: RevGrowthPct=5.75, FCFMarginPct=6.55">12</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001103982&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/MDLZ" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-MDLZ">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">MDLZ</span><span class="dn">Mondelez International</span>
+      <span class="meta">CIK 0001103982</span>
+      
+      <button class="close-btn" onclick="toggleDetail('MDLZ')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$39.304B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=38,537,000,000+YTD(2026-03-31)=10,080,000,000-PriorYTD(2025-03-31)=9,313,000,000,concept=Revenues">SEC 10-Q · Revenues <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$11.308B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=10,935,000,000+YTD(2026-03-31)=2,803,000,000-PriorYTD(2025-03-31)=2,430,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$5.053B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(3676M)+D&amp;A(1377M)=5053M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$2.575B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $3.89B &nbsp;|&nbsp; <strong>CapEx</strong>: $1.31B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$3.889B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=4,514,000,000+YTD(2026-03-31)=467,000,000-PriorYTD(2025-03-31)=1,092,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$1.314B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=1,279,000,000+YTD(2026-03-31)=312,000,000-PriorYTD(2025-03-31)=277,000,000,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$2.609B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0001103982&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=2,451,000,000+YTD(2026-03-31)=560,000,000-PriorYTD(2025-03-31)=402,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for total_cash. edgar: All EDGAR concepts failed for total_cash: CashAndCashEquivalentsAtCarryingValue: value period 2013-06-30 is 153mo behind latest filing 2026-03-31 (max 12mo) — concept likely no longer tagged; skipped to avoid stale data | CashCashEquivalentsAndShortTermInvestments: HTTP error or not found | CashAndCashEquivalentsAndShortTermInvestments: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$15.468B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/1103982/000162828026027937/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-027937,concept=LongTermDebtAndCapitalLeaseObligations">SEC 10-Q · LongTermDebtAndCapitalLeaseObligations <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$77.173B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (MDLZ)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (MDLZ)) = 60.12 × 1283.65M = 77.173B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$92.641B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 77.17B + 15.47B − 0.00B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">28.8%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $11.31B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $39.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">12.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $5.05B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $39.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">6.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $2.58B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $39.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">5.8%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $38.54B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $36.44B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">2.357x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $92.64B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $39.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">18.33x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $92.64B &nbsp;|&nbsp; <strong>EBITDA</strong>: $5.05B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">35.98x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $92.64B &nbsp;|&nbsp; <strong>FCF</strong>: $2.58B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">29.58x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $77.17B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $2.61B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">17.75x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 60.12 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $3.39</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">0.987x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 0.99</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">1.963x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $77.17B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $39.30B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">29.97x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $77.17B &nbsp;|&nbsp; <strong>FCF</strong>: $2.58B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$15.468B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $15.47B &nbsp;|&nbsp; <strong>TotalCash</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">3.061x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $15.47B &nbsp;|&nbsp; <strong>EBITDA</strong>: $5.05B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">12.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 5.8% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 6.6%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="CL"
+    data-company="Colgate-Palmolive Co."
+    data-focus="Oral, personal & home care"
+    data-mktcap="71600939458.8000"
+    data-ev="78104939458.8000"
+    data-rev="20.7950"
+    data-revgrowth="1.3979"
+    data-gm="60.0625"
+    data-ebitdam="18.3073"
+    data-fcfm="20.8944"
+    data-evrev="3.7559"
+    data-evebitda="20.5161"
+    data-evfcf="17.9758"
+    data-pe="34.2916"
+    data-fwdpe="22.1333"
+    data-peg="1.5987"
+    data-ps="3.4432"
+    data-pfcf="16.4789"
+    data-netdebt="1.7084"
+    data-r40="22.2924">
+
+  <td class="txt ticker" onclick="toggleDetail('CL')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>CL
+  </td>
+  <td class="txt"><span class="company">Colgate-Palmolive Co.</span></td>
+  <td class="txt focus">Oral, personal & home care</td>
+
+  <td title="Market Cap | = 71.601B | Source: computed:price(yfinance:ticker.info.currentPrice (CL)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (CL)) = 89.48 × 800.19M = 71.601B | Period: live">$71.6B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 78.105B | Source: Computed: MarketCap + TotalDebt − TotalCash = 71.60B + 7.84B − 1.33B | Period: live">$78.1B</td>
+  <td title="Revenue TTM | = 20.795B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=20,382,000,000+YTD(2026-03-31)=5,324,000,000-PriorYTD(2025-03-31)=4,911,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax | Period: TTM via YTD recon (2026-03-31)">$20.8B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 1.398 | Inputs: Revenue_TTM=2.04e+10, Revenue_PriorYear=2.01e+10">1.4%</td>
+  <td title="GrossProfit / Revenue_TTM | = 60.063 | Inputs: GrossProfit=1.25e+10, Revenue_TTM=2.08e+10">60.1%</td>
+  <td title="EBITDA / Revenue_TTM | = 18.307 | Inputs: EBITDA=3.81e+09, Revenue_TTM=2.08e+10">18.3%</td>
+  <td title="FCF / Revenue_TTM | = 20.894 | Inputs: FCF=4.34e+09, Revenue_TTM=2.08e+10">20.9%</td>
+
+  <td class="y" title="EV / Revenue_TTM | = 3.756 | Inputs: EV=7.81e+10, Revenue_TTM=2.08e+10">3.76x</td>
+  <td class="y" title="EV / EBITDA | = 20.516 | Inputs: EV=7.81e+10, EBITDA=3.81e+09">20.52x</td>
+  <td class="y" title="EV / FCF | = 17.976 | Inputs: EV=7.81e+10, FCF=4.34e+09">17.98x</td>
+
+  <td class="r" title="MarketCap / NetIncome_TTM | = 34.292 | Inputs: MarketCap=7.16e+10, NetIncome_TTM=2.09e+09">34.29x</td>
+  <td class="y" title="Price / EPS_Forward | = 22.133 | Inputs: Price=89.5, EPS_Forward=4.04 [analyst estimate]">22.13x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 1.599 | Inputs: YahooPEG=1.6 [analyst estimate]">1.60x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 3.443 | Inputs: MarketCap=7.16e+10, Revenue_TTM=2.08e+10">3.44x</td>
+  <td class="y" title="MarketCap / FCF | = 16.479 | Inputs: MarketCap=7.16e+10, FCF=4.34e+09">16.48x</td>
+
+  <td class="g" title="NetDebt / EBITDA | = 1.708 | Inputs: NetDebt=6.5e+09, EBITDA=3.81e+09">1.71x</td>
+  <td class="y" title="RevGrowthPct + FCFMarginPct | = 22.292 | Inputs: RevGrowthPct=1.4, FCFMarginPct=20.9">22</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000021665&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/CL" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-CL">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">CL</span><span class="dn">Colgate-Palmolive Co.</span>
+      <span class="meta">CIK 0000021665</span>
+      
+      <button class="close-btn" onclick="toggleDetail('CL')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$20.795B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021665&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=20,382,000,000+YTD(2026-03-31)=5,324,000,000-PriorYTD(2025-03-31)=4,911,000,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax">SEC 10-Q · RevenueFromContractWithCustomerExcludingAssessedTax <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$12.490B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021665&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=12,251,000,000+YTD(2026-03-31)=3,226,000,000-PriorYTD(2025-03-31)=2,987,000,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$3.807B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021665&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(3194M)+D&amp;A(613M)=3807M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$4.345B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $4.34B &nbsp;|&nbsp; <strong>CapEx</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$4.345B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021665&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=4,198,000,000+YTD(2026-03-31)=747,000,000-PriorYTD(2025-03-31)=600,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for capex. edgar: All EDGAR concepts failed for capex: PaymentsToAcquirePropertyPlantAndEquipment: value period 2022-12-31 is 39mo behind latest filing 2026-03-31 (max 18mo) — concept likely no longer tagged; skipped to avoid stale data | CapitalExpendituresIncurredButNotYetPaid: HTTP error or not found | PaymentsForCapitalImprovements: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$2.088B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000021665&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=2,132,000,000+YTD(2026-03-31)=646,000,000-PriorYTD(2025-03-31)=690,000,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$1.335B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/21665/000002166526000023/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0000021665-26-000023,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$7.839B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/21665/000002166526000006/" target="_blank" rel="noopener" title="edgar:10-K,accession=0000021665-26-000006,concept=LongTermDebt">SEC 10-K · LongTermDebt <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2025-12-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$71.601B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (CL)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (CL)) = 89.48 × 800.19M = 71.601B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$78.105B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 71.60B + 7.84B − 1.33B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">60.1%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $12.49B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $20.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">18.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $3.81B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $20.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">20.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $4.34B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $20.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">1.4%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $20.38B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $20.10B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">3.756x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $78.10B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $20.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">20.52x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $78.10B &nbsp;|&nbsp; <strong>EBITDA</strong>: $3.81B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">17.98x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $78.10B &nbsp;|&nbsp; <strong>FCF</strong>: $4.34B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">34.29x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $71.60B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $2.09B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">22.13x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 89.48 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $4.04</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">1.599x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 1.60</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">3.443x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $71.60B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $20.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">16.48x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $71.60B &nbsp;|&nbsp; <strong>FCF</strong>: $4.34B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$6.504B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $7.84B &nbsp;|&nbsp; <strong>TotalCash</strong>: $1.33B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">1.708x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $6.50B &nbsp;|&nbsp; <strong>EBITDA</strong>: $3.81B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">22.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 1.4% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 20.9%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="KMB"
+    data-company="Kimberly-Clark Corp."
+    data-focus="Tissue & personal care"
+    data-mktcap="34043803013.9200"
+    data-ev="39976803013.9200"
+    data-rev="16.5560"
+    data-revgrowth="-2.1303"
+    data-gm="35.9266"
+    data-ebitdam="18.8149"
+    data-fcfm="19.2981"
+    data-evrev="2.4146"
+    data-evebitda="12.8336"
+    data-evfcf="12.5123"
+    data-pe="16.0660"
+    data-fwdpe="13.5488"
+    data-peg="2.0719"
+    data-ps="2.0563"
+    data-pfcf="10.6553"
+    data-netdebt="1.9047"
+    data-r40="17.1678">
+
+  <td class="txt ticker" onclick="toggleDetail('KMB')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>KMB
+  </td>
+  <td class="txt"><span class="company">Kimberly-Clark Corp.</span></td>
+  <td class="txt focus">Tissue & personal care</td>
+
+  <td title="Market Cap | = 34.044B | Source: computed:price(yfinance:ticker.info.currentPrice (KMB)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (KMB)) = 102.56 × 331.94M = 34.044B | Period: live">$34.0B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 39.977B | Source: Computed: MarketCap + TotalDebt − TotalCash = 34.04B + 6.47B − 0.54B | Period: live">$40.0B</td>
+  <td title="Revenue TTM | = 16.556B | Source: edgar_10q:accessions=['0001628280-26-027800', '0001628280-26-007567']...,concept=Revenues | Period: TTM (2026-03-31 latest quarter)">$16.6B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = -2.130 | Inputs: Revenue_TTM=1.64e+10, Revenue_PriorYear=1.68e+10">-2.1%</td>
+  <td title="GrossProfit / Revenue_TTM | = 35.927 | Inputs: GrossProfit=5.95e+09, Revenue_TTM=1.66e+10">35.9%</td>
+  <td title="EBITDA / Revenue_TTM | = 18.815 | Inputs: EBITDA=3.12e+09, Revenue_TTM=1.66e+10">18.8%</td>
+  <td title="FCF / Revenue_TTM | = 19.298 | Inputs: FCF=3.2e+09, Revenue_TTM=1.66e+10">19.3%</td>
+
+  <td class="g" title="EV / Revenue_TTM | = 2.415 | Inputs: EV=4e+10, Revenue_TTM=1.66e+10">2.41x</td>
+  <td class="g" title="EV / EBITDA | = 12.834 | Inputs: EV=4e+10, EBITDA=3.12e+09">12.83x</td>
+  <td class="g" title="EV / FCF | = 12.512 | Inputs: EV=4e+10, FCF=3.2e+09">12.51x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 16.066 | Inputs: MarketCap=3.4e+10, NetIncome_TTM=2.12e+09">16.07x</td>
+  <td class="g" title="Price / EPS_Forward | = 13.549 | Inputs: Price=103, EPS_Forward=7.57 [analyst estimate]">13.55x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 2.072 | Inputs: YahooPEG=2.07 [analyst estimate]">2.07x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 2.056 | Inputs: MarketCap=3.4e+10, Revenue_TTM=1.66e+10">2.06x</td>
+  <td class="g" title="MarketCap / FCF | = 10.655 | Inputs: MarketCap=3.4e+10, FCF=3.2e+09">10.66x</td>
+
+  <td class="g" title="NetDebt / EBITDA | = 1.905 | Inputs: NetDebt=5.93e+09, EBITDA=3.12e+09">1.90x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 17.168 | Inputs: RevGrowthPct=-2.13, FCFMarginPct=19.3">17</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000055785&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/KMB" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-KMB">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">KMB</span><span class="dn">Kimberly-Clark Corp.</span>
+      <span class="meta">CIK 0000055785</span>
+      
+      <button class="close-btn" onclick="toggleDetail('KMB')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$16.556B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/55785/000162828026027800/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001628280-26-027800', '0001628280-26-007567']...,concept=Revenues">SEC 10-Q · Revenues <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2026-03-31 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$5.948B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/55785/000162828026027800/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001628280-26-027800', '0001628280-26-007567']...,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2026-03-31 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$3.115B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000055785&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(2335M)+D&amp;A(780M)=3115M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$3.195B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $3.19B &nbsp;|&nbsp; <strong>CapEx</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$3.195B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000055785&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=2,777,000,000+YTD(2026-03-31)=745,000,000-PriorYTD(2025-03-31)=327,000,000,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-31)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for capex. edgar: All EDGAR concepts failed for capex: PaymentsToAcquirePropertyPlantAndEquipment: HTTP error or not found | CapitalExpendituresIncurredButNotYetPaid: HTTP error or not found | PaymentsForCapitalImprovements: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$2.119B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/55785/000162828026027800/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001628280-26-027800', '0001628280-26-007567']...,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2026-03-31 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$542.0M</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/55785/000162828026027800/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-027800,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$6.475B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/55785/000162828026027800/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-027800,concept=LongTermDebtAndCapitalLeaseObligations">SEC 10-Q · LongTermDebtAndCapitalLeaseObligations <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-31</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$34.044B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (KMB)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (KMB)) = 102.56 × 331.94M = 34.044B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$39.977B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 34.04B + 6.47B − 0.54B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">35.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $5.95B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $16.56B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">18.8%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $3.12B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $16.56B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">19.3%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $3.19B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $16.56B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">-2.1%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $16.45B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $16.80B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">2.415x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $39.98B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $16.56B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">12.83x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $39.98B &nbsp;|&nbsp; <strong>EBITDA</strong>: $3.12B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">12.51x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $39.98B &nbsp;|&nbsp; <strong>FCF</strong>: $3.19B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">16.07x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $34.04B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $2.12B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">13.55x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 102.56 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $7.57</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">2.072x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 2.07</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">2.056x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $34.04B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $16.56B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">10.66x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $34.04B &nbsp;|&nbsp; <strong>FCF</strong>: $3.19B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$5.933B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $6.47B &nbsp;|&nbsp; <strong>TotalCash</strong>: $542.0M</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">1.905x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $5.93B &nbsp;|&nbsp; <strong>EBITDA</strong>: $3.12B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">17.2%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: -2.1% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 19.3%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="GIS"
+    data-company="General Mills, Inc."
+    data-focus="Packaged foods"
+    data-mktcap="17835626305.5600"
+    data-ev="28042226305.5600"
+    data-rev="18.3712"
+    data-revgrowth="-1.8663"
+    data-gm="36.6498"
+    data-ebitdam="21.8897"
+    data-fcfm="12.4809"
+    data-evrev="1.5264"
+    data-evebitda="6.9732"
+    data-evfcf="12.2300"
+    data-pe="8.0547"
+    data-fwdpe="10.6339"
+    data-peg="11.7371"
+    data-ps="0.9708"
+    data-pfcf="7.7786"
+    data-netdebt="2.5381"
+    data-r40="10.6146">
+
+  <td class="txt ticker" onclick="toggleDetail('GIS')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>GIS
+  </td>
+  <td class="txt"><span class="company">General Mills, Inc.</span></td>
+  <td class="txt focus">Packaged foods</td>
+
+  <td title="Market Cap | = 17.836B | Source: computed:price(yfinance:ticker.info.currentPrice (GIS)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (GIS)) = 33.42 × 533.68M = 17.836B | Period: live">$17.8B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 28.042B | Source: Computed: MarketCap + TotalDebt − TotalCash = 17.84B + 10.99B − 0.79B | Period: live">$28.0B</td>
+  <td title="Revenue TTM | = 18.371B | Source: edgar_10q:accessions=['0001628280-26-019398', '0001628280-25-057598']...,concept=RevenueFromContractWithCustomerExcludingAssessedTax | Period: TTM (2026-02-22 latest quarter)">$18.4B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = -1.866 | Inputs: Revenue_TTM=1.95e+10, Revenue_PriorYear=1.99e+10">-1.9%</td>
+  <td title="GrossProfit / Revenue_TTM | = 36.650 | Inputs: GrossProfit=6.73e+09, Revenue_TTM=1.84e+10">36.6%</td>
+  <td title="EBITDA / Revenue_TTM | = 21.890 | Inputs: EBITDA=4.02e+09, Revenue_TTM=1.84e+10">21.9%</td>
+  <td title="FCF / Revenue_TTM | = 12.481 | Inputs: FCF=2.29e+09, Revenue_TTM=1.84e+10">12.5%</td>
+
+  <td class="g" title="EV / Revenue_TTM | = 1.526 | Inputs: EV=2.8e+10, Revenue_TTM=1.84e+10">1.53x</td>
+  <td class="g" title="EV / EBITDA | = 6.973 | Inputs: EV=2.8e+10, EBITDA=4.02e+09">6.97x</td>
+  <td class="g" title="EV / FCF | = 12.230 | Inputs: EV=2.8e+10, FCF=2.29e+09">12.23x</td>
+
+  <td class="g" title="MarketCap / NetIncome_TTM | = 8.055 | Inputs: MarketCap=1.78e+10, NetIncome_TTM=2.21e+09">8.05x</td>
+  <td class="g" title="Price / EPS_Forward | = 10.634 | Inputs: Price=33.4, EPS_Forward=3.14 [analyst estimate]">10.63x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 11.737 | Inputs: YahooPEG=11.7 [analyst estimate]">11.74x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 0.971 | Inputs: MarketCap=1.78e+10, Revenue_TTM=1.84e+10">0.97x</td>
+  <td class="g" title="MarketCap / FCF | = 7.779 | Inputs: MarketCap=1.78e+10, FCF=2.29e+09">7.78x</td>
+
+  <td class="y" title="NetDebt / EBITDA | = 2.538 | Inputs: NetDebt=1.02e+10, EBITDA=4.02e+09">2.54x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 10.615 | Inputs: RevGrowthPct=-1.87, FCFMarginPct=12.5">11</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000040704&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/GIS" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-GIS">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">GIS</span><span class="dn">General Mills, Inc.</span>
+      <span class="meta">CIK 0000040704</span>
+      
+      <button class="close-btn" onclick="toggleDetail('GIS')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$18.371B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/40704/000162828026019398/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001628280-26-019398', '0001628280-25-057598']...,concept=RevenueFromContractWithCustomerExcludingAssessedTax">SEC 10-Q · RevenueFromContractWithCustomerExcludingAssessedTax <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2026-02-22 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$6.733B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/40704/000119312525147079/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001193125-25-147079', '0001193125-25-147079']...,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2025-05-25 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$4.021B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000040704&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(3482M)+D&amp;A(539M)=4021M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-02-22)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$2.293B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $2.92B &nbsp;|&nbsp; <strong>CapEx</strong>: $625.3M</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$2.918B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000040704&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-05-25)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$625.3M</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000040704&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-05-25)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$2.214B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/40704/000162828026019398/" target="_blank" rel="noopener" title="edgar_10q:accessions=['0001628280-26-019398', '0001628280-25-057598']...,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM (2026-02-22 latest quarter)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value">$785.5M</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/40704/000162828026019398/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-019398,concept=CashAndCashEquivalentsAtCarryingValue">SEC 10-Q · CashAndCashEquivalentsAtCarryingValue <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-02-22</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$10.992B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/40704/000162828026019398/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-019398,concept=LongTermDebtAndCapitalLeaseObligations">SEC 10-Q · LongTermDebtAndCapitalLeaseObligations <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-02-22</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$17.836B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (GIS)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (GIS)) = 33.42 × 533.68M = 17.836B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$28.042B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 17.84B + 10.99B − 0.79B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">36.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $6.73B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $18.37B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">21.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $4.02B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $18.37B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">12.5%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $2.29B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $18.37B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">-1.9%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $19.49B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $19.86B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">1.526x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $28.04B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $18.37B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">6.973x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $28.04B &nbsp;|&nbsp; <strong>EBITDA</strong>: $4.02B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">12.23x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $28.04B &nbsp;|&nbsp; <strong>FCF</strong>: $2.29B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">8.055x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $17.84B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $2.21B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">10.63x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 33.42 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $3.14</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">11.74x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 11.74</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">0.971x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $17.84B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $18.37B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">7.779x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $17.84B &nbsp;|&nbsp; <strong>FCF</strong>: $2.29B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$10.207B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $10.99B &nbsp;|&nbsp; <strong>TotalCash</strong>: $785.5M</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">2.538x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $10.21B &nbsp;|&nbsp; <strong>EBITDA</strong>: $4.02B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">10.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: -1.9% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 12.5%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+<tr class="data-row"
+    data-ticker="HSY"
+    data-company="The Hershey Company"
+    data-focus="Confectionery & snacks"
+    data-mktcap="25588920386.5400"
+    data-ev="30777364386.5400"
+    data-rev="11.9913"
+    data-revgrowth="4.3769"
+    data-gm="35.0350"
+    data-ebitdam="18.4899"
+    data-fcfm="15.2005"
+    data-evrev="2.5666"
+    data-evebitda="13.8813"
+    data-evfcf="16.8852"
+    data-pe="23.3868"
+    data-fwdpe="17.3702"
+    data-peg="0.9910"
+    data-ps="2.1340"
+    data-pfcf="14.0387"
+    data-netdebt="2.3401"
+    data-r40="19.5774">
+
+  <td class="txt ticker" onclick="toggleDetail('HSY')" title="Click to expand sources &amp; formulas">
+    <span class="car">▸</span>HSY
+  </td>
+  <td class="txt"><span class="company">The Hershey Company</span></td>
+  <td class="txt focus">Confectionery & snacks</td>
+
+  <td title="Market Cap | = 25.589B | Source: computed:price(yfinance:ticker.info.currentPrice (HSY)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (HSY)) = 172.63 × 148.23M = 25.589B | Period: live">$25.6B</td>
+  <td title="EV = MarketCap + Debt − Cash | = 30.777B | Source: Computed: MarketCap + TotalDebt − TotalCash = 25.59B + 5.19B − 0.00B | Period: live">$30.8B</td>
+  <td title="Revenue TTM | = 11.991B | Source: edgar_10q:ytd_reconstruction,FY(2025-12-31)=11,692,576,000+YTD(2026-03-29)=3,104,167,000-PriorYTD(2025-03-30)=2,805,419,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax | Period: TTM via YTD recon (2026-03-29)">$12.0B</td>
+  <td title="(Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear | = 4.377 | Inputs: Revenue_TTM=1.17e+10, Revenue_PriorYear=1.12e+10">4.4%</td>
+  <td title="GrossProfit / Revenue_TTM | = 35.035 | Inputs: GrossProfit=4.2e+09, Revenue_TTM=1.2e+10">35.0%</td>
+  <td title="EBITDA / Revenue_TTM | = 18.490 | Inputs: EBITDA=2.22e+09, Revenue_TTM=1.2e+10">18.5%</td>
+  <td title="FCF / Revenue_TTM | = 15.201 | Inputs: FCF=1.82e+09, Revenue_TTM=1.2e+10">15.2%</td>
+
+  <td class="g" title="EV / Revenue_TTM | = 2.567 | Inputs: EV=3.08e+10, Revenue_TTM=1.2e+10">2.57x</td>
+  <td class="g" title="EV / EBITDA | = 13.881 | Inputs: EV=3.08e+10, EBITDA=2.22e+09">13.88x</td>
+  <td class="y" title="EV / FCF | = 16.885 | Inputs: EV=3.08e+10, FCF=1.82e+09">16.89x</td>
+
+  <td class="y" title="MarketCap / NetIncome_TTM | = 23.387 | Inputs: MarketCap=2.56e+10, NetIncome_TTM=1.09e+09">23.39x</td>
+  <td class="y" title="Price / EPS_Forward | = 17.370 | Inputs: Price=173, EPS_Forward=9.94 [analyst estimate]">17.37x <span class="badge badge-est">EST</span></td>
+  <td title="Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced) | = 0.991 | Inputs: YahooPEG=0.991 [analyst estimate]">0.99x <span class="badge badge-est">EST</span></td>
+  <td title="MarketCap / Revenue_TTM | = 2.134 | Inputs: MarketCap=2.56e+10, Revenue_TTM=1.2e+10">2.13x</td>
+  <td class="g" title="MarketCap / FCF | = 14.039 | Inputs: MarketCap=2.56e+10, FCF=1.82e+09">14.04x</td>
+
+  <td class="y" title="NetDebt / EBITDA | = 2.340 | Inputs: NetDebt=5.19e+09, EBITDA=2.22e+09">2.34x</td>
+  <td class="r" title="RevGrowthPct + FCFMarginPct | = 19.577 | Inputs: RevGrowthPct=4.38, FCFMarginPct=15.2">20</td>
+
+  <td class="source-cell">
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000047111&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>
+    <a href="https://finance.yahoo.com/quote/HSY" target="_blank" rel="noopener">↗ Yahoo Finance</a>
+    <span class="gen">Generated 2026-06-20</span>
+  </td>
+</tr>
+
+<tr class="detail-row" id="detail-HSY">
+  <td colspan="21">
+    <div class="detail-bar">
+      <span class="dt">HSY</span><span class="dn">The Hershey Company</span>
+      <span class="meta">CIK 0000047111</span>
+      
+      <button class="close-btn" onclick="toggleDetail('HSY')" title="Collapse">✕</button>
+    </div>
+    <div class="detail-grid">
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue TTM</div>
+  <div class="detail-value">$11.991B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=11,692,576,000+YTD(2026-03-29)=3,104,167,000-PriorYTD(2025-03-30)=2,805,419,000,concept=RevenueFromContractWithCustomerExcludingAssessedTax">SEC 10-Q · RevenueFromContractWithCustomerExcludingAssessedTax <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-29)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Profit</div>
+  <div class="detail-value">$4.201B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=3,922,691,000+YTD(2026-03-29)=1,222,731,000-PriorYTD(2025-03-30)=944,267,000,concept=GrossProfit">SEC 10-Q · GrossProfit <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-29)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA</div>
+  <div class="detail-value">$2.217B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="computed:OpIncome(1713M)+D&amp;A(504M)=2217M">SEC 10-Q <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-29)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Free Cash Flow (OCF − CapEx)</div>
+  <div class="detail-value">$1.823B</div>
+  <div class="detail-line"><strong>Formula:</strong> OCF - CapEx</div><div class="detail-line"><strong>Inputs:</strong> <strong>OCF</strong>: $2.28B &nbsp;|&nbsp; <strong>CapEx</strong>: $454.6M</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Operating Cash Flow</div>
+  <div class="detail-value">$2.277B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=NetCashProvidedByUsedInOperatingActivities">SEC 10-Q · NetCashProvidedByUsedInOperatingActivities <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-12-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">CapEx</div>
+  <div class="detail-value">$454.6M</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10k:annual_fallback,concept=PaymentsToAcquirePropertyPlantAndEquipment">SEC 10-Q · PaymentsToAcquirePropertyPlantAndEquipment <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> FY (2025-12-31)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Income TTM</div>
+  <div class="detail-value">$1.094B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=0000047111&amp;type=10-Q" target="_blank" rel="noopener" title="edgar_10q:ytd_reconstruction,FY(2025-12-31)=883,259,000+YTD(2026-03-29)=435,105,000-PriorYTD(2025-03-30)=224,203,000,concept=NetIncomeLoss">SEC 10-Q · NetIncomeLoss <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> TTM via YTD recon (2026-03-29)</div>
+</div>
+      
+<div class="detail-card na-card">
+  <div class="detail-metric">Total Cash</div>
+  <div class="detail-value na">N/A</div>
+  <div class="detail-line reason"><strong>Reason:</strong> All sources failed for total_cash. edgar: All EDGAR concepts failed for total_cash: CashAndCashEquivalentsAtCarryingValue: value period 2019-06-30 is 81mo behind latest filing 2026-03-29 (max 12mo) — concept likely no longer tagged; skipped to avoid stale data | CashCashEquivalentsAndShortTermInvestments: HTTP error or not found | CashAndCashEquivalentsAndShortTermInvestments: HTTP error or not found | stockanalysis: StockAnalysis fallback disabled (run with --use-scrape to enable)</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Total Debt</div>
+  <div class="detail-value">$5.188B</div>
+  <div class="detail-line"><strong>Source:</strong> <a href="https://www.sec.gov/Archives/edgar/data/47111/000162828026028682/" target="_blank" rel="noopener" title="edgar:10-Q,accession=0001628280-26-028682,concept=LongTermDebt">SEC 10-Q · LongTermDebt <span class="ext">↗</span></a></div><div class="detail-line"><strong>Period:</strong> As of 2026-03-29</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Market Cap</div>
+  <div class="detail-value">$25.589B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="computed:price(yfinance:ticker.info.currentPrice (HSY)) × sharesOutstanding(yfinance:ticker.info.sharesOutstanding (HSY)) = 172.63 × 148.23M = 25.589B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Enterprise Value</div>
+  <div class="detail-value">$30.777B</div>
+  <div class="detail-line"><strong>Source:</strong> <span title="Computed: MarketCap + TotalDebt − TotalCash = 25.59B + 5.19B − 0.00B">Computed</span></div><div class="detail-line"><strong>Period:</strong> live</div><div class="detail-line">EV = MarketCap + Debt − Cash</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Gross Margin %</div>
+  <div class="detail-value">35.0%</div>
+  <div class="detail-line"><strong>Formula:</strong> GrossProfit / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>GrossProfit</strong>: $4.20B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $11.99B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EBITDA Margin %</div>
+  <div class="detail-value">18.5%</div>
+  <div class="detail-line"><strong>Formula:</strong> EBITDA / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EBITDA</strong>: $2.22B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $11.99B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">FCF Margin %</div>
+  <div class="detail-value">15.2%</div>
+  <div class="detail-line"><strong>Formula:</strong> FCF / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>FCF</strong>: $1.82B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $11.99B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Revenue Growth YoY %</div>
+  <div class="detail-value">4.4%</div>
+  <div class="detail-line"><strong>Formula:</strong> (Revenue_TTM - Revenue_PriorYear) / Revenue_PriorYear</div><div class="detail-line"><strong>Inputs:</strong> <strong>Revenue_TTM</strong>: $11.69B &nbsp;|&nbsp; <strong>Revenue_PriorYear</strong>: $11.20B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / Revenue</div>
+  <div class="detail-value">2.567x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $30.78B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $11.99B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / EBITDA</div>
+  <div class="detail-value">13.88x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $30.78B &nbsp;|&nbsp; <strong>EBITDA</strong>: $2.22B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">EV / FCF</div>
+  <div class="detail-value">16.89x</div>
+  <div class="detail-line"><strong>Formula:</strong> EV / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>EV</strong>: $30.78B &nbsp;|&nbsp; <strong>FCF</strong>: $1.82B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">P/E TTM</div>
+  <div class="detail-value">23.39x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / NetIncome_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $25.59B &nbsp;|&nbsp; <strong>NetIncome_TTM</strong>: $1.09B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Forward P/E (analyst estimate)</div>
+  <div class="detail-value">17.37x</div>
+  <div class="detail-line"><strong>Formula:</strong> Price / EPS_Forward</div><div class="detail-line"><strong>Inputs:</strong> <strong>Price</strong>: 172.63 &nbsp;|&nbsp; <strong>EPS_Forward</strong>: $9.94</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">PEG Ratio (analyst estimate)</div>
+  <div class="detail-value">0.991x</div>
+  <div class="detail-line"><strong>Formula:</strong> Yahoo PEG = P/E ÷ 3-5yr est. EPS growth (sourced)</div><div class="detail-line"><strong>Inputs:</strong> <strong>YahooPEG</strong>: 0.99</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / Sales</div>
+  <div class="detail-value">2.134x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / Revenue_TTM</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $25.59B &nbsp;|&nbsp; <strong>Revenue_TTM</strong>: $11.99B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Price / FCF</div>
+  <div class="detail-value">14.04x</div>
+  <div class="detail-line"><strong>Formula:</strong> MarketCap / FCF</div><div class="detail-line"><strong>Inputs:</strong> <strong>MarketCap</strong>: $25.59B &nbsp;|&nbsp; <strong>FCF</strong>: $1.82B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt (Debt − Cash)</div>
+  <div class="detail-value">$5.188B</div>
+  <div class="detail-line"><strong>Formula:</strong> TotalDebt - TotalCash</div><div class="detail-line"><strong>Inputs:</strong> <strong>TotalDebt</strong>: $5.19B &nbsp;|&nbsp; <strong>TotalCash</strong>: N/A</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Net Debt / EBITDA</div>
+  <div class="detail-value">2.340x</div>
+  <div class="detail-line"><strong>Formula:</strong> NetDebt / EBITDA</div><div class="detail-line"><strong>Inputs:</strong> <strong>NetDebt</strong>: $5.19B &nbsp;|&nbsp; <strong>EBITDA</strong>: $2.22B</div>
+</div>
+      
+<div class="detail-card">
+  <div class="detail-metric">Rule of 40</div>
+  <div class="detail-value">19.6%</div>
+  <div class="detail-line"><strong>Formula:</strong> RevGrowthPct + FCFMarginPct</div><div class="detail-line"><strong>Inputs:</strong> <strong>RevGrowthPct</strong>: 4.4% &nbsp;|&nbsp; <strong>FCFMarginPct</strong>: 15.2%</div>
+</div>
+    </div>
+  </td>
+</tr>
+
+
+</tbody>
+</table>
+</div>
+
+<footer class="foot">
+    <div class="disc">Not investment advice. For research and educational use only.</div>
+    <div class="src">
+        Generated 2026-06-20 · Pipeline v1.0.0 ·
+        Deterministic open-source pipeline · Data: SEC EDGAR XBRL + Yahoo Finance ·
+        Every figure is traceable — click a ticker for sources, formulas, and N/A reasons.
+    </div>
+</footer>
+
+</div><!-- /wrap -->
+
+<script>
+// ── Theme toggle (persisted) ─────────────────────────────────────────────────
+(function () {
+    const saved = localStorage.getItem('valdash-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.setAttribute('data-theme', 'dark');
+})();
+function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('valdash-theme', next);
+}
+
+// ── Sort ─────────────────────────────────────────────────────────────────────
+(function () {
+    const tbody = document.getElementById('tbody');
+    const headers = document.querySelectorAll('thead tr.cols th[data-key]');
+    let currentKey = null, ascending = true;
+    headers.forEach(th => {
+        th.addEventListener('click', function () {
+            const key = this.dataset.key, type = this.dataset.type;
+            if (!key) return;
+            if (currentKey === key) ascending = !ascending;
+            else { currentKey = key; ascending = (type !== 'num'); }
+            headers.forEach(h => h.classList.remove('sorted-asc', 'sorted-desc'));
+            this.classList.add(ascending ? 'sorted-asc' : 'sorted-desc');
+            const dataRows = Array.from(tbody.querySelectorAll('tr.data-row'));
+            const pairs = dataRows.map(r => {
+                const next = r.nextElementSibling;
+                return { data: r, detail: (next && next.classList.contains('detail-row')) ? next : null };
+            });
+            pairs.sort((a, b) => {
+                if (type === 'num') {
+                    const av = parseFloat(a.data.dataset[key]) || 0;
+                    const bv = parseFloat(b.data.dataset[key]) || 0;
+                    return ascending ? av - bv : bv - av;
+                }
+                const av = (a.data.dataset[key] || '').toLowerCase();
+                const bv = (b.data.dataset[key] || '').toLowerCase();
+                return ascending ? av.localeCompare(bv) : bv.localeCompare(av);
+            });
+            pairs.forEach(({ data, detail }) => {
+                tbody.appendChild(data);
+                if (detail) tbody.appendChild(detail);
+            });
+        });
+    });
+})();
+
+// ── Expand / collapse detail rows ────────────────────────────────────────────
+function toggleDetail(ticker) {
+    const row = document.getElementById('detail-' + ticker);
+    if (row) row.classList.toggle('open');
+}
+</script>
+</body>
+</html>

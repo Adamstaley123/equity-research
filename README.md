@@ -17,9 +17,17 @@ sourcing, formulas, and an explicit reason behind every `N/A`.
 ```bash
 cd tearsheet
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+export EDGAR_USER_AGENT="YourName your@email.com"   # courtesy to SEC; optional
+
+# A built-in sector (payments | semiconductors | consumer_staples):
 .venv/bin/python pipeline/run.py --sector payments
 # → open output/Payments/payments_valuation.html
+
+# …or any tickers you like, no config file (metadata auto-filled from Yahoo):
+.venv/bin/python pipeline/run.py --tickers NEE,DUK,SO --name "Utilities"
 ```
+
+Keyless by default (SEC EDGAR + Yahoo Finance); every number links to its source.
 
 See [`tearsheet/README.md`](tearsheet/README.md) for the full guide, including
 how to add your own sector in a single YAML file.

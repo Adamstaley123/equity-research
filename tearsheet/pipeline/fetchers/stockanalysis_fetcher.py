@@ -1,13 +1,17 @@
 """
-StockAnalysis.com scrape fetcher — fallback when EDGAR and yfinance both fail.
+StockAnalysis.com scrape fetcher — OPT-IN fallback when EDGAR and yfinance fail.
 
-StockAnalysis is updated daily and is the most comprehensive free screener
-for US payments/fintech companies.  Scraping is inherently fragile; all values
-fetched here are tagged source_confidence="scraped".
+⚠ Opt-in only. This module is NOT used unless the pipeline is run with
+`--use-scrape`. Scraping StockAnalysis.com may violate their Terms of Service,
+so it is disabled by default and the user is responsible for their own use.
+SEC EDGAR (public domain) and Yahoo Finance are the default sources.
 
-Used as fallback for:
+When enabled, it is used as a last-resort fallback for:
   - Foreign private issuers (e.g. ADYEN) that don't have EDGAR XBRL data
   - Any field where EDGAR returns None
+
+Scraping is inherently fragile; all values fetched here are tagged
+source="stockanalysis_scrape".
 """
 from __future__ import annotations
 import re

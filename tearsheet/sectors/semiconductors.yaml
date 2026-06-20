@@ -1,0 +1,66 @@
+# Semiconductors sector — company universe for the valuation dashboard.
+#
+# To run this sector:   python pipeline/run.py --sector semiconductors
+# To run a subset:      python pipeline/run.py --sector semiconductors --tickers NVDA --tickers AMD
+#
+# This file is also the "second sector" reference: it deliberately uses NO `cik`
+# overrides, relying on SEC EDGAR auto-lookup, to mirror exactly what happens
+# when someone clones the repo and runs it on their own (unambiguous) tickers.
+#
+# Per-company fields (see sectors/payments.yaml for the full list):
+#   name / focus / exchange / currency, plus optional cik / yfinance_ticker / flags / foreign.
+
+name: Semiconductors
+description: Leading US-listed semiconductor designers and equipment makers.
+
+companies:
+  NVDA:
+    name: NVIDIA Corporation
+    focus: GPUs / accelerated computing & AI
+    exchange: NASDAQ
+    currency: USD
+  AMD:
+    name: Advanced Micro Devices
+    focus: CPUs, GPUs, data-center accelerators
+    exchange: NASDAQ
+    currency: USD
+  AVGO:
+    name: Broadcom Inc.
+    focus: Networking & custom silicon, infra software
+    exchange: NASDAQ
+    currency: USD
+  INTC:
+    name: Intel Corporation
+    focus: x86 CPUs & foundry
+    exchange: NASDAQ
+    currency: USD
+  QCOM:
+    name: QUALCOMM Incorporated
+    focus: Mobile SoCs & wireless licensing
+    exchange: NASDAQ
+    currency: USD
+  TXN:
+    name: Texas Instruments
+    focus: Analog & embedded processing
+    exchange: NASDAQ
+    currency: USD
+  MU:
+    name: Micron Technology
+    focus: DRAM & NAND memory
+    exchange: NASDAQ
+    currency: USD
+  ADI:
+    name: Analog Devices, Inc.
+    focus: High-performance analog & mixed-signal
+    exchange: NASDAQ
+    currency: USD
+  MRVL:
+    name: Marvell Technology, Inc.
+    focus: Data-center & networking silicon
+    exchange: NASDAQ
+    currency: USD
+  LRCX:
+    name: Lam Research Corporation
+    focus: Wafer-fabrication equipment
+    exchange: NASDAQ
+    currency: USD

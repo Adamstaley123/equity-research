@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ dataset.sector | title }} Sector Tearsheet</title>
+<title>{{ dataset.sector | replace('_', ' ') | title }} Sector Tearsheet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -214,6 +214,10 @@ html[data-theme="dark"] .detail-bar .dt { color: var(--accent); }
 .detail-line { color: var(--ink-soft); font-size: 11px; margin-top: 3px; word-break: break-word; }
 .detail-line strong { color: var(--ink); font-weight: 600; }
 .detail-line.reason { color: var(--r-fg); }
+.detail-line a { color: var(--accent); text-decoration: none; font-weight: 500; cursor: help; }
+html[data-theme="dark"] .detail-line a { color: var(--accent); }
+.detail-line a:hover { text-decoration: underline; }
+.detail-line a .ext { font-size: 9px; opacity: .7; }
 
 /* ── Footer ───────────────────────────────────────────── */
 footer.foot { border-top: 2px solid var(--ink); padding: 22px 0 60px; font-size: 11.5px; color: var(--ink-soft); line-height: 1.7; }
@@ -234,7 +238,7 @@ footer.foot a { color: var(--accent); }
 <header class="mast">
     <div class="eyebrow">Tearsheet · Equity Research · v{{ dataset.pipeline_version }}</div>
     <div class="mast-row">
-        <h1 class="title">{{ dataset.sector | title }} <em>Sector Tearsheet</em></h1>
+        <h1 class="title">{{ dataset.sector | replace('_', ' ') | title }} <em>Sector Tearsheet</em></h1>
         <div>
             <div class="mast-meta">
                 As of <b>{{ dataset.generated_at[:10] }}</b> · <b>{{ summary.count }}</b> companies<br>
@@ -297,7 +301,7 @@ footer.foot a { color: var(--accent); }
     <summary><span class="chev">▸</span> Methodology &amp; data sources <span class="tag">how every number is computed</span></summary>
     <div class="body">
         <h4>Sources</h4>
-        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. Foreign issuers without EDGAR XBRL (e.g. Adyen) fall back to a StockAnalysis source.</p>
+        <p>Financial statements (revenue, EBITDA, FCF, cash, debt) come from the <strong>SEC EDGAR XBRL</strong> API — authoritative 10-Q / 10-K filings. Market data (price, shares) from <strong>Yahoo Finance</strong>. These two keyless sources are the default; an optional StockAnalysis scrape (for foreign issuers without EDGAR) is off unless explicitly enabled. Click any ticker to see each figure's exact source, filing, and formula.</p>
         <h4>TTM &amp; freshness</h4>
         <p>TTM = the four most recent quarters (or YTD reconstruction for cash-flow items). Every value is checked against the company's latest filing date; anything stale is dropped to <strong>N/A with a reason</strong> rather than shown.</p>
         <h4>Enterprise value</h4>
@@ -307,7 +311,7 @@ footer.foot a { color: var(--accent); }
         <h4>Estimates</h4>
         <p>Forward P/E and PEG are <strong>analyst consensus</strong> (marked <span class="badge badge-est">EST</span>), not filings. PEG is Yahoo's (P/E ÷ 3–5yr est. growth).</p>
         <h4>Revenue basis</h4>
-        <p>Net revenue (†) keeps only the fee retained (Adyen, Marqeta, Payoneer); gross revenue includes full processing volume (Shift4, Paymentus). EV/Revenue is not directly comparable across these.</p>
+        <p>Net revenue (†) keeps only the fee retained (Marqeta, Payoneer); gross revenue includes full processing volume (Shift4, Paymentus). EV/Revenue is not directly comparable across these.</p>
         <h4>Rule of 40</h4>
         <p><code>Rev Growth % + FCF Margin %</code>. For SBC-heavy names, FCF &gt; EBITDA because stock comp is added back — EV/FCF flatters them (<span class="badge badge-sbc">SBC</span>).</p>
     </div>
@@ -357,7 +361,7 @@ footer.foot a { color: var(--accent); }
 <tr class="data-row{% if 'european' in c.flags %} european{% endif %}"
     data-ticker="{{ c.ticker }}"
     data-company="{{ c.company_name }}"
-    data-focus="{{ c.payments_focus }}"
+    data-focus="{{ c.focus }}"
     data-mktcap="{{ c.market_cap.value | fmt_num }}"
     data-ev="{{ c.enterprise_value.value | fmt_num }}"
     data-rev="{{ c.revenue_ttm.value | fmt_rev }}"
@@ -380,7 +384,7 @@ footer.foot a { color: var(--accent); }
     <span class="car">▸</span>{{ c.ticker }}{% if 'european' in c.flags %} <span class="badge badge-eur">{{ c.currency }}</span>{% endif %}{% if 'sbc_heavy' in c.flags %} <span class="badge badge-sbc">SBC</span>{% endif %}
   </td>
   <td class="txt"><span class="company">{{ c.company_name }}</span></td>
-  <td class="txt focus">{{ c.payments_focus }}</td>
+  <td class="txt focus">{{ c.focus }}</td>
 
   <td title="{{ c.market_cap | dp_tooltip('Market Cap') }}">{{ c.market_cap.value | fmt_b_display | safe }}</td>
   <td title="{{ c.enterprise_value | dp_tooltip('EV = MarketCap + Debt − Cash') }}">{{ c.enterprise_value.value | fmt_b_display | safe }}</td>
@@ -404,9 +408,8 @@ footer.foot a { color: var(--accent); }
   <td class="{{ c.rule_of_40 | color_class('rule_of_40') }}" title="{{ c.rule_of_40 | ratio_tooltip }}">{{ c.rule_of_40 | fmt_ratio_plain | safe }}</td>
 
   <td class="source-cell">
-    {% if c.cik %}<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{ c.cik }}&type=10-K" target="_blank">↗ SEC EDGAR</a>{% endif %}
-    {% if 'european' not in c.flags %}<a href="https://stockanalysis.com/stocks/{{ c.ticker | lower }}/statistics/" target="_blank">↗ StockAnalysis</a>{% else %}<a href="https://stockanalysis.com/quote/ams/{{ c.ticker | lower }}/statistics/" target="_blank">↗ StockAnalysis</a>{% endif %}
-    <a href="https://finance.yahoo.com/quote/{{ c.ticker }}" target="_blank">↗ Yahoo Finance</a>
+    {% if c.cik %}<a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={{ c.cik }}&type=10-K" target="_blank" rel="noopener">↗ SEC EDGAR</a>{% endif %}
+    <a href="https://finance.yahoo.com/quote/{{ c.yfinance_ticker or c.ticker }}" target="_blank" rel="noopener">↗ Yahoo Finance</a>
     <span class="gen">Generated {{ dataset.generated_at[:10] }}</span>
   </td>
 </tr>
@@ -420,17 +423,17 @@ footer.foot a { color: var(--accent); }
       <button class="close-btn" onclick="toggleDetail('{{ c.ticker }}')" title="Collapse">✕</button>
     </div>
     <div class="detail-grid">
-      {{ c.revenue_ttm | detail_card('Revenue TTM', '') }}
-      {{ c.gross_profit | detail_card('Gross Profit', '') }}
-      {{ c.ebitda | detail_card('EBITDA', '') }}
+      {{ c.revenue_ttm | detail_card('Revenue TTM', '', c.cik, c.ticker) }}
+      {{ c.gross_profit | detail_card('Gross Profit', '', c.cik, c.ticker) }}
+      {{ c.ebitda | detail_card('EBITDA', '', c.cik, c.ticker) }}
       {{ c.fcf | ratio_detail_card('Free Cash Flow (OCF − CapEx)') }}
-      {{ c.operating_cash_flow | detail_card('Operating Cash Flow', '') }}
-      {{ c.capex | detail_card('CapEx', '') }}
-      {{ c.net_income_ttm | detail_card('Net Income TTM', '') }}
-      {{ c.total_cash | detail_card('Total Cash', '') }}
-      {{ c.total_debt | detail_card('Total Debt', '') }}
-      {{ c.market_cap | detail_card('Market Cap', '') }}
-      {{ c.enterprise_value | detail_card('Enterprise Value', 'EV = MarketCap + Debt − Cash') }}
+      {{ c.operating_cash_flow | detail_card('Operating Cash Flow', '', c.cik, c.ticker) }}
+      {{ c.capex | detail_card('CapEx', '', c.cik, c.ticker) }}
+      {{ c.net_income_ttm | detail_card('Net Income TTM', '', c.cik, c.ticker) }}
+      {{ c.total_cash | detail_card('Total Cash', '', c.cik, c.ticker) }}
+      {{ c.total_debt | detail_card('Total Debt', '', c.cik, c.ticker) }}
+      {{ c.market_cap | detail_card('Market Cap', '', c.cik, c.ticker) }}
+      {{ c.enterprise_value | detail_card('Enterprise Value', 'EV = MarketCap + Debt − Cash', c.cik, c.ticker) }}
       {{ c.gross_margin_pct | ratio_detail_card('Gross Margin %') }}
       {{ c.ebitda_margin_pct | ratio_detail_card('EBITDA Margin %') }}
       {{ c.fcf_margin_pct | ratio_detail_card('FCF Margin %') }}
@@ -459,7 +462,7 @@ footer.foot a { color: var(--accent); }
     <div class="disc">Not investment advice. For research and educational use only.</div>
     <div class="src">
         Generated {{ dataset.generated_at[:10] }} · Pipeline v{{ dataset.pipeline_version }} ·
-        Deterministic open-source pipeline · Data: SEC EDGAR XBRL, Yahoo Finance, StockAnalysis ·
+        Deterministic open-source pipeline · Data: SEC EDGAR XBRL + Yahoo Finance ·
         Every figure is traceable — click a ticker for sources, formulas, and N/A reasons.
     </div>
 </footer>
